@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { NextAuthProvider } from "@/NextAuthProvider";
+import DynamicHeader from "@/components/Layout/Header/Header";
+import DynamicLayout from "@/components/Layout/layout";
+import Footer from "@/components/Layout/Footer/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,15 +23,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
+      <title>Medicova</title>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <NextAuthProvider>
+          <DynamicHeader />
+          <DynamicLayout>{children}</DynamicLayout>
+          <Footer />
+        </NextAuthProvider>
       </body>
     </html>
   );
