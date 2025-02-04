@@ -17,7 +17,7 @@ const MinimalHeader: React.FC<BaseHeaderProps> = ({ user, pathname }) => {
     <header
       style={{ backgroundImage: `url(${headerbg_1.src})` }}
       className={`${
-        isScrolled ? "fixed -top-1 shadow-lg " : ""
+        isScrolled ? "fixed !-top-1 shadow-lg " : ""
       } left-0 -top-20 z-50 w-full overflow-hidden transition-all text-white duration-700 }`}>
       <div className="relative ">
         <Image className="absolute  top-0" src={headerbg_2} alt="" />
