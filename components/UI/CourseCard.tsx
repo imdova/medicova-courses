@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 
 type CardProps = {
+  id: string | number;
   courseImg: string;
   courseName: string;
   rating: number;
@@ -24,6 +25,7 @@ type CardProps = {
   price: number;
 };
 const CourseCard: React.FC<CardProps> = ({
+  id,
   courseImg,
   courseName,
   rating,
@@ -54,7 +56,7 @@ const CourseCard: React.FC<CardProps> = ({
   };
   return (
     <div className="relative p-5 border rounded-lg">
-      <Link href={"#"}>
+      <Link href={`courses/${id}`}>
         {handlleStatus(status)}
         <div className="w-full overflow-hidden rounded-md mb-3 h-40">
           <Image

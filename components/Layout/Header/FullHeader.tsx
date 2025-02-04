@@ -2,16 +2,17 @@ import LogoIcon from "@/assets/icons/logo";
 import { BaseHeaderProps } from "@/types";
 import Link from "next/link";
 
-import { useState } from "react";
+// import { useState } from "react";
 
-import Image from "next/image";
-import { commonLangouge } from "@/constants/header";
+// import Image from "next/image";
+// import { commonLangouge } from "@/constants/header";
 
-import { getNavLinks } from "./routeConfigs";
+// import { getNavLinks } from "./routeConfigs";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const FullHeader: React.FC<BaseHeaderProps> = ({ user, pathname }) => {
-  const links = getNavLinks(user?.type, pathname);
-  const [langSelectedValue, setLangSelectedValue] = useState("Eng (US)");
+  // const links = getNavLinks(user?.type, pathname);
+  // const [langSelectedValue, setLangSelectedValue] = useState("Eng (US)");
   // // Correctly type the event parameter as SelectChangeEvent
   // const handleChange = (event: SelectChangeEvent<string>) => {
   //   setLangSelectedValue(event.target.value); // Now the target value is typed as string

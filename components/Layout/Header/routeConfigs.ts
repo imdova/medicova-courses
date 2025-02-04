@@ -1,7 +1,7 @@
 import { commonLinks, roleBasedLinks } from "@/constants/header";
 import { RoleState } from "@/types/next-auth";
 
-type HeaderType = "minimal" | "full" | "centered" | "transparent" | "dark";
+type HeaderType = "minimal" | "transparent";
 type LinksType = "default" | "userType";
 
 interface RouteConfig {

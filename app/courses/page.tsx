@@ -161,6 +161,7 @@ const CoursesList: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
               {currentCourse.map((course, index) => (
                 <CourseCard
+                  id={course.id}
                   key={index}
                   courseImg={course.courseImg}
                   courseName={course.courseName}

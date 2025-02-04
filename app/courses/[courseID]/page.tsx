@@ -15,40 +15,26 @@ import {
   Star,
 } from "lucide-react";
 import Tabs from "@/components/UI/Tabs";
-import OverviewSlice from "./OverviewSlice";
-import CurriculumSlice from "./CurriculumSlice";
-import InstructorsSlice from "./InstructorsSlice";
-import ReviewSlice from "./ReviewSlice";
-import IconBtn from "@/components/UI/Buttons/IconBtn";
 
-type SingleCourseProps = {
-  params: { courseID: string };
-};
+import IconBtn from "@/components/UI/Buttons/IconBtn";
+import OverviewSlice from "../OverviewSlice";
+import CurriculumSlice from "../CurriculumSlice";
+import InstructorsSlice from "../InstructorsSlice";
+import ReviewSlice from "../ReviewSlice";
+
+interface SingleCourseProps {
+  params: {
+    courseID: string;
+  };
+}
 
 type CoursePost = {
   title: string;
   content: string;
 };
 
-export default function SingleCourse({ params }: SingleCourseProps) {
+const SingleCourse = async ({ params }: SingleCourseProps) => {
   const { courseID } = params;
-
-  // Simulated blog data (replace with actual fetching logic)
-  const coursesList: Record<string, CoursePost> = {
-    "1": {
-      title: "Next.js App Router",
-      content: "Learn about the new App Router in Next.js!",
-    },
-    "2": {
-      title: "React Server Components",
-      content: "React Server Components are powerful...",
-    },
-  };
-
-  const post = coursesList[courseID];
-  console.log(courseID);
-
-  if (!post) return <NotFoundPage />; // Corrected: Use JSX element
   const tabData = [
     { label: "Overview", content: <OverviewSlice /> },
     { label: "Curriculum", content: <CurriculumSlice /> },
@@ -61,14 +47,29 @@ export default function SingleCourse({ params }: SingleCourseProps) {
       content: <ReviewSlice />,
     },
   ];
+  const coursesList: Record<string, CoursePost> = {
+    "1": {
+      title: "Next.js App Router",
+      content: "Learn about the new App Router in Next.js!",
+    },
+    "2": {
+      title: "React Server Components",
+      content: "React Server Components are powerful...",
+    },
+  };
+
+  const course = coursesList[courseID];
+
+  if (!course) return <NotFoundPage />;
 
   return (
     <main className="mb-32">
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
-        <h1 className="text-5xl font-bold my-20 md:text-start text-center">
+        {/* course Overview  */}
+        <h1 className="text-4xl md:text-5xl font-bold my-20 md:text-start text-center">
           Courses Details
         </h1>
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-6">
           <div className="w-full">
             <div className="mb-3">
               <Image
@@ -86,14 +87,16 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                 <span className="text-secondary">(4.5 reviews)</span>
               </span>
             </div>
-            <h2 className="text-4xl font-bold mb-5">Course Name Here</h2>
-            <div className="flex items-center gap-3 mb-5">
+            <h2 className="text-3xl md:text-4xl font-bold mb-5">
+              Course Name Here
+            </h2>
+            <div className="flex items-start sm:items-center sm:flex-row flex-col gap-3 mb-5">
               <Image
                 className="w-12 h-12 rounded-full"
                 width={40}
                 height={40}
                 src={imageCourse}
-                alt=""
+                alt="image Course"
               />
               <p className="text-secondary">
                 By<span className="text-black ml-2">Dr/ mohamed Farag</span>
@@ -107,11 +110,13 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                 <span>250 students</span>
               </div>
             </div>
+            {/* Tabs Review  */}
             <div>
               <Tabs tabs={tabData} />
             </div>
           </div>
-          <div className="box-content w-full lg:w-[300px] h-fit !p-6">
+          {/* Payment checkout content  */}
+          <div className="box-content  lg:w-[500px] h-fit !p-6">
             <div className="bg-primary p-3 rounded-md text-white mb-4">
               <span>This Course Free:</span>
               <h1 className="font-semibold text-xl">$18.00</h1>
@@ -211,4 +216,5 @@ export default function SingleCourse({ params }: SingleCourseProps) {
       </div>
     </main>
   );
-}
+};
+export default SingleCourse;

@@ -16,7 +16,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
   return (
     <div className="w-full">
       {/* Tab Buttons */}
-      <div className="flex flex-wrap gap-2 mb-7">
+      <div className="flex flex-wrap  gap-2 mb-7">
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -32,7 +32,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
       </div>
 
       {/* Tab Content */}
-      <div className="box-content">{tabs[activeTab].content}</div>
+      <div className="box-content !p-6">{tabs[activeTab].content}</div>
     </div>
   );
 };

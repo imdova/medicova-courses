@@ -38,7 +38,7 @@ export type City = {
   longitude: string;
 };
 
-export interface Result<T = any> {
+export interface Result<T = unknown> {
   success: boolean;
   message: string;
   data?: T;
