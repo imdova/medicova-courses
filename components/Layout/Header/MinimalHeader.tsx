@@ -1,6 +1,5 @@
 import LogoIcon from "@/assets/icons/logo";
 import { BaseHeaderProps } from "@/types";
-
 import useScrollDetection from "@/hooks/useScrollDetection";
 import { isCurrentPage } from "@/util";
 import { getNavLinks } from "./routeConfigs";

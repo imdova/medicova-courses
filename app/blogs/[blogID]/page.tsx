@@ -7,6 +7,7 @@ import { Calendar } from "lucide-react";
 import Accordion from "@/components/UI/Accordion";
 import { Blogs } from "@/constants/blogs.data";
 import BlogCard from "@/components/UI/BlogCard";
+import Link from "next/link";
 
 interface SingleBlogeProps {
   params: Promise<{ blogID: string }>;
@@ -128,7 +129,8 @@ export default function SingleBloge({ params }: SingleBlogeProps) {
               {/* Lasted blogs  */}
               {Blogs.slice(0, 4).map((blog) => {
                 return (
-                  <div
+                  <Link
+                    href={"#"}
                     key={blog.id}
                     className="flex gap-4 items-center bg-[#f7f7f7] p-3 rounded-md mb-3">
                     <Image
@@ -142,7 +144,7 @@ export default function SingleBloge({ params }: SingleBlogeProps) {
                       </span>
                       <p className="text-sm">Lorem Ipsum is simply dummy</p>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
