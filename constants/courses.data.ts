@@ -98,9 +98,9 @@ export const Instructors = [
   { id: 4, title: "Jacob Jones " },
 ];
 export const Ratings = [
-  { id: 1, valu: 1 },
-  { id: 2, valu: 2 },
-  { id: 3, valu: 3 },
-  { id: 4, valu: 4 },
-  { id: 5, valu: 5 },
+  { id: 1, value: 1 },
+  { id: 2, value: 2 },
+  { id: 3, value: 3 },
+  { id: 4, value: 4 },
+  { id: 5, value: 5 },
 ];

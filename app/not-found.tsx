@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 export default function NotFoundPage() {
   return (
@@ -13,12 +14,11 @@ export default function NotFoundPage() {
           We couldn&apos;t find the page you were looking for. It might have
           been moved or deleted.
         </p>
-        <a
+        <Link
           href="/"
-          className="inline-block transform rounded-lg bg-primary px-8 py-3 text-lg font-semibold text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 hover:bg-primary-900"
-        >
+          className="inline-block transform rounded-lg bg-primary px-8 py-3 text-lg font-semibold text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 hover:bg-primary-900">
           Go Back Home
-        </a>
+        </Link>
       </div>
 
       <div className="absolute bottom-4 text-sm text-secondary">

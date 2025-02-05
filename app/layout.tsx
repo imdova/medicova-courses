@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { DM_Serif_Display, Poppins } from "next/font/google";
 import "./globals.css";
 import { NextAuthProvider } from "@/NextAuthProvider";

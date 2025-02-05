@@ -42,7 +42,7 @@ const Accordion: React.FC<AccordionProps> = ({ items }) => {
             </span>
           </button>
           {openIndex === index && (
-            <div className="p-4 text-gray-600">{item.content}</div>
+            <div className="ml-10 p-2 text-gray-600">{item.content}</div>
           )}
         </div>
       ))}

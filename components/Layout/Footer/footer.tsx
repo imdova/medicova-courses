@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="relative w-full bg-[url('../assets/images/footer.jpg')] bg-center bg-cover before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-[#82C341E5] before:z-0">
@@ -5,7 +7,7 @@ export default function Footer() {
         {/* Grid */}
         <div className="relative grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-6 gap-3 gap-y-8 md:gap-8 py-10 max-w-sm mx-auto sm:max-w-3xl lg:max-w-full">
           <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">
-            <a
+            <Link
               href="https://pagedone.io/"
               className="flex justify-center lg:justify-start">
               <svg
@@ -35,7 +37,7 @@ export default function Footer() {
                   fill="white"
                 />
               </svg>
-            </a>
+            </Link>
             <p className="py-8 text-sm text-white lg:max-w-xs text-center lg:text-left">
               Browse Jobs by Career Level Employers and Recruiters, go to our
               RECRUITMENT SERVICES. Great platform for the job seeker that
@@ -47,39 +49,39 @@ export default function Footer() {
             <h4 className="text-lg text-white font-medium mb-7">About</h4>
             <ul className="text-sm  transition-all duration-500">
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className="text-white hover:text-gray-900">
                   Companies
-                </a>
+                </Link>
               </li>
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className=" text-white hover:text-gray-900">
                   Pricing
-                </a>
+                </Link>
               </li>
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className=" text-white hover:text-gray-900">
                   Terms
-                </a>
+                </Link>
               </li>
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className=" text-white hover:text-gray-900">
                   Advice
-                </a>
+                </Link>
               </li>
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className=" text-white hover:text-gray-900">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -88,32 +90,32 @@ export default function Footer() {
             <h4 className="text-lg text-white font-medium mb-7">Resources</h4>
             <ul className="text-sm  transition-all duration-500">
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className="text-white hover:text-gray-900">
                   Help Docs
-                </a>
+                </Link>
               </li>
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className=" text-white hover:text-gray-900">
                   Guide
-                </a>
+                </Link>
               </li>
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className=" text-white hover:text-gray-900">
                   Updates
-                </a>
+                </Link>
               </li>
               <li className="mb-6">
-                <a
+                <Link
                   href="javascript:;"
                   className=" text-white hover:text-gray-900">
                   Contact Us
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -142,11 +144,11 @@ export default function Footer() {
         <div className="relative py-7 border-t border-gray-200">
           <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
             <span className="text-sm text-white ">
-              ©<a href="https://pagedone.io/">2025.Medicova </a> All rights
-              reserved.
+              ©<Link href="https://pagedone.io/">2025.Medicova </Link> All
+              rights reserved.
             </span>
             <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0 ">
-              <a
+              <Link
                 href="javascript:;"
                 className="w-8 h-8 rounded-full transition-all duration-500 flex justify-center items-center bg-[#2BA149] hover:bg-gray-900">
                 <svg
@@ -163,8 +165,8 @@ export default function Footer() {
                     />
                   </g>
                 </svg>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="javascript:;"
                 className="relative w-8 h-8 rounded-full transition-all duration-500 flex justify-center items-center bg-[#2BA149]  hover:bg-gradient-to-b from-gray-900 to-gray-900  
                           ">
@@ -178,8 +180,8 @@ export default function Footer() {
                     fill="white"
                   />
                 </svg>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="javascript:;"
                 className="relative w-8 h-8 rounded-full transition-all duration-500 flex justify-center items-center bg-[#2BA149]  hover:bg-gray-900 ">
                 <svg
@@ -192,8 +194,8 @@ export default function Footer() {
                     fill="currentColor"
                   />
                 </svg>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="javascript:;"
                 className="relative w-8 h-8 rounded-full transition-all duration-500 flex justify-center items-center bg-[#2BA149]  hover:bg-gray-900 ">
                 <svg
@@ -208,7 +210,7 @@ export default function Footer() {
                     fill="white"
                   />
                 </svg>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

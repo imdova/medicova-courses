@@ -39,7 +39,7 @@ html,
     @apply bg-primary  hover:bg-primary-foreground hover:text-primary;
   }
   .box-content {
-    @apply overflow-hidden rounded-md bg-white p-2 shadow-baseShadow md:p-4;
+    @apply overflow-hidden rounded-lg bg-white p-2 shadow-baseShadow md:p-4;
   }
   .link-smooth {
     @apply transition duration-300;

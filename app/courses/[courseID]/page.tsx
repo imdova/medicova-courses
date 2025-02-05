@@ -21,11 +21,10 @@ import OverviewSlice from "../OverviewSlice";
 import CurriculumSlice from "../CurriculumSlice";
 import InstructorsSlice from "../InstructorsSlice";
 import ReviewSlice from "../ReviewSlice";
+import { use } from "react";
 
 interface SingleCourseProps {
-  params: {
-    courseID: string;
-  };
+  params: Promise<{ courseID: string }>;
 }
 
 type CoursePost = {
@@ -33,8 +32,8 @@ type CoursePost = {
   content: string;
 };
 
-const SingleCourse = async ({ params }: SingleCourseProps) => {
-  const { courseID } = params;
+export default function SingleCourse({ params }: SingleCourseProps) {
+  const { courseID } = use(params);
   const tabData = [
     { label: "Overview", content: <OverviewSlice /> },
     { label: "Curriculum", content: <CurriculumSlice /> },
@@ -216,5 +215,4 @@ const SingleCourse = async ({ params }: SingleCourseProps) => {
       </div>
     </main>
   );
-};
-export default SingleCourse;
+}

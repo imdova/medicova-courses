@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Rating from "./Rating";
 import image_2 from "@/assets/images/image-2.jpg";
 import {
@@ -26,10 +26,10 @@ type CardProps = {
 };
 const CourseCard: React.FC<CardProps> = ({
   id,
-  courseImg,
+  // courseImg,
   courseName,
   rating,
-  instructorImg,
+  // instructorImg,
   instructorName,
   lessons,
   time,

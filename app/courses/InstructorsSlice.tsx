@@ -33,11 +33,11 @@ const InstructorsSlice: React.FC = () => {
         </ul>
       </div>
       <p className="text-secondary mb-3">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard Quis ipsum
+        Lorem Ipsumis simply dummy text of the printing and typesetting
+        industry. Lorem Ipsum has been the industrys standard Quis ipsum
         suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard Quis ipsum
+        Lorem Ipsumis simply dummy text of the printing and typesetting
+        industry. Lorem Ipsum has been the industrys standard Quis ipsum
         suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.
       </p>
     </div>

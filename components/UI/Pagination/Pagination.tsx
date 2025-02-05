@@ -24,8 +24,8 @@ const Pagination: React.FC<PaginationProps> = ({
         {pageNumbers.map((number) => (
           <li key={number}>
             <button
-              className={`page-item flex justify-center items-center w-10 h-10 text-xs cursor-pointer text-gray-500   rounded-lg ${
-                currentPage === number ? "bg-primary text-white" : ""
+              className={`page-item flex justify-center items-center w-10 h-10 text-xs cursor-pointer text-gray-500 border hover:border-primary hover:text-primary   rounded-lg ${
+                currentPage === number ? "bg-primary !text-white" : ""
               }`}
               onClick={() => paginate(number)}>
               {number}

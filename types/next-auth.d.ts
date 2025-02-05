@@ -3,11 +3,12 @@ import NextAuth from "next-auth";
 export type RoleState = "seeker" | "admin" | "employer";
 
 declare module "next-auth" {
-  interface User {
-    id: string | null;
-    email: string | null;
-    name: string | null;
-  }
+  type User = {
+    id: string;
+    name: string;
+    email: string;
+    permissions?: Permission[];
+  };
 
   interface Session {
     user: User;

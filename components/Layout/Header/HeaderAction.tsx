@@ -8,7 +8,7 @@ interface UserActionProps {
   pathname?: string;
 }
 
-const HeaderAction: React.FC<UserActionProps> = ({ user, pathname }) => {
+const HeaderAction: React.FC<UserActionProps> = ({ user }) => {
   if (user && user.id) {
     return (
       <div className="flex items-center gap-3 text-inherit">
