@@ -128,13 +128,13 @@ export default function Footer() {
             <p className="text-sm text-white leading-6 mb-7">
               The latest job news, articles, sent to your inbox weekly.
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
-                className="p-3 rounded-md outline-none text-gray-500 "
+                className="p-3  rounded-md outline-none text-gray-500 "
                 type="email"
                 placeholder="Email Adress"
               />
-              <button className="p-3 text-white bg-black rounded-md">
+              <button className="p-3  text-white bg-black rounded-md">
                 Subscribe
               </button>
             </div>

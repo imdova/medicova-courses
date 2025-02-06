@@ -12,9 +12,11 @@ interface RouteConfig {
 
 export const routeConfigs: RouteConfig[] = [
   // default
-  { pattern: "/", headerType: "transparent", linksType: "default" },
-  { pattern: "/courses/*", headerType: "minimal", linksType: "userType" },
-  { pattern: "/blogs/*", headerType: "minimal", linksType: "userType" },
+  { pattern: "/", headerType: "minimal", linksType: "default" },
+  { pattern: "/courses/*", headerType: "minimal", linksType: "default" },
+  { pattern: "/blogs/*", headerType: "minimal", linksType: "default" },
+  { pattern: "/cart/*", headerType: "minimal", linksType: "default" },
+  { pattern: "/tutors/*", headerType: "minimal", linksType: "default" },
 ];
 
 // DynamicHeader.tsx

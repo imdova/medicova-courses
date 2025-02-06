@@ -3,13 +3,14 @@ import { usePathname } from "next/navigation";
 import { matchRoute } from "./routeConfigs";
 import MinimalHeader from "./MinimalHeader";
 import TransparentHeader from "./TransparentHeader";
-import { useSession } from "next-auth/react";
-import { UserState } from "@/types";
+import { users } from "@/constants";
+// import { useSession } from "next-auth/react";
+// import { UserState } from "@/types";
 // import useValidateUser from "@/hooks/useValidateUser";
 
 const DynamicHeader: React.FC = () => {
-  const session = useSession();
-  const user = session.data?.user as unknown as UserState;
+  // const session = useSession();
+  // const user = session.data?.user as unknown as UserState;
   // useValidateUser()
 
   const pathname = usePathname() || "/";
@@ -22,7 +23,7 @@ const DynamicHeader: React.FC = () => {
 
   const SelectedHeader = headerComponents[headerType];
 
-  return <SelectedHeader user={user} pathname={pathname} />;
+  return <SelectedHeader user={users} pathname={pathname} />;
 };
 
 export default DynamicHeader;

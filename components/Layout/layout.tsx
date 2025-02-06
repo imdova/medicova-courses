@@ -2,13 +2,12 @@
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { matchRoute } from "./SideBar/LayoutRoutConfigs";
-import useScrollDetection from "@/hooks/useScrollDetection";
 // import DynamicSideBar from "./SideBar/dynamic-side-bar";
 
 const DynamicLayout = ({ children }: { children: React.ReactNode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: session } = useSession();
-  const isScrolled = useScrollDetection();
+
   const pathname = usePathname() || "/";
   const sideBarType = matchRoute(pathname)?.sideBarType || "";
   const getLayout = () => {
@@ -29,17 +28,9 @@ const DynamicLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         );
       case "minimal":
-        return (
-          <main className={`${isScrolled ? "pt-[90px]" : ""} min-h-screen`}>
-            {children}
-          </main>
-        );
+        return <main className="min-h-screen pt-[90px]">{children}</main>;
       default:
-        return (
-          <main className={`${isScrolled ? "pt-[90px]" : ""} min-h-screen`}>
-            {children}
-          </main>
-        );
+        return <main className="min-h-screen pt-[90px]">{children}</main>;
     }
   };
 

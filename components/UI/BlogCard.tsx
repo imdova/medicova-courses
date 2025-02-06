@@ -14,30 +14,31 @@ type CardProps = {
   viewNumber: number;
 };
 const BlogCard: React.FC<CardProps> = ({
+  id,
   blogTitle,
   userName,
   describtion,
   viewNumber,
 }) => {
   return (
-    <div className="box-content !p-4 md:!p-6">
-      <Link href={"#"}>
+    <div className="box-content !p-3 md:!p-6">
+      <Link href={`blogs/${id}`}>
         <Image
-          className="object-cover h-[280px] rounded-lg mb-5"
+          className="object-cover h-[170px] rounded-md mb-3"
           src={image_2}
           alt="blog image"
         />
 
-        <h2 className="mb-5">{blogTitle}</h2>
-        <div className="flex items-center mb-4 gap-3">
+        <h2 className="mb-3">{blogTitle}</h2>
+        <div className="flex items-center mb-3 gap-3">
           <div className="w-14 h-14 overflow-hidden rounded-full">
             <Image className="object-cover" src={Avatar} alt="blog image" />
           </div>
           <span>{userName}</span>
         </div>
-        <p className="text-secondary mb-6 text-sm">{describtion}</p>
+        <p className="text-secondary mb-4 text-sm">{describtion}</p>
       </Link>
-      <div className="flex justify-between items-center my-7">
+      <div className="flex justify-between items-center my-4">
         <Link
           className="text-secondary link-smooth hover:text-light-primary hover:border-b-light-primary border-b"
           href={"#"}>

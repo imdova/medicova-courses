@@ -70,7 +70,7 @@ const CourseCard: React.FC<CardProps> = ({
         <div className="flex justify-between items-center w-full ">
           <h1 className="mb-3 font-semibold">{courseName}</h1>
           <div className="flex flex-col items-center gap-1">
-            <Rating size={10} />
+            <Rating rating={rating} size={10} />
             <span className="text-[10px] text-secondary">
               ({rating} Reviews)
             </span>

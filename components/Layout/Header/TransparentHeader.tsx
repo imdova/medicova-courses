@@ -18,7 +18,7 @@ const TransparentHeader: React.FC<BaseHeaderProps> = ({ user, pathname }) => {
           : "bg-transparent text-white"
       }`}>
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
-        <div className="flex h-[70px] items-center">
+        <div className="flex h-[70px] justify-between items-center">
           <Link href="/">
             <LogoIcon
               className={`${
@@ -26,29 +26,28 @@ const TransparentHeader: React.FC<BaseHeaderProps> = ({ user, pathname }) => {
               } h-[30px] w-auto md:h-[40px]`}
             />
           </Link>
-          <nav className="ml-auto flex items-center space-x-8">
-            <div className="hidden items-center space-x-8 md:flex">
-              {links.map((link, i) => {
-                const isPage = isCurrentPage(pathname, link.url);
-                return (
-                  <Link
-                    key={i}
-                    href={link.url}
-                    className={`font-medium ${
-                      isPage
-                        ? isScrolled
-                          ? "text-primary"
-                          : "text-white"
-                        : "hover:text-primary"
-                    }`}>
-                    {link.title}
-                  </Link>
-                );
-              })}
-            </div>
 
-            <HeaderAction user={user} pathname={pathname} />
-          </nav>
+          <div className="hidden items-center space-x-8 lg:flex">
+            {links.map((link, i) => {
+              const isPage = isCurrentPage(pathname, link.url);
+              return (
+                <Link
+                  key={i}
+                  href={link.url}
+                  className={`font-medium ${
+                    isPage
+                      ? isScrolled
+                        ? "text-primary"
+                        : "text-white"
+                      : "hover:text-primary"
+                  }`}>
+                  {link.title}
+                </Link>
+              );
+            })}
+          </div>
+
+          <HeaderAction user={user} pathname={pathname} />
         </div>
       </div>
     </header>

@@ -33,7 +33,7 @@ const CartPage = () => {
           Courses Cart
         </h1>
         <div className="flex gap-6 flex-col lg:flex-row">
-          <div className="box-content w-full">
+          <div className="box-content lg:w-full">
             <h2 className="font-semibold text-xl mb-6">Checkout</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Payment Method Selection */}

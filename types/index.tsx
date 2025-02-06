@@ -65,7 +65,7 @@ export interface registerData {
 }
 
 export interface BaseHeaderProps {
-  user?: UserState;
+  user?: UserProps;
   pathname: string;
 }
 
@@ -334,4 +334,38 @@ export interface CountryPhone {
   code: string;
   label: string;
   phone: string;
+}
+
+// **************
+
+// Define the User type
+export type UserProps = {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  type: RoleState;
+};
+
+// Notification
+export interface User {
+  id: string;
+  name: string;
+  photo: string;
+}
+
+export interface Action {
+  label: string;
+  url: string;
+}
+
+export interface Notification {
+  id: number;
+  typee: "info" | "error" | "warning" | "success";
+  message: string;
+  title: string;
+  timestamp: string;
+  read: boolean;
+  user: User;
+  action: Action;
 }

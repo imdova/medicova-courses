@@ -7,7 +7,7 @@ const ReviewSlice: React.FC = () => {
     <ul>
       <li className="py-5 border-b">
         <span className="block mb-3 text-secondary">Nov 7, 2023</span>
-        <Rating size={10} />
+        <Rating rating={4} size={10} />
         <div className="flex gap-3 items-center my-4">
           <div className="w-12 h-12 overflow-hidden rounded-full">
             <Image src={avatar} alt="Avater" />
@@ -26,7 +26,7 @@ const ReviewSlice: React.FC = () => {
       </li>
       <li className="py-5 border-b">
         <span className="block mb-3 text-secondary">Nov 7, 2023</span>
-        <Rating size={10} />
+        <Rating rating={4} size={10} />
         <div className="flex gap-3 items-center my-4">
           <div className="w-12 h-12 overflow-hidden rounded-full">
             <Image src={avatar} alt="Avater" />
@@ -45,7 +45,7 @@ const ReviewSlice: React.FC = () => {
       </li>
       <li className="py-5">
         <span className="block mb-3 text-secondary">Nov 7, 2023</span>
-        <Rating size={10} />
+        <Rating rating={3} size={10} />
         <div className="flex gap-3 items-center my-4">
           <div className="w-12 h-12 overflow-hidden rounded-full">
             <Image src={avatar} alt="Avater" />

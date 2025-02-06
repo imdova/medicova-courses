@@ -26,10 +26,11 @@ const BlogsList: React.FC = () => {
             Not Found Blogs!
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
             {currentBlogs?.map((blog) => (
               <BlogCard
                 key={blog.id}
+                id={blog.id}
                 describtion={blog.describtion}
                 userName={blog.userName}
                 blogTitle={blog.blogTitle}

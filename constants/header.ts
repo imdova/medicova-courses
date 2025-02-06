@@ -1,5 +1,4 @@
-import { CommonLangouge, CommonLinks, RoleBasedLinks } from "@/types";
-import markLang from "@/assets/icons/markLang.png";
+import { CommonLinks, RoleBasedLinks } from "@/types";
 
 export const roleBasedLinks: RoleBasedLinks = {
   employer: [],
@@ -27,16 +26,16 @@ export const commonLinks: CommonLinks = {
       url: "/",
     },
     {
-      title: "Find Tutors",
+      title: "Courses",
       url: "/courses",
     },
     {
-      title: "Corporate training",
-      url: "/",
+      title: "Blogs",
+      url: "/blogs",
     },
     {
       title: "Become a tutor",
-      url: "/",
+      url: "/tutors",
     },
   ],
 };
