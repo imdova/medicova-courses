@@ -1,0 +1,146 @@
+import React, { useState } from "react";
+// import {
+//   Checkbox,
+//   FormControlLabel,
+//   FormControl,
+//   TextField,
+//   Typography,
+//   Box,
+//   InputAdornment,
+//   Collapse,
+//   IconButton,
+// } from "@mui/material";
+
+import { FilterOption, FilterSectionType } from "@/types";
+import IconBtn from "@/components/UI/Buttons/IconBtn";
+import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import CustomInput from "@/components/UI/form/CustomInput";
+
+interface FilterItemProps {
+  section: FilterSectionType;
+  value: string[];
+  handleCheckChange: (key: string, value: string[]) => void;
+  isSearch: boolean;
+  index?: number;
+}
+
+function getTotalCount(items: FilterOption[]) {
+  return items.reduce((sum, item) => sum + (item.count || 0), 0);
+}
+
+const filterOptions = (options: FilterOption[], query: string) => {
+  return options.filter((option) =>
+    option.label.toLowerCase().includes(query.toLowerCase())
+  );
+};
+
+const FilterItem: React.FC<FilterItemProps> = ({
+  section,
+  value,
+  handleCheckChange,
+  isSearch,
+  index,
+}) => {
+  const [query, setQuery] = useState("");
+  const [isExpanded, setIsExpanded] = useState(
+    index ? index === 0 || index === 1 : true
+  );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const toggleExpand = () => setIsExpanded(!isExpanded);
+
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
+  const filteredOptions =
+    isSearch && query ? filterOptions(section.options, query) : section.options;
+
+  const isAllSelected = value.length === section.options.length;
+
+  const handleAllChange = () => {
+    const newValue = isAllSelected
+      ? [] // Deselect all if "All" is checked
+      : section.options.map((option) => option.value); // Select all
+    handleCheckChange(section.key, newValue);
+  };
+
+  const handleCheckboxChange = (optionValue: string) => {
+    const newValue = value.includes(optionValue)
+      ? value.filter((val) => val !== optionValue)
+      : [...value, optionValue];
+
+    handleCheckChange(section.key, newValue);
+  };
+
+  return (
+    <div className="border-b pb-4 last:border-b-0">
+      <div className="flex items-center justify-between">
+        <h6 className="mb-3 text-[14px] font-bold text-[#25324B]">
+          {section.title}
+        </h6>
+        {/* TODO: you need to add some customizations to your custom component to make it dynamic  */}
+
+        {/* <IconBtn onClick={toggleExpand} size="small"> */}
+        <IconBtn>{isExpanded ? <ChevronUp /> : <ChevronDown />}</IconBtn>
+      </div>
+      {/* TODO: you will find a Collapsible component you can try to use and customize on it for better usage  */}
+      {/* <Collapse className="px-1" in={isExpanded}> */}
+      <div className="px-1">
+        <fieldset className="w-full">
+          <div className="grid grid-cols-1 gap-1 px-1">
+            {/* All Checkbox */}
+            <label className="flex cursor-pointer items-center rounded-md p-1 text-[#515B6F] transition-colors hover:bg-gray-50">
+              <div className="relative mr-2">
+                <input
+                  type="checkbox"
+                  checked={isAllSelected}
+                  onChange={handleAllChange}
+                  className="peer hidden"
+                />
+                <div className="h-5 w-5 rounded-sm border-2 border-[#D6DDEB] peer-checked:border-primary peer-checked:bg-primary">
+                  {isAllSelected && (
+                    <Check className="h-4 w-4 text-primary-foreground" />
+                  )}
+                </div>
+              </div>
+              <span>{`All (${getTotalCount(filteredOptions)})`}</span>
+            </label>
+
+            {/* Individual Checkboxes */}
+            {filteredOptions.map((option) => (
+              <label
+                key={option.value}
+                className="flex cursor-pointer items-center rounded-md p-1 text-[#515B6F] transition-colors hover:bg-gray-50"
+              >
+                <div className="relative mr-2">
+                  <input
+                    type="checkbox"
+                    checked={value.includes(option.value)}
+                    onChange={() => handleCheckboxChange(option.value)}
+                    className="peer hidden"
+                  />
+                  <div className="h-5 w-5 rounded-sm border-2 border-[#D6DDEB] peer-checked:border-primary peer-checked:bg-primary">
+                    {value.includes(option.value) && (
+                      <Check className="h-4 w-4 text-primary-foreground" />
+                    )}
+                  </div>
+                </div>
+                <span>{`${option.label} (${option.count})`}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        {isSearch && (
+          <CustomInput
+            placeholder="Search..."
+            value={query || ""}
+            onChange={searchHandler}
+            className="my-1 py-0"
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default FilterItem;
