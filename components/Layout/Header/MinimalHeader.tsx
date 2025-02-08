@@ -18,8 +18,8 @@ const MinimalHeader: React.FC<BaseHeaderProps> = ({ user, pathname }) => {
       className={`${
         isScrolled ? "shadow-lg " : ""
       } left-0 top-0 fixed z-50 w-full transition-all text-white duration-700 }`}>
-      <div className="relative ">
-        <Image className="absolute  top-0" src={headerbg_2} alt="" />
+      <div className="absolute overflow-hidden h-24 ">
+        <Image src={headerbg_2} alt="" />
       </div>
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
         <div className="flex h-[90px] justify-between items-center">

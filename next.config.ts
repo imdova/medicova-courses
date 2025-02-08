@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
         pathname: "/api/portraits/**",
       },
     ],
+    domains: ["i.ytimg.com"],
   },
 };
 

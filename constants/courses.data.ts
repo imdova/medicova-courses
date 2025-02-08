@@ -1,3 +1,5 @@
+import { CourseVideo } from "@/types";
+
 export const Courses = [
   {
     id: 1,
@@ -103,4 +105,43 @@ export const Ratings = [
   { id: 3, value: 3 },
   { id: 4, value: 4 },
   { id: 5, value: 5 },
+];
+
+// Course Video List
+export const courseVideos: CourseVideo[] = [
+  {
+    title: "Introduction",
+    progress: 10,
+    url: "https://www.youtube.com/watch?v=XDuWyYxksXU&list=PLDoPjvoNmBAwy-rS6WKudwVeb_x63EzgS",
+    locked: false,
+    duration: "1:00",
+  },
+  {
+    title: "Medical Terminology",
+    progress: 30,
+    url: "https://www.youtube.com/watch?v=jOUb09iiO20&list=PLDoPjvoNmBAwy-rS6WKudwVeb_x63EzgS&index=2",
+    locked: false,
+    duration: "4:00",
+  },
+  {
+    title: "Medical Neuroscience",
+    progress: 50,
+    url: "https://www.youtube.com/watch?v=R-Hu5rdn-vc&list=PLDoPjvoNmBAwy-rS6WKudwVeb_x63EzgS&index=3",
+    locked: true,
+    duration: "2:35",
+  },
+  {
+    title: "Trauma on EMT",
+    progress: 75,
+    url: "https://www.youtube.com/watch?v=R-Hu5rdn-vc&list=PLDoPjvoNmBAwy-rS6WKudwVeb_x63EzgS&index=4",
+    locked: true,
+    duration: "7:00",
+  },
+  {
+    title: "Biomedical Visualization",
+    progress: 100,
+    url: "https://www.youtube.com/watch?v=R-Hu5rdn-vc&list=PLDoPjvoNmBAwy-rS6WKudwVeb_x63EzgS&index=5",
+    locked: true,
+    duration: "11:00",
+  },
 ];
