@@ -369,3 +369,24 @@ export interface Notification {
   user: User;
   action: Action;
 }
+export interface CourseVideo {
+  title: string;
+  progress: number;
+  url: string;
+  locked: boolean;
+  duration: string;
+}
+
+interface TabItem {
+  name: string;
+  url: string;
+  locked: boolean;
+  duration: string;
+}
+
+export interface Tab {
+  title: string;
+  total: number;
+  completed: number;
+  items?: TabItem[];
+}

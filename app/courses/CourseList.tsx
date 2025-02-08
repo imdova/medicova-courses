@@ -1,5 +1,4 @@
 "use client";
-
 import { LayoutGrid, List } from "lucide-react";
 import CourseCard from "@/components/UI/CourseCard";
 import { useState, useEffect } from "react";
