@@ -3,19 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #2ba149;
+  --primary-100: #ecf7f3;
+  --primary-900: #31b151;
+  --primary-foreground: #ffffff;
+  --light-primary: #82c341;
+  --light-primary-transparent: #82c341e5;
+  --primary-transparent: #2ba149e5;
+  --text-main: #161439;
+  --text-secondary: #6d6c80;
+  --border-main: #f3f3f3ee;
+  --hover-link: #f7f7f7ee;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Apply global font family */
+body,
+html,
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+@layer components {
+  .btn-primary {
+    @apply rounded-[10px] px-4 py-2 text-sm font-semibold uppercase focus:ring-2 focus:ring-primary-foreground md:text-base;
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  .btn-signup {
+    @apply text-nowrap text-inherit hover:bg-primary-foreground hover:text-primary;
+  }
+
+  .btn-login {
+    @apply bg-primary  hover:bg-primary-foreground hover:text-primary;
+  }
+  .box-content {
+    @apply overflow-hidden rounded-lg bg-white p-2 shadow-baseShadow md:p-4;
+  }
+  .link-smooth {
+    @apply transition duration-300;
+  }
 }
