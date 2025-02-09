@@ -1,7 +1,5 @@
 import NotFoundPage from "@/app/not-found";
 import Image from "next/image";
-import imageCourse from "@/assets/images/image-2.jpg";
-import Avatar from "@/assets/images/avarar.avif";
 import { use } from "react";
 import { Calendar } from "lucide-react";
 import Accordion from "@/components/UI/Accordion";
@@ -69,17 +67,19 @@ export default function SingleBloge({ params }: SingleBlogeProps) {
             {/* Blog Image  */}
             <Image
               className="object-cover w-full h-[350px] rounded-xl mb-4"
-              src={imageCourse}
+              src="https://img.freepik.com/free-photo/businesswoman-working-cafe_1157-30929.jpg?t=st=1739104648~exp=1739108248~hmac=c74aab2df54844272ec87276e7c7d4ce02a6924f4971f2805c69d738e8deb6e9&w=996"
+              width={400}
+              height={400}
               alt="course image"
             />
             <div className="flex items-start sm:items-center sm:flex-row flex-col gap-3 mb-5">
               {/* Profile image  */}
               <Image
                 className="w-12 h-12 object-cover rounded-full"
-                width={40}
-                height={40}
-                src={Avatar}
-                alt="Avatar"
+                width={90}
+                height={90}
+                src="https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740"
+                alt="avater"
               />
               <div className="flex justify-between items-center w-full">
                 <p className="text-secondary">
@@ -135,7 +135,9 @@ export default function SingleBloge({ params }: SingleBlogeProps) {
                     className="flex gap-4 items-center bg-[#f7f7f7] p-3 rounded-md mb-3">
                     <Image
                       className="object-cover w-24 h-24 rounded-xl"
-                      src={imageCourse}
+                      src="https://img.freepik.com/free-photo/businesswoman-working-cafe_1157-30929.jpg?t=st=1739104648~exp=1739108248~hmac=c74aab2df54844272ec87276e7c7d4ce02a6924f4971f2805c69d738e8deb6e9&w=996"
+                      width={400}
+                      height={400}
                       alt="course image"
                     />
                     <div>
@@ -186,10 +188,12 @@ export default function SingleBloge({ params }: SingleBlogeProps) {
             {Blogs.slice(0, 2).map((blog) => {
               return (
                 <BlogCard
+                  id={blog.id}
                   key={blog.id}
                   describtion={blog.describtion}
-                  userName={blog.userName}
-                  blogTitle={blog.blogTitle}
+                  user={blog.user}
+                  title={blog.title}
+                  image={blog.image}
                   viewNumber={blog.viewNuber}
                 />
               );

@@ -4,12 +4,15 @@ export const Courses = [
   {
     id: 1,
     courseImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
+      "https://img.freepik.com/free-photo/looking-camera-group-people-business-conference-modern-classroom-daytime_146671-16272.jpg?t=st=1739104096~exp=1739107696~hmac=41a76eca32211ace62c1d62a90303d2b79b26b092c7a70a234a11f62571ab6eb&w=996",
     courseName: "Course Name here",
     rating: 3,
-    instructorImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    instructorName: "DR/ Carlos Maggi",
+    instructor: {
+      id: "1",
+      name: "DR/ Carlos Maggi",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     lessons: 10,
     time: "2 hr 30 mins",
     students: 300,
@@ -19,12 +22,15 @@ export const Courses = [
   {
     id: 2,
     courseImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
+      "https://img.freepik.com/free-photo/medium-shot-woman-with-headphones-studio_23-2149386582.jpg?t=st=1739104131~exp=1739107731~hmac=74ef27066855e737fb86d6f780ee083fcbeb8a2e71eeaee261342682acf322e1&w=996",
     courseName: "Course Name here",
     rating: 5,
-    instructorImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    instructorName: "DR/ Carlos Maggi",
+    instructor: {
+      id: "1",
+      name: "DR/ Carlos Maggi",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     lessons: 13,
     time: "2 hr 30 mins",
     students: 400,
@@ -34,12 +40,15 @@ export const Courses = [
   {
     id: 3,
     courseImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
+      "https://img.freepik.com/free-photo/medium-shot-young-people-recording-podcast_23-2149386529.jpg?t=st=1739104145~exp=1739107745~hmac=2fc96c73c86add85c536193ff63570c3fb88e3e17330a570994930f8cb399217&w=996",
     courseName: "Course Name here",
     rating: 1,
-    instructorImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    instructorName: "DR/ Carlos Maggi",
+    instructor: {
+      id: "1",
+      name: "DR/ Carlos Maggi",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     lessons: 10,
     time: "2 hr 30 mins",
     students: 300,
@@ -49,12 +58,15 @@ export const Courses = [
   {
     id: 4,
     courseImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
+      "https://img.freepik.com/free-photo/couple-desk-working-together-from-home_23-2149208556.jpg?t=st=1739104160~exp=1739107760~hmac=056166b5c10b1c47cea18b69102388e34a4de670ff8d9d9eca150913639c59a2&w=996",
     courseName: "Course Name here",
     rating: 2,
-    instructorImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    instructorName: "DR/ Carlos Maggi",
+    instructor: {
+      id: "1",
+      name: "DR/ ahmed Maggi",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     lessons: 50,
     time: "3 hr 30 mins",
     students: 600,

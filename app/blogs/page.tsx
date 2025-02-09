@@ -32,8 +32,9 @@ const BlogsList: React.FC = () => {
                 key={blog.id}
                 id={blog.id}
                 describtion={blog.describtion}
-                userName={blog.userName}
-                blogTitle={blog.blogTitle}
+                user={blog.user}
+                title={blog.title}
+                image={blog.image}
                 viewNumber={blog.viewNuber}
               />
             ))}

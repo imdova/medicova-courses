@@ -13,6 +13,7 @@ interface RouteConfig {
 export const routeConfigs: RouteConfig[] = [
   // default
   { pattern: "/", headerType: "minimal", linksType: "default" },
+  { pattern: "/admin/*", headerType: "minimal", linksType: "default" },
   { pattern: "/courses/*", headerType: "minimal", linksType: "default" },
   { pattern: "/blogs/*", headerType: "minimal", linksType: "default" },
   { pattern: "/cart/*", headerType: "minimal", linksType: "default" },

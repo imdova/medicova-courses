@@ -1,7 +1,6 @@
 "use client";
 import NotFoundPage from "@/app/not-found";
 import Image from "next/image";
-import imageCourse from "@/assets/images/image-2.jpg";
 import Payment from "@/assets/images/payment.png";
 import {
   ArrowRight,
@@ -72,9 +71,11 @@ export default function SingleCourse({ params }: SingleCourseProps) {
           <div className="w-full">
             <div className="mb-3">
               <Image
-                className="object-cover w-full rounded-xl"
-                src={imageCourse}
+                className="object-cover h-[350px] w-full rounded-xl"
+                src="https://img.freepik.com/free-photo/front-view-group-people-business-conference-modern-classroom-daytime_146671-16268.jpg?t=st=1739104580~exp=1739108180~hmac=450219560702cbdb649e0e58c822e24f9e9c8f8060f6ed718e0ac93e6b169ec6&w=996"
                 alt="course image"
+                width={400}
+                height={150}
               />
             </div>
             <div className="flex gap-3 mb-6">
@@ -92,9 +93,9 @@ export default function SingleCourse({ params }: SingleCourseProps) {
             <div className="flex items-start sm:items-center sm:flex-row flex-col gap-3 mb-5">
               <Image
                 className="w-12 h-12 rounded-full"
-                width={40}
-                height={40}
-                src={imageCourse}
+                width={90}
+                height={90}
+                src="https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740"
                 alt="image Course"
               />
               <p className="text-secondary">

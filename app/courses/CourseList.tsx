@@ -122,8 +122,7 @@ const CoursesList: React.FC = () => {
                     courseImg={course.courseImg}
                     courseName={course.courseName}
                     rating={course.rating}
-                    instructorImg={course.instructorImg}
-                    instructorName={course.instructorName}
+                    instructor={course.instructor}
                     lessons={course.lessons}
                     time={course.time}
                     students={course.students}

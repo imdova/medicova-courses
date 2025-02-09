@@ -41,5 +41,9 @@ export const commonLinks: CommonLinks = {
       title: "Offline Video",
       url: "/offlinevideo",
     },
+    {
+      title: "Admin",
+      url: "/admin",
+    },
   ],
 };

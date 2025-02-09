@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Rating from "./Rating";
-import image_2 from "@/assets/images/image-2.jpg";
 import {
   BookOpen,
   Clock,
@@ -11,13 +10,18 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+type Instructor = {
+  id: string | number;
+  image: string;
+  name: string;
+};
+
 type CardProps = {
   id: string | number;
   courseImg: string;
   courseName: string;
   rating: number;
-  instructorImg: string;
-  instructorName: string;
+  instructor: Instructor;
   lessons: number;
   time: string;
   status: string;
@@ -26,11 +30,10 @@ type CardProps = {
 };
 const CourseCard: React.FC<CardProps> = ({
   id,
-  // courseImg,
+  courseImg,
   courseName,
   rating,
-  // instructorImg,
-  instructorName,
+  instructor,
   lessons,
   time,
   students,
@@ -61,10 +64,10 @@ const CourseCard: React.FC<CardProps> = ({
         <div className="w-full overflow-hidden rounded-md mb-3 h-40">
           <Image
             className="w-full h-full object-cover"
-            src={image_2} // Dynamically sets the image source from the props
+            src={courseImg} // Dynamically sets the image source from the props
             alt="image-content"
-            width={100}
-            height={100}
+            width={400}
+            height={400}
           />
         </div>
         <div className="flex justify-between items-center w-full ">
@@ -79,12 +82,12 @@ const CourseCard: React.FC<CardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <Image
             className="w-9 h-9 rounded-full"
-            width={30}
-            height={30}
-            src={image_2}
+            width={90}
+            height={90}
+            src={instructor.image}
             alt=""
           />
-          <span className="text-xs">{instructorName}</span>
+          <span className="text-xs">{instructor.name}</span>
         </div>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 mb-3">
           <div className="flex gap-2">

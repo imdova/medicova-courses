@@ -47,7 +47,7 @@ const ProgressTabs: React.FC<ProgressTabsProps> = ({
                   key={index}
                   className={`flex justify-between items-center  p-3 rounded-lg cursor-pointer ${
                     currentVideoIndex === index
-                      ? "bg-green-500 text-white"
+                      ? "bg-primary text-white"
                       : "bg-gray-100"
                   }`}
                   onClick={() => (item.locked ? "" : setCurrentVideo(index))} // if video is locked no Updates the current video
