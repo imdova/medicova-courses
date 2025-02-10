@@ -1,5 +1,9 @@
 import { CartItem } from "@/types/cart";
 import { CartItemCard } from "./cart-item";
+import { ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { useAppDispatch } from "@/store/hooks";
+import { removeItem } from "@/store/slices/cartSlice";
 
 type SummaryRow = {
   label: string;
@@ -30,14 +34,33 @@ export const OrderSummary = ({
       isBold: true,
     },
   ];
-
+  const dispatch = useAppDispatch();
+  const handeleDelete = (id: string) => {
+    dispatch(removeItem(id));
+  };
   return (
     <div className="box-content lg:w-[650px]">
       <h2 className="text-xl font-semibold mb-5">Summary</h2>
       <div>
-        {items.map((item) => (
-          <CartItemCard key={item.id} item={item} />
-        ))}
+        {items.length > 0 ? (
+          items.map((item) => (
+            <CartItemCard
+              key={item.id}
+              item={item}
+              handeleDelete={() => handeleDelete(item.id)}
+            />
+          ))
+        ) : (
+          <div className="text-center text-gray-500 mt-5">
+            <ShoppingBag className="m-auto mb-2 text-[#eee]" size={70} />
+            <span className="block mb-2">The cart is empty.</span>
+            <Link
+              className="bg-primary p-2 rounded-md text-white text-xs"
+              href="/courses">
+              Back To Courses
+            </Link>
+          </div>
+        )}
       </div>
       {summaryRows.map(({ label, value, isBold }) => (
         <div

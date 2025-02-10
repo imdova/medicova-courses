@@ -73,16 +73,19 @@ const PrepaidChart: React.FC<PrepaidChartProps> = ({ series }) => {
       enabled: false,
     },
     colors: ["#3269D3"],
+    legend: {
+      show: false,
+    },
   };
 
   return (
-    <div className="h-[180px] m-2 overflow-hidden">
+    <div className="m-2 overflow-hidden">
       <Chart
         options={options}
         series={series}
         type="line"
         width="100%"
-        height={150}
+        height={200}
       />
     </div>
   );

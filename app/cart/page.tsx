@@ -1,13 +1,15 @@
 "use client";
 import { OrderSummary } from "@/components/cart/order-summary";
 import { PaymentForm } from "@/components/cart/PaymentForm";
-import { CartFormValues, CartItem } from "@/types/cart";
+import { useAppSelector } from "@/store/hooks";
+import { CartFormValues } from "@/types/cart";
 import { useState } from "react";
 
 const CartPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-
+  const { courses, totalPrice } = useAppSelector((state) => state.cart);
+  console.log(totalPrice);
   const handleSubmit = async (data: CartFormValues) => {
     setIsSubmitting(true);
     setSubmitError(null);
@@ -27,25 +29,6 @@ const CartPage = () => {
     }
   };
 
-  const cartItems: CartItem[] = [
-    {
-      id: "1",
-      title: "adipising elit, sed do eiusmod tempor",
-      description: "Lorem ipsum dollar...",
-      price: 24.69,
-      image:
-        "https://img.freepik.com/free-photo/focused-book-group-people-business-conference-modern-classroom-daytime_146671-16265.jpg?t=st=1739101586~exp=1739105186~hmac=24bd32da7f884be27d267b17e70060cd62895079067ae74431809e6fbc32aa29&w=996",
-    },
-    {
-      id: "2",
-      title: "adipising elit, sed do eiusmod tempor",
-      description: "Lorem ipsum dollar...",
-      price: 24.69,
-      image:
-        "https://img.freepik.com/free-photo/focused-book-group-people-business-conference-modern-classroom-daytime_146671-16265.jpg?t=st=1739101586~exp=1739105186~hmac=24bd32da7f884be27d267b17e70060cd62895079067ae74431809e6fbc32aa29&w=996",
-    },
-  ];
-
   return (
     <main className="mb-20">
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
@@ -63,8 +46,8 @@ const CartPage = () => {
             <PaymentForm onSubmit={handleSubmit} loading={isSubmitting} />
           </div>
           <OrderSummary
-            items={cartItems}
-            subtotal={51.38}
+            items={courses}
+            subtotal={totalPrice}
             discount={0}
             tax={5}
           />

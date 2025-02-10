@@ -4,7 +4,7 @@ import Rating from "@/components/UI/Rating";
 
 const ReviewSlice: React.FC = () => {
   return (
-    <ul>
+    <ul className="box-content !p-6">
       <li className="py-5 border-b">
         <span className="block mb-3 text-secondary">Nov 7, 2023</span>
         <Rating rating={4} size={10} />

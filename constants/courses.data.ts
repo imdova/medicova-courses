@@ -2,10 +2,10 @@ import { CourseVideo } from "@/types";
 
 export const Courses = [
   {
-    id: 1,
-    courseImg:
+    id: "1",
+    image:
       "https://img.freepik.com/free-photo/looking-camera-group-people-business-conference-modern-classroom-daytime_146671-16272.jpg?t=st=1739104096~exp=1739107696~hmac=41a76eca32211ace62c1d62a90303d2b79b26b092c7a70a234a11f62571ab6eb&w=996",
-    courseName: "Course Name here",
+    title: "Course Name here",
     rating: 3,
     instructor: {
       id: "1",
@@ -18,12 +18,15 @@ export const Courses = [
     students: 300,
     status: "Recorded",
     price: 20,
+    type: "Live",
+    description:
+      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
   },
   {
-    id: 2,
-    courseImg:
+    id: "2",
+    image:
       "https://img.freepik.com/free-photo/medium-shot-woman-with-headphones-studio_23-2149386582.jpg?t=st=1739104131~exp=1739107731~hmac=74ef27066855e737fb86d6f780ee083fcbeb8a2e71eeaee261342682acf322e1&w=996",
-    courseName: "Course Name here",
+    title: "Course Name here",
     rating: 5,
     instructor: {
       id: "1",
@@ -36,12 +39,15 @@ export const Courses = [
     students: 400,
     status: "Online",
     price: 23,
+    type: "Live",
+    description:
+      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
   },
   {
-    id: 3,
-    courseImg:
+    id: "3",
+    image:
       "https://img.freepik.com/free-photo/medium-shot-young-people-recording-podcast_23-2149386529.jpg?t=st=1739104145~exp=1739107745~hmac=2fc96c73c86add85c536193ff63570c3fb88e3e17330a570994930f8cb399217&w=996",
-    courseName: "Course Name here",
+    title: "Course Name here",
     rating: 1,
     instructor: {
       id: "1",
@@ -54,12 +60,15 @@ export const Courses = [
     students: 300,
     status: "Recorded",
     price: 20,
+    type: "Offline",
+    description:
+      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
   },
   {
-    id: 4,
-    courseImg:
+    id: "4",
+    image:
       "https://img.freepik.com/free-photo/couple-desk-working-together-from-home_23-2149208556.jpg?t=st=1739104160~exp=1739107760~hmac=056166b5c10b1c47cea18b69102388e34a4de670ff8d9d9eca150913639c59a2&w=996",
-    courseName: "Course Name here",
+    title: "Course Name here",
     rating: 2,
     instructor: {
       id: "1",
@@ -72,6 +81,9 @@ export const Courses = [
     students: 600,
     status: "Recorded",
     price: 80,
+    type: "Offline",
+    description:
+      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
   },
 ];
 

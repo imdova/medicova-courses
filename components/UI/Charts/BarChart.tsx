@@ -25,6 +25,9 @@ const BarChart: React.FC<StudentChartProps> = ({ series }) => {
         },
       },
     },
+    legend: {
+      show: false,
+    },
     chart: {
       id: "basic-bar",
       toolbar: {
@@ -35,10 +38,9 @@ const BarChart: React.FC<StudentChartProps> = ({ series }) => {
       labels: {
         show: true,
         style: {
-          fontSize: "12px",
+          fontSize: "10px",
           fontWeight: 400,
           colors: "gray",
-          cssClass: "",
         },
       },
     },
@@ -51,7 +53,6 @@ const BarChart: React.FC<StudentChartProps> = ({ series }) => {
       },
       labels: {
         show: true,
-
         style: {
           fontSize: "10px",
           fontWeight: 400,
@@ -100,13 +101,13 @@ const BarChart: React.FC<StudentChartProps> = ({ series }) => {
   };
 
   return (
-    <div className="w-full h-[280px] overflow-hidden">
+    <div className="w-full  overflow-hidden">
       <Chart
         options={options}
         series={series}
         type="bar"
         width="100%"
-        height={300}
+        height={400}
       />
     </div>
   );

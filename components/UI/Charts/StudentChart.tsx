@@ -15,7 +15,6 @@ const StudentChart: React.FC<StudentChartProps> = ({ series }) => {
   const options: ApexOptions = {
     grid: {
       show: false,
-
       xaxis: {
         lines: {
           show: false,
@@ -26,6 +25,9 @@ const StudentChart: React.FC<StudentChartProps> = ({ series }) => {
       id: "basic-bar",
       toolbar: {
         show: false,
+      },
+      animations: {
+        enabled: true,
       },
     },
     yaxis: {
@@ -68,10 +70,13 @@ const StudentChart: React.FC<StudentChartProps> = ({ series }) => {
       enabled: false,
     },
     colors: ["#3269D3", "#FEC64F"],
+    legend: {
+      show: false,
+    },
   };
 
   return (
-    <div className="h-[200px] overflow-hidden mb-4">
+    <div className="overflow-hidden mb-4">
       <Chart
         options={options}
         series={series}

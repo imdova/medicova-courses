@@ -36,7 +36,7 @@ const CoursesList: React.FC = () => {
     // Filter by search query
     if (searchQuery) {
       updatedCourses = updatedCourses.filter((course) =>
-        course.courseName.toLowerCase().includes(searchQuery.toLowerCase())
+        course.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -44,12 +44,10 @@ const CoursesList: React.FC = () => {
     if (selectedOption) {
       switch (selectedOption.value) {
         case "oldest":
-          updatedCourses.sort((a, b) => a.id - b.id);
+          updatedCourses.sort((a, b) => Number(a.id) - Number(b.id));
           break;
         case "name":
-          updatedCourses.sort((a, b) =>
-            a.courseName.localeCompare(b.courseName)
-          );
+          updatedCourses.sort((a, b) => a.title.localeCompare(b.title));
           break;
         default:
           break;
@@ -119,8 +117,8 @@ const CoursesList: React.FC = () => {
                   <CourseCard
                     key={course.id}
                     id={course.id}
-                    courseImg={course.courseImg}
-                    courseName={course.courseName}
+                    image={course.image}
+                    title={course.title}
                     rating={course.rating}
                     instructor={course.instructor}
                     lessons={course.lessons}
@@ -128,6 +126,7 @@ const CoursesList: React.FC = () => {
                     students={course.students}
                     status={course.status}
                     price={course.price}
+                    description={course.description}
                   />
                 ))}
               </div>

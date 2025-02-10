@@ -1,12 +1,14 @@
 import { CartItem } from "@/types/cart";
+import { X } from "lucide-react";
 import Image from "next/image";
 
 type CartItemProps = {
   item: CartItem;
+  handeleDelete: () => void;
 };
 
-export const CartItemCard = ({ item }: CartItemProps) => (
-  <div className="flex gap-3 p-3 border-b">
+export const CartItemCard = ({ item, handeleDelete }: CartItemProps) => (
+  <div className="relative flex gap-3 p-3 border-b">
     <Image
       className="w-[150px] rounded-lg"
       src={item.image}
@@ -19,5 +21,8 @@ export const CartItemCard = ({ item }: CartItemProps) => (
       <p className="text-secondary text-sm">{item.description}</p>
       <span className="font-semibold">${item.price.toFixed(2)}</span>
     </div>
+    <button onClick={handeleDelete} className="absolute top-2 right-0">
+      <X size={15} />
+    </button>
   </div>
 );

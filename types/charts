@@ -1,5 +1,0 @@
-export interface SeriesData {
-  name: string;
-  data: number[];
-  color?: string; // Optional property
-}

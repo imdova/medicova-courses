@@ -1,5 +1,11 @@
 "use client";
-import { Ellipsis, MessageSquareMore, Search, Video } from "lucide-react";
+import {
+  ArrowUpDown,
+  Ellipsis,
+  MessageSquareMore,
+  Search,
+  Video,
+} from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -104,15 +110,25 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
               ].map((header, index) => (
                 <th
                   key={index}
-                  className="p-3 text-left cursor-pointer"
+                  className="p-3 text-left  cursor-pointer"
                   onClick={() =>
                     toggleSort(
                       header.toLowerCase().replace(/\s/g, "") as keyof Student
                     )
                   }>
-                  {header}{" "}
-                  {sortField === header.toLowerCase().replace(/\s/g, "") &&
-                    (sortOrder === "asc" ? "↑" : "↓")}
+                  <div className="flex gap-3">
+                    {header}
+                    {sortField === header.toLowerCase().replace(/\s/g, "") &&
+                      (sortOrder === "asc" ? (
+                        <span>
+                          <ArrowUpDown className=" text-primary" size={15} />
+                        </span>
+                      ) : (
+                        <span>
+                          <ArrowUpDown className=" text-primary" size={15} />
+                        </span>
+                      ))}
+                  </div>
                 </th>
               ))}
               <th className="p-3">Actions</th>

@@ -4,7 +4,7 @@ import { FileVideo, SquareChartGantt, Star, UsersRound } from "lucide-react";
 
 const InstructorsSlice: React.FC = () => {
   return (
-    <div>
+    <div className="box-content !p-6">
       <div className="mb-4">
         <h2 className="text-2xl font-semibold">DR/ Mohamed Farag</h2>
         <span className="text-secondary">micrographic surgery</span>

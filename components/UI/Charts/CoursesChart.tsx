@@ -72,10 +72,13 @@ const CoursesChart: React.FC<CoursesChartProps> = ({ series }) => {
       enabled: false,
     },
     colors: ["#FEC64F"],
+    legend: {
+      show: false,
+    },
   };
 
   return (
-    <div className="h-[200px] m-2 overflow-hidden">
+    <div className="m-2 overflow-hidden">
       <Chart
         options={options}
         series={series}

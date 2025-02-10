@@ -4,6 +4,7 @@ import { NextAuthProvider } from "@/NextAuthProvider";
 import DynamicHeader from "@/components/Layout/Header/Header";
 import DynamicLayout from "@/components/Layout/layout";
 import Footer from "@/components/Layout/Footer/footer";
+import StoreProvider from "@/store/StoreProvider";
 
 const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
@@ -31,11 +32,13 @@ export default function RootLayout({
       <title>Medicova</title>
       <body
         className={`${dmSerifDisplay.variable}  ${poppins.variable} font-poppins`}>
-        <NextAuthProvider>
-          <DynamicHeader />
-          <DynamicLayout>{children}</DynamicLayout>
-          <Footer />
-        </NextAuthProvider>
+        <StoreProvider>
+          <NextAuthProvider>
+            <DynamicHeader />
+            <DynamicLayout>{children}</DynamicLayout>
+            <Footer />
+          </NextAuthProvider>
+        </StoreProvider>
       </body>
     </html>
   );

@@ -24,7 +24,7 @@ const CurriculumSlice: React.FC = () => {
     },
   ];
   return (
-    <div>
+    <div className="box-content !p-6">
       <div className="mb-4">
         <Accordion items={accordionData} />
       </div>

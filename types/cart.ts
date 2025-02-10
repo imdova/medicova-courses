@@ -7,10 +7,11 @@ export type CartFormValues = {
   saveInfo: boolean;
 };
 
-export type CartItem = {
+export interface CartItem {
   id: string;
-  title: string;
-  description: string;
-  price: number;
   image: string;
-};
+  title: string;
+  price: number;
+  totalPrice: number;
+  description: string;
+}
