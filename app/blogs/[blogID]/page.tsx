@@ -154,27 +154,27 @@ export default function SingleBloge({ params }: SingleBlogeProps) {
               {/* Tags content  */}
               <h2 className="text-2xl font-semibold mb-6">Tags</h2>
               <div className="flex flex-wrap gap-2">
-                <div className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit">
+                <button className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit link-smooth hover:bg-primary-900">
                   Tag Title Here
-                </div>
-                <div className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit">
+                </button>
+                <button className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit link-smooth hover:bg-primary-900">
                   Tag Title Here
-                </div>
-                <div className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit">
+                </button>
+                <button className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit link-smooth hover:bg-primary-900">
                   Tag Title Here
-                </div>
-                <div className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit">
+                </button>
+                <button className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit link-smooth hover:bg-primary-900">
                   Tag Title Here
-                </div>
-                <div className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit">
+                </button>
+                <button className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit link-smooth hover:bg-primary-900">
                   Tag Title Here
-                </div>
-                <div className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit">
+                </button>
+                <button className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit link-smooth hover:bg-primary-900">
                   Tag Title Here
-                </div>
-                <div className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit">
+                </button>
+                <button className="p-2 rounded-md text-xs font-semibold bg-primary text-white w-fit link-smooth hover:bg-primary-900">
                   Tag Title Here
-                </div>
+                </button>
               </div>
             </div>
           </div>

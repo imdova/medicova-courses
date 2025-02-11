@@ -30,7 +30,7 @@ const CartPage = () => {
   };
 
   return (
-    <main className="mb-20">
+    <main className="relative mb-20">
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
         <h1 className="text-4xl md:text-5xl font-bold my-20 md:text-start text-center">
           Courses Cart

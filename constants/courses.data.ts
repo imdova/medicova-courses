@@ -87,50 +87,6 @@ export const Courses = [
   },
 ];
 
-export const Categories = [
-  { id: 1, title: "Category Name 1" },
-  { id: 2, title: "Category Name 2" },
-  { id: 3, title: "Category Name 3" },
-  { id: 4, title: "Category Name 4" },
-  { id: 5, title: "Category Name 5" },
-  { id: 6, title: "Category Name 6" },
-];
-export const Language = [
-  { id: 1, title: "All Language" },
-  { id: 2, title: "Arabic" },
-  { id: 3, title: "English" },
-  { id: 4, title: "Spanish" },
-];
-export const Price = [
-  { id: 1, title: "All Price" },
-  { id: 2, title: "Free" },
-  { id: 3, title: "Paid" },
-];
-export const TipVideo = [
-  { id: 1, title: "Recorded videos" },
-  { id: 2, title: "live videos" },
-  { id: 3, title: "offline videos" },
-];
-export const SkillLevel = [
-  { id: 1, title: "All Skills" },
-  { id: 2, title: "Beginner" },
-  { id: 3, title: "Intermediate" },
-  { id: 4, title: "High " },
-];
-export const Instructors = [
-  { id: 1, title: "David Millar" },
-  { id: 2, title: "Wade Warren " },
-  { id: 3, title: "Jenny Wilson" },
-  { id: 4, title: "Jacob Jones " },
-];
-export const Ratings = [
-  { id: 1, value: 1 },
-  { id: 2, value: 2 },
-  { id: 3, value: 3 },
-  { id: 4, value: 4 },
-  { id: 5, value: 5 },
-];
-
 // Course Video List
 export const courseVideos: CourseVideo[] = [
   {

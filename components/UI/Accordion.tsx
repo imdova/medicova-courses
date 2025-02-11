@@ -25,9 +25,9 @@ const Accordion: React.FC<AccordionProps> = ({ items }) => {
           <button
             onClick={() => toggleAccordion(index)}
             className="w-full flex items-center justify-between p-4 text-left font-semibold text-gray-800">
-            <span className="flex items-center gap-2">
+            <span className="group flex items-center gap-2">
               <span
-                className={` w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${
+                className={` w-7 h-7 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-white link-smooth  ${
                   openIndex === index
                     ? "bg-primary text-white"
                     : "bg-green-200 text-green-600"

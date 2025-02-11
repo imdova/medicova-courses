@@ -4,6 +4,8 @@ import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useAppDispatch } from "@/store/hooks";
 import { removeItem } from "@/store/slices/cartSlice";
+import CustomAlert from "../UI/CustomAlert";
+import { useState } from "react";
 
 type SummaryRow = {
   label: string;
@@ -35,11 +37,32 @@ export const OrderSummary = ({
     },
   ];
   const dispatch = useAppDispatch();
-  const handeleDelete = (id: string) => {
-    dispatch(removeItem(id));
+  const [alert, setAlert] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
+
+  // Show Alert Function
+  const showAlert = (message: string, type: "success" | "error") => {
+    setAlert({ message, type });
+    setTimeout(() => setAlert(null), 3000); // Hide after 3 seconds
   };
+
+  // Add to Cart Function
+  const removeFromCart = (id: string) => {
+    dispatch(removeItem(id));
+    showAlert("Removed from cart!", "error");
+  };
+
   return (
     <div className="box-content lg:w-[650px]">
+      {alert && (
+        <CustomAlert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
       <h2 className="text-xl font-semibold mb-5">Summary</h2>
       <div>
         {items.length > 0 ? (
@@ -47,7 +70,7 @@ export const OrderSummary = ({
             <CartItemCard
               key={item.id}
               item={item}
-              handeleDelete={() => handeleDelete(item.id)}
+              handeleDelete={() => removeFromCart(item.id)}
             />
           ))
         ) : (

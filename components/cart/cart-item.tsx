@@ -8,9 +8,9 @@ type CartItemProps = {
 };
 
 export const CartItemCard = ({ item, handeleDelete }: CartItemProps) => (
-  <div className="relative flex gap-3 p-3 border-b">
+  <div className="relative flex gap-3 p-4 border-b">
     <Image
-      className="w-[150px] rounded-lg"
+      className="w-[150px] h-[70px] rounded-lg"
       src={item.image}
       alt={item.title}
       width={150}
@@ -18,7 +18,7 @@ export const CartItemCard = ({ item, handeleDelete }: CartItemProps) => (
     />
     <div>
       <h2 className="font-semibold text-sm">{item.title}</h2>
-      <p className="text-secondary text-sm">{item.description}</p>
+      <p className="text-secondary text-sm line-clamp-2">{item.description}</p>
       <span className="font-semibold">${item.price.toFixed(2)}</span>
     </div>
     <button onClick={handeleDelete} className="absolute top-2 right-0">

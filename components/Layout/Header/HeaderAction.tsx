@@ -27,7 +27,9 @@ const HeaderAction: React.FC<UserActionProps> = ({ user }) => {
           </Link>
           <Link className="relative" href="/cart">
             {courses.length ? (
-              <span className="absolute w-2 h-2 rounded-full bg-orange-500 -top-2 -right-1 "></span>
+              <span className="flex justify-center items-center absolute text-[7px] w-3 h-3 rounded-full bg-orange-500 -top-2 -right-1 ">
+                {courses.length}
+              </span>
             ) : (
               ""
             )}
