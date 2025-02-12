@@ -1,6 +1,6 @@
 "use client";
 import AddBtn from "@/components/UI/Buttons/AddBtn";
-import CourseCard from "@/components/UI/CourseCard";
+import VideoCard from "@/components/UI/VideoCard";
 import { Courses } from "@/constants/courses.data";
 import { useState } from "react";
 
@@ -36,7 +36,7 @@ const LiveOfflinePage = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourses.map((course) => (
-          <CourseCard
+          <VideoCard
             key={course.id}
             id={course.id}
             image={course.image}

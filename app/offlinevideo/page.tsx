@@ -9,8 +9,6 @@ import Image from "next/image";
 import { Tab } from "@/types";
 import { courseVideos } from "@/constants/courses.data";
 
-// Define TypeScript Interfaces
-
 // Progress Tabs
 const tabs: Tab[] = [
   {

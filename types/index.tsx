@@ -353,6 +353,10 @@ export interface User {
   name: string;
   photo: string;
 }
+export interface instructor {
+  name: string;
+  image: string;
+}
 
 export interface Action {
   label: string;
@@ -389,4 +393,36 @@ export interface Tab {
   total: number;
   completed: number;
   items?: TabItem[];
+}
+export interface replies {
+  id: string;
+  user: {
+    name: string;
+    image: string;
+  };
+  content: string;
+  timestamp: number;
+}
+
+export interface qustion {
+  id: string;
+  user: {
+    name: string;
+    image: string;
+  };
+  content: string;
+  replies: replies[];
+  timestamp: number;
+}
+export type CourseContentProps = {
+  title: string;
+  content: CourseVideo[];
+  instructor: instructor;
+  qustions: qustion[];
+};
+
+export interface CourseMaterial {
+  title: string;
+  fileUrl: string;
+  fileType: "pdf" | "docx" | "video";
 }

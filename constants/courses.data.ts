@@ -1,4 +1,4 @@
-import { CourseVideo } from "@/types";
+import { CourseContentProps, CourseMaterial, CourseVideo } from "@/types";
 
 export const Courses = [
   {
@@ -123,5 +123,178 @@ export const courseVideos: CourseVideo[] = [
     url: "https://www.youtube.com/watch?v=R-Hu5rdn-vc&list=PLDoPjvoNmBAwy-rS6WKudwVeb_x63EzgS&index=5",
     locked: true,
     duration: "11:00",
+  },
+];
+
+// Single page Video Data
+export const courseData: Record<string, CourseContentProps> = {
+  "1": {
+    title: "Course Name 1",
+    content: courseVideos,
+    instructor: {
+      name: "DR/ Carlos Maggi",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
+    qustions: [
+      {
+        id: "1",
+        user: {
+          name: "Mohamed Farag",
+          image:
+            "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+        },
+        content: "What is the best way to learn Next.js?",
+        replies: [
+          {
+            id: "2-1",
+            user: {
+              name: "Emily Brown",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Utility classes save time!",
+            timestamp: 17,
+          },
+          {
+            id: "2-2",
+            user: {
+              name: "Mike Johnson",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Less custom CSS needed.",
+            timestamp: 17,
+          },
+        ],
+        timestamp: 17,
+      },
+      {
+        id: "2",
+        user: {
+          name: "Ahmed Samir",
+          image:
+            "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+        },
+        content: "How does Tailwind CSS improve development speed?",
+        replies: [
+          {
+            id: "1-1",
+            user: {
+              name: "John Doe",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Start with the official docs!",
+            timestamp: 17,
+          },
+          {
+            id: "1-2",
+            user: {
+              name: "Jane Smith",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Follow some YouTube tutorials.",
+            timestamp: 17,
+          },
+        ],
+        timestamp: 17,
+      },
+    ],
+  },
+  "2": {
+    title: "Course Name 2",
+    content: courseVideos,
+    instructor: {
+      name: "DR/ Carlos Maggi",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
+    qustions: [
+      {
+        id: "1",
+        user: {
+          name: "Mohamed Farag",
+          image:
+            "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+        },
+        content: "What is the best way to learn Next.js?",
+        replies: [
+          {
+            id: "2-1",
+            user: {
+              name: "Emily Brown",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Utility classes save time!",
+            timestamp: 17,
+          },
+          {
+            id: "2-2",
+            user: {
+              name: "Mike Johnson",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Less custom CSS needed.",
+            timestamp: 17,
+          },
+        ],
+        timestamp: 17,
+      },
+      {
+        id: "2",
+        user: {
+          name: "Ahmed Samir",
+          image:
+            "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+        },
+        content: "How does Tailwind CSS improve development speed?",
+        replies: [
+          {
+            id: "2-1",
+            user: {
+              name: "Emily Brown",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Utility classes save time!",
+            timestamp: 17,
+          },
+          {
+            id: "2-2",
+            user: {
+              name: "Mike Johnson",
+              image:
+                "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+            },
+            content: "Less custom CSS needed.",
+            timestamp: 17,
+          },
+        ],
+        timestamp: 17,
+      },
+    ],
+  },
+};
+
+// Courses material files
+export const courseMaterials: CourseMaterial[] = [
+  {
+    title: "Introduction to Next.js",
+    fileUrl: "/files/intro-to-nextjs.pdf",
+    fileType: "pdf",
+  },
+  {
+    title: "TypeScript Basics",
+    fileUrl: "/files/typescript-basics.docx",
+    fileType: "docx",
+  },
+  {
+    title: "Tailwind CSS Guide",
+    fileUrl: "/files/tailwind-guide.pdf",
+    fileType: "pdf",
   },
 ];
