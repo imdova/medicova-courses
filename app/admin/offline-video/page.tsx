@@ -45,7 +45,7 @@ const LiveOfflinePage = () => {
               rating={course.rating}
               instructor={course.instructor}
               lessons={course.lessons}
-              time={course.time}
+              time={course.duration}
               students={course.students}
               status={course.status}
               price={course.price}

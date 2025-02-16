@@ -12,7 +12,7 @@ import YouTubePlayer from "@/components/UI/YouTubePlayer";
 import ProgressTabs from "@/components/UI/ProgressTabs";
 import Progress from "@/components/UI/Progress";
 import Image from "next/image";
-import { qustion, replies, Tab } from "@/types";
+import { qustion, replies, Tab } from "@/types/courses";
 import PDF from "@/assets/icons/pdf.svg";
 import DOCX from "@/assets/icons/docx.svg";
 import VideoFile from "@/assets/icons/video.svg";

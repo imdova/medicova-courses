@@ -4,7 +4,6 @@ import { BookOpen, Clock, Earth, Star, Video } from "lucide-react";
 import Link from "next/link";
 
 type Instructor = {
-  id: string | number;
   image: string;
   name: string;
 };

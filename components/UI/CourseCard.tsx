@@ -15,38 +15,19 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addItem } from "@/store/slices/cartSlice";
 import { useEffect, useState } from "react";
 import CustomAlert from "./CustomAlert";
+import { CourseType } from "@/types/courses";
 
-type Instructor = {
-  id: string | number;
-  image: string;
-  name: string;
-};
-
-type CardProps = {
-  id: string;
-  image: string;
-  title: string;
-  rating: number;
-  instructor: Instructor;
-  lessons: number;
-  time: string;
-  status: string;
-  students: number;
-  price: number;
-  description: string;
-};
-
-const CourseCard: React.FC<CardProps> = ({
+const CourseCard: React.FC<CourseType> = ({
   id,
   image,
   title,
   rating,
   instructor,
   lessons,
-  time,
   students,
   status,
   price,
+  duration,
   description,
 }) => {
   const [cartIsActive, setCartIsActive] = useState(false);
@@ -140,7 +121,7 @@ const CourseCard: React.FC<CardProps> = ({
             </div>
             <div className="flex gap-2">
               <Clock className="text-secondary" size={18} />
-              <span className="text-sm text-secondary">{time}</span>
+              <span className="text-sm text-secondary">{duration}</span>
             </div>
             <div className="flex gap-2">
               <GraduationCap className="text-secondary" size={18} />
@@ -160,7 +141,7 @@ const CourseCard: React.FC<CardProps> = ({
             <button
               onClick={addToCart}
               className={`flex justify-center items-center w-10 h-10 rounded-2xl border text-secondary hover:text-primary hover:border-primary ${
-                cartIsActive ? "bg-[#bbf7d0] text-primary border-none" : ""
+                cartIsActive ? "bg-[#bbf7d0] !text-primary border-none" : ""
               }`}>
               <ShoppingCart size={15} />
             </button>

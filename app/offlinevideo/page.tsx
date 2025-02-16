@@ -6,7 +6,7 @@ import YouTubePlayer from "@/components/UI/YouTubePlayer";
 import ProgressTabs from "@/components/UI/ProgressTabs";
 import Progress from "@/components/UI/Progress";
 import Image from "next/image";
-import { Tab } from "@/types";
+import { Tab } from "@/types/courses";
 import { courseVideos } from "@/constants/courses.data";
 
 // Progress Tabs

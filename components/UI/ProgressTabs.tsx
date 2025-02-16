@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ChevronDown, PlayCircle, LockIcon } from "lucide-react";
-import { Tab } from "@/types";
+import { Tab } from "@/types/courses";
 
 interface ProgressTabsProps {
   tabs: Tab[];

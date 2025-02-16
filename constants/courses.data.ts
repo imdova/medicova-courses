@@ -1,89 +1,191 @@
-import { CourseContentProps, CourseMaterial, CourseVideo } from "@/types";
+import {
+  CourseContentProps,
+  CourseMaterial,
+  CourseType,
+  CourseVideo,
+} from "@/types/courses";
 
-export const Courses = [
+// Course data
+export const Courses: CourseType[] = [
   {
     id: "1",
     image:
-      "https://img.freepik.com/free-photo/looking-camera-group-people-business-conference-modern-classroom-daytime_146671-16272.jpg?t=st=1739104096~exp=1739107696~hmac=41a76eca32211ace62c1d62a90303d2b79b26b092c7a70a234a11f62571ab6eb&w=996",
-    title: "Course Name here",
-    rating: 3,
-    instructor: {
-      id: "1",
-      name: "DR/ Carlos Maggi",
-      image:
-        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
-    },
-    lessons: 10,
-    time: "2 hr 30 mins",
-    students: 300,
-    status: "Recorded",
-    price: 20,
+      "https://img.freepik.com/free-photo/students-listening-lecture_23-2147649721.jpg?w=996",
+    title: "Introduction to Psychology",
+    rating: 4.5,
+    level: "Expert",
+    duration: "11h 20m",
+    lessons: 12,
+    quizzes: 145,
+    certifications: "Yes",
+    graduation: "25K",
+    price: 25,
     type: "Live",
+    instructor: {
+      name: "Dr. Emily Carter",
+      image:
+        "https://img.freepik.com/free-photo/smiling-woman-posing-outdoors_23-2148211695.jpg?w=740",
+      rating: 5,
+      reviews: 1500,
+      courses: 8,
+      description:
+        "An expert in cognitive and behavioral psychology, Dr. Carter has 10+ years of experience.",
+      job: "Professor of Psychology",
+      students: 500,
+    },
+    students: 400,
+    status: "Recorded",
     description:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
+      "Explore the fundamentals of human behavior and mental processes in this engaging course.",
+    curriculums: [
+      {
+        title: "Introduction",
+        content: "An overview of psychology and its history.",
+      },
+      {
+        title: "Cognitive Development",
+        content: "Study of cognitive growth in individuals.",
+      },
+    ],
+    reviews: [
+      {
+        date: "Jan 10, 2024",
+        rating: 5,
+        user: {
+          name: "John D.",
+          photo:
+            "https://img.freepik.com/free-photo/smiling-man_23-2148890856.jpg?w=740",
+          job: "Therapist",
+        },
+        content: "Great insights into psychology!",
+      },
+      {
+        date: "Jan 15, 2024",
+        rating: 4,
+        user: {
+          name: "Alice M.",
+          photo:
+            "https://img.freepik.com/free-photo/happy-woman-posing_23-2148888888.jpg?w=740",
+          job: "Psychology Student",
+        },
+        content: "Very informative but could use more real-life examples.",
+      },
+    ],
   },
   {
     id: "2",
     image:
-      "https://img.freepik.com/free-photo/medium-shot-woman-with-headphones-studio_23-2149386582.jpg?t=st=1739104131~exp=1739107731~hmac=74ef27066855e737fb86d6f780ee083fcbeb8a2e71eeaee261342682acf322e1&w=996",
-    title: "Course Name here",
-    rating: 5,
-    instructor: {
-      id: "1",
-      name: "DR/ Carlos Maggi",
-      image:
-        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
-    },
-    lessons: 13,
-    time: "2 hr 30 mins",
-    students: 400,
-    status: "Online",
-    price: 23,
+      "https://img.freepik.com/free-photo/group-young-people-working-together_23-2148876693.jpg?w=996",
+    title: "Business Management Basics",
+    rating: 4.2,
+    level: "Expert",
+    duration: "11h 20m",
+    lessons: 12,
+    quizzes: 145,
+    certifications: "Yes",
+    graduation: "25K",
+    price: 30,
     type: "Live",
-    description:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
+    instructor: {
+      name: "Prof. Robert Smith",
+      image:
+        "https://img.freepik.com/free-photo/serious-businessman_23-2148876674.jpg?w=740",
+      rating: 4.8,
+      reviews: 1100,
+      courses: 10,
+      description:
+        "A seasoned business strategist with experience in global markets.",
+      job: "Business Consultant",
+      students: 600,
+    },
+    students: 550,
+    status: "Live",
+    description: "Learn the key principles of managing businesses effectively.",
+    curriculums: [
+      { title: "Introduction", content: "Understanding business structures." },
+      {
+        title: "Market Analysis",
+        content: "How to analyze and interpret market trends.",
+      },
+    ],
+    reviews: [
+      {
+        date: "Jan 20, 2024",
+        rating: 5,
+        user: {
+          name: "Robert T.",
+          photo:
+            "https://img.freepik.com/free-photo/smiling-man-with-glasses_23-2148899999.jpg?w=740",
+          job: "Neuroscientist",
+        },
+        content: "Fantastic course! Well structured and engaging.",
+      },
+      {
+        date: "Jan 25, 2024",
+        rating: 4.5,
+        user: {
+          name: "Sophia L.",
+          photo:
+            "https://img.freepik.com/free-photo/cheerful-woman-smiling_23-2148887777.jpg?w=740",
+          job: "Counselor",
+        },
+        content: "Loved the topics covered, would recommend!",
+      },
+    ],
   },
   {
     id: "3",
     image:
-      "https://img.freepik.com/free-photo/medium-shot-young-people-recording-podcast_23-2149386529.jpg?t=st=1739104145~exp=1739107745~hmac=2fc96c73c86add85c536193ff63570c3fb88e3e17330a570994930f8cb399217&w=996",
-    title: "Course Name here",
-    rating: 1,
+      "https://img.freepik.com/free-photo/developer-working-laptop_23-2147892701.jpg?w=996",
+    title: "Web Development Bootcamp",
+    rating: 4.7,
+    level: "Expert",
+    duration: "11h 20m",
+    lessons: 12,
+    quizzes: 145,
+    certifications: "Yes",
+    graduation: "25K",
+    price: 40,
+    type: "Live",
     instructor: {
-      id: "1",
-      name: "DR/ Carlos Maggi",
+      name: "Jane Doe",
       image:
-        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+        "https://img.freepik.com/free-photo/young-woman-smiling_23-2148886376.jpg?w=740",
+      rating: 4.9,
+      reviews: 1300,
+      courses: 15,
+      description:
+        "Full-stack web developer and instructor with 12+ years of experience.",
+      job: "Software Engineer",
+      students: 800,
     },
-    lessons: 10,
-    time: "2 hr 30 mins",
-    students: 300,
-    status: "Recorded",
-    price: 20,
-    type: "Offline",
+    students: 750,
+    status: "Live",
     description:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
-  },
-  {
-    id: "4",
-    image:
-      "https://img.freepik.com/free-photo/couple-desk-working-together-from-home_23-2149208556.jpg?t=st=1739104160~exp=1739107760~hmac=056166b5c10b1c47cea18b69102388e34a4de670ff8d9d9eca150913639c59a2&w=996",
-    title: "Course Name here",
-    rating: 2,
-    instructor: {
-      id: "1",
-      name: "DR/ ahmed Maggi",
-      image:
-        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
-    },
-    lessons: 50,
-    time: "3 hr 30 mins",
-    students: 600,
-    status: "Recorded",
-    price: 80,
-    type: "Offline",
-    description:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively.",
+      "A complete bootcamp covering HTML, CSS, JavaScript, and React.js.",
+    curriculums: [
+      {
+        title: "Introduction to HTML & CSS",
+        content: "Basics of web structure and styling.",
+      },
+      {
+        title: "JavaScript Fundamentals",
+        content: "Learn JavaScript from the ground up.",
+      },
+    ],
+    reviews: [
+      {
+        date: "Mar 5, 2024",
+        rating: 5,
+        user: {
+          name: "Kevin L.",
+          photo:
+            "https://img.freepik.com/free-photo/young-man-smiling_23-2148886379.jpg?w=740",
+          job: "Web Developer",
+        },
+        content: "The best course I've taken so far!",
+      },
+    ],
   },
 ];
 
@@ -135,6 +237,13 @@ export const courseData: Record<string, CourseContentProps> = {
       name: "DR/ Carlos Maggi",
       image:
         "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+      rating: 5,
+      reviews: 1200,
+      courses: 12,
+      description:
+        "Lorem Ipsumis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan. Lorem Ipsumis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.",
+      job: "Teacher",
+      students: 400,
     },
     qustions: [
       {
@@ -210,6 +319,13 @@ export const courseData: Record<string, CourseContentProps> = {
       name: "DR/ Carlos Maggi",
       image:
         "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+      rating: 5,
+      reviews: 1200,
+      courses: 12,
+      description:
+        "Lorem Ipsumis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan. Lorem Ipsumis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.",
+      job: "Teacher",
+      students: 200,
     },
     qustions: [
       {

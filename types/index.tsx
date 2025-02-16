@@ -68,13 +68,19 @@ export interface BaseHeaderProps {
   user?: UserProps;
   pathname: string;
 }
-
+export interface Action {
+  label: string;
+  url: string;
+}
 export interface Notification {
   id: number;
-  title: string;
+  typee: "info" | "error" | "warning" | "success";
   message: string;
-  type: string;
+  title: string;
   timestamp: string;
+  read: boolean;
+  user: User;
+  action: Action;
 }
 
 export interface Experience {
@@ -337,7 +343,6 @@ export interface CountryPhone {
 }
 
 // **************
-
 // Define the User type
 export type UserProps = {
   id: number;
@@ -349,80 +354,7 @@ export type UserProps = {
 
 // Notification
 export interface User {
-  id: string;
   name: string;
   photo: string;
-}
-export interface instructor {
-  name: string;
-  image: string;
-}
-
-export interface Action {
-  label: string;
-  url: string;
-}
-
-export interface Notification {
-  id: number;
-  typee: "info" | "error" | "warning" | "success";
-  message: string;
-  title: string;
-  timestamp: string;
-  read: boolean;
-  user: User;
-  action: Action;
-}
-export interface CourseVideo {
-  title: string;
-  progress: number;
-  url: string;
-  locked: boolean;
-  duration: string;
-}
-
-interface TabItem {
-  name: string;
-  url: string;
-  locked: boolean;
-  duration: string;
-}
-
-export interface Tab {
-  title: string;
-  total: number;
-  completed: number;
-  items?: TabItem[];
-}
-export interface replies {
-  id: string;
-  user: {
-    name: string;
-    image: string;
-  };
-  content: string;
-  timestamp: number;
-}
-
-export interface qustion {
-  id: string;
-  user: {
-    name: string;
-    image: string;
-  };
-  content: string;
-  replies: replies[];
-  timestamp: number;
-}
-export type CourseContentProps = {
-  title: string;
-  content: CourseVideo[];
-  instructor: instructor;
-  qustions: qustion[];
-};
-
-export interface CourseMaterial {
-  title: string;
-  fileUrl: string;
-  fileType: "pdf" | "docx" | "video";
+  job: string;
 }

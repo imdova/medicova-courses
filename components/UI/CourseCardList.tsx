@@ -6,27 +6,9 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addItem } from "@/store/slices/cartSlice";
 import { useEffect, useState } from "react";
 import CustomAlert from "./CustomAlert";
+import { CourseType } from "@/types/courses";
 
-type Instructor = {
-  id: string | number;
-  image: string;
-  name: string;
-};
-
-type CardProps = {
-  id: string;
-  image: string;
-  title: string;
-  rating: number;
-  instructor: Instructor;
-  lessons: number;
-  time: string;
-  status: string;
-  students: number;
-  price: number;
-  description: string;
-};
-const CourseCardList: React.FC<CardProps> = ({
+const CourseCardList: React.FC<CourseType> = ({
   id,
   image,
   title,
