@@ -27,7 +27,7 @@ export interface CourseType {
   rating: number;
   level: string;
   duration: string;
-  quizzes: 145;
+  quizzes: number;
   certifications: string;
   graduation: string;
   instructor: instructor;
@@ -40,21 +40,7 @@ export interface CourseType {
   curriculums: curriculums[];
   reviews: review[];
 }
-export interface Action {
-  label: string;
-  url: string;
-}
 
-export interface Notification {
-  id: number;
-  typee: "info" | "error" | "warning" | "success";
-  message: string;
-  title: string;
-  timestamp: string;
-  read: boolean;
-  user: User;
-  action: Action;
-}
 export interface CourseVideo {
   title: string;
   progress: number;

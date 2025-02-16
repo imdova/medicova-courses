@@ -187,6 +187,167 @@ export const Courses: CourseType[] = [
       },
     ],
   },
+  {
+    id: "4",
+    image:
+      "https://img.freepik.com/free-photo/creative-design-process_23-2147654321.jpg?w=996",
+    title: "Graphic Design Masterclass",
+    rating: 4.8,
+    level: "Intermediate",
+    duration: "9h 30m",
+    lessons: 10,
+    quizzes: 120,
+    certifications: "Yes",
+    graduation: "18K",
+    price: 35,
+    type: "Recorded",
+    instructor: {
+      name: "Sarah Johnson",
+      image:
+        "https://img.freepik.com/free-photo/woman-smiling-portrait_23-2148312331.jpg?w=740",
+      rating: 4.7,
+      reviews: 1250,
+      courses: 12,
+      description:
+        "A professional graphic designer with over 8 years of experience.",
+      job: "Creative Director",
+      students: 900,
+    },
+    students: 650,
+    status: "Live",
+    description:
+      "Master Photoshop, Illustrator, and InDesign with hands-on projects.",
+    curriculums: [
+      {
+        title: "Introduction to Graphic Design",
+        content: "Basic principles and tools overview.",
+      },
+      {
+        title: "Typography & Color Theory",
+        content: "Understanding fonts and color selection.",
+      },
+    ],
+    reviews: [
+      {
+        date: "Feb 5, 2024",
+        rating: 5,
+        user: {
+          name: "Emily R.",
+          photo:
+            "https://img.freepik.com/free-photo/portrait-smiling-woman_23-2148311111.jpg?w=740",
+          job: "Freelance Designer",
+        },
+        content: "Very detailed and practical!",
+      },
+    ],
+  },
+  {
+    id: "5",
+    image:
+      "https://img.freepik.com/free-photo/coding-workplace-laptop_23-2147698321.jpg?w=996",
+    title: "Python for Beginners",
+    rating: 4.6,
+    level: "Beginner",
+    duration: "8h 15m",
+    lessons: 15,
+    quizzes: 100,
+    certifications: "Yes",
+    graduation: "20K",
+    price: 20,
+    type: "Live",
+    instructor: {
+      name: "Michael Brown",
+      image:
+        "https://img.freepik.com/free-photo/smiling-man-office_23-2147654321.jpg?w=740",
+      rating: 4.9,
+      reviews: 1750,
+      courses: 5,
+      description: "Software engineer specializing in Python and AI.",
+      job: "Software Engineer",
+      students: 1200,
+    },
+    students: 850,
+    status: "Live",
+    description:
+      "Learn Python from scratch, including data structures and automation.",
+    curriculums: [
+      {
+        title: "Python Basics",
+        content: "Syntax, variables, and data types.",
+      },
+      {
+        title: "Control Flow & Functions",
+        content: "Loops, conditions, and function creation.",
+      },
+    ],
+    reviews: [
+      {
+        date: "Feb 10, 2024",
+        rating: 4.8,
+        user: {
+          name: "Daniel M.",
+          photo:
+            "https://img.freepik.com/free-photo/smiling-young-man_23-2148324321.jpg?w=740",
+          job: "Data Analyst",
+        },
+        content: "A great introduction to Python!",
+      },
+    ],
+  },
+  {
+    id: "6",
+    image:
+      "https://img.freepik.com/free-photo/money-financial-growth_23-2147656789.jpg?w=996",
+    title: "Personal Finance & Investing",
+    rating: 4.9,
+    level: "Advanced",
+    duration: "12h 40m",
+    lessons: 18,
+    quizzes: 150,
+    certifications: "Yes",
+    graduation: "30K",
+    price: 50,
+    type: "Recorded",
+    instructor: {
+      name: "Robert Williams",
+      image:
+        "https://img.freepik.com/free-photo/professional-businessman_23-2147656789.jpg?w=740",
+      rating: 5,
+      reviews: 1600,
+      courses: 7,
+      description:
+        "Finance expert with over 15 years of experience in wealth management.",
+      job: "Financial Advisor",
+      students: 1400,
+    },
+    students: 1100,
+    status: "Recorded",
+    description:
+      "A step-by-step guide to managing money and making smart investments.",
+    curriculums: [
+      {
+        title: "Budgeting & Saving",
+        content: "Understanding expenses and building savings.",
+      },
+      {
+        title: "Stock Market Basics",
+        content: "How to invest wisely in stocks and ETFs.",
+      },
+    ],
+    reviews: [
+      {
+        date: "Feb 15, 2024",
+        rating: 5,
+        user: {
+          name: "Linda C.",
+          photo:
+            "https://img.freepik.com/free-photo/smiling-woman-posing-outdoors_23-2147656789.jpg?w=740",
+          job: "Entrepreneur",
+        },
+        content: "Very insightful! Helped me improve my finances.",
+      },
+    ],
+  },
 ];
 
 // Course Video List

@@ -97,7 +97,7 @@ const AlertDropDown: React.FC<notificationProps> = ({ notification }) => {
                     </div>
                   </div>
                 ))}
-                <MainBtn>View All</MainBtn>
+                <MainBtn width="100%">View All</MainBtn>
               </div>
             ) : (
               // if notfcation is Empty

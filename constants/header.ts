@@ -45,5 +45,9 @@ export const commonLinks: CommonLinks = {
       title: "Admin",
       url: "/admin",
     },
+    {
+      title: "Prometric Exams",
+      url: "/prometric-exams",
+    },
   ],
 };

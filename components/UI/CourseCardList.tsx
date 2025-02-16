@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Rating from "./Rating";
-import { Earth, ShoppingCart, Video } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addItem } from "@/store/slices/cartSlice";
@@ -13,8 +13,6 @@ const CourseCardList: React.FC<CourseType> = ({
   image,
   title,
   rating,
-  instructor,
-  status,
   price,
   description,
 }) => {
@@ -79,30 +77,6 @@ const CourseCardList: React.FC<CourseType> = ({
                 <Rating rating={rating} size={10} />
               </div>
             </div>
-            <div className="">
-              <div className="flex items-center gap-2 mb-3">
-                <Image
-                  className="w-9 h-9 rounded-full"
-                  width={90}
-                  height={90}
-                  src={instructor.image}
-                  alt="instructor"
-                />
-                <span className="text-xs">{instructor.name}</span>
-              </div>
-            </div>
-            {status === "Online" && (
-              <span className="flex items-center gap-3 px-3 py-2 rounded-full ">
-                <Earth size={15} />
-                <span className="text-xs ">Online</span>
-              </span>
-            )}
-            {status === "Recorded" && (
-              <span className="flex items-center gap-3 px-3 py-2 rounded-full ">
-                <Video size={15} />
-                <span className="text-xs ">Recorded</span>
-              </span>
-            )}
           </Link>
           <div className="flex justify-between items-center gap-8  mb-3">
             <span className="flex items-center gap-1 font-semibold text-prbg-primary ">
