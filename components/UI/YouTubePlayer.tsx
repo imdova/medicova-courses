@@ -33,17 +33,17 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
   }, [videoUrl]);
 
   if (!videoId) {
-    return <div className="text-red-500">Invalid YouTube URL</div>;
+    return <div className="text-red-500 h-[300px]">Invalid YouTube URL</div>;
   }
 
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0`;
   const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
 
   return (
-    <div className="relative w-full h-full overflow-hidden rounded-md">
+    <div className="relative w-full h-full overflow-hidden rounded-md ">
       {!isPlaying ? (
         <div
-          className="relative cursor-pointer group"
+          className="relative cursor-pointer group "
           onClick={() => setIsPlaying(true)}>
           <Image
             src={thumbnailUrl}

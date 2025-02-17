@@ -50,7 +50,9 @@ export interface CourseVideo {
 }
 
 interface TabItem {
-  name: string;
+  title: string;
+  progress: number;
+  name?: string;
   url: string;
   locked: boolean;
   duration: string;
@@ -72,7 +74,7 @@ export interface replies {
   timestamp: number;
 }
 
-export interface qustion {
+export interface question {
   id: string;
   user: {
     name: string;
@@ -84,13 +86,34 @@ export interface qustion {
 }
 export type CourseContentProps = {
   title: string;
-  content: CourseVideo[];
+  tabs: Tab[];
   instructor: instructor;
-  qustions: qustion[];
+  questions: question[];
+  materials: CourseMaterial[];
 };
 
 export interface CourseMaterial {
   title: string;
   fileUrl: string;
   fileType: "pdf" | "docx" | "video";
+}
+export interface views {
+  name: string;
+  image: string;
+}
+
+export interface LiveVidoesType {
+  id: string;
+  title: string;
+  tabs: Tab[];
+  instructor: instructor;
+  views: views[];
+  messages: Message[];
+}
+export interface Message {
+  text: string;
+  sender: string;
+  avatar: string;
+  name: string;
+  timestamp: string;
 }

@@ -24,7 +24,7 @@ const ExamCard: React.FC<Exams> = ({
               <Image
                 className="w-full h-full object-cover"
                 src={image}
-                alt="Course Thumbnail"
+                alt="Exam Thumbnail"
                 width={400}
                 height={400}
               />

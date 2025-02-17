@@ -12,56 +12,49 @@ import YouTubePlayer from "@/components/UI/YouTubePlayer";
 import ProgressTabs from "@/components/UI/ProgressTabs";
 import Progress from "@/components/UI/Progress";
 import Image from "next/image";
-import { qustion, replies, Tab } from "@/types/courses";
+import { question, replies } from "@/types/courses";
 import PDF from "@/assets/icons/pdf.svg";
 import DOCX from "@/assets/icons/docx.svg";
 import VideoFile from "@/assets/icons/video.svg";
-import { courseData, courseMaterials } from "@/constants/courses.data";
 import Link from "next/link";
+import { courseData } from "@/constants/offlineVideos.data";
 interface SingleCourseProps {
   params: Promise<{ videoID: string }>;
 }
 
 export default function OfflineVideo({ params }: SingleCourseProps) {
   const { videoID } = use(params);
-  const [currentVideo, setCurrentVideo] = useState(0);
+  const [currentTab, setCurrentTab] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  const handleSetCurrentVideo = (tabIndex: number, videoIndex: number) => {
+    setCurrentTab(tabIndex);
+    setCurrentVideoIndex(videoIndex);
+  };
   const Video = courseData[videoID];
   const [question, setQuestion] = useState("");
   const [reply, setReply] = useState("");
   const [replyIndex, setReplyIndex] = useState<string | null>(null);
   if (!Video) return <NotFoundPage />;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [questions, setQuestions] = useState<qustion[]>(Video.qustions);
-  // Progress Tabs
-  const tabs: Tab[] = [
-    {
-      title: "Course Videos",
-      total: 10,
-      completed: 1,
-      items: Video.content.map((video) => ({
-        name: video.title,
-        url: video.url,
-        locked: video.locked,
-        duration: video.duration,
-      })),
-    },
-    { title: "Audio", total: 25, completed: 1 },
-    { title: "Module", total: 50, completed: 1 },
-    { title: "Quiz", total: 10, completed: 1 },
-  ];
-
+  const [questions, setQuestions] = useState<question[]>(Video.questions);
   const nextVideo = () => {
     if (
-      currentVideo < Video.content.length - 1 &&
-      !Video.content[currentVideo + 1].locked
+      (currentVideoIndex < Video.tabs.length - 1 && // Ensure it's not the last video
+        !Video?.tabs?.[currentTab]?.items?.[currentVideoIndex + 1]?.locked) ||
+      ""
     ) {
-      setCurrentVideo(currentVideo + 1);
+      setCurrentVideoIndex(currentVideoIndex + 1);
     }
   };
 
   const prevVideo = () => {
-    if (currentVideo > 0) {
-      setCurrentVideo(currentVideo - 1);
+    if (
+      (currentVideoIndex > 0 && // Ensure it's not the first video
+        !Video?.tabs?.[currentTab]?.items?.[currentVideoIndex - 1]?.locked) ||
+      ""
+    ) {
+      setCurrentVideoIndex(currentVideoIndex - 1);
     }
   };
 
@@ -69,7 +62,7 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (question.trim()) {
-      const newQuestion: qustion = {
+      const newQuestion: question = {
         id: (questions.length + 1).toString(),
         user: Video.instructor,
         content: question,
@@ -146,7 +139,9 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
           </div>
           <div className="overflow-hidden relative">
             <YouTubePlayer
-              videoUrl={Video.content[currentVideo].url}
+              videoUrl={
+                Video?.tabs?.[currentTab]?.items?.[currentVideoIndex]?.url || ""
+              }
               priority={true}
             />
           </div>
@@ -154,13 +149,13 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
             <button
               className="p-2 border rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
               onClick={prevVideo}
-              disabled={currentVideo === 0}>
+              disabled={currentVideoIndex === 0}>
               <ChevronLeft />
             </button>
             <button
               className="p-2 border rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
               onClick={nextVideo}
-              disabled={currentVideo === Video.content.length - 1}>
+              disabled={currentVideoIndex === Video.tabs.length}>
               <ChevronRight />
             </button>
           </div>
@@ -182,10 +177,13 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
             </div>
           </div>
           <ProgressTabs
-            tabs={tabs}
-            currentVideoIndex={currentVideo}
-            setCurrentVideo={setCurrentVideo}
+            tabs={Video.tabs}
+            currentTab={currentTab}
+            currentVideoIndex={currentVideoIndex}
+            setCurrentVideo={handleSetCurrentVideo}
+            setCurrentTab={setCurrentTab}
           />
+          ;
         </div>
       </div>
       <div>
@@ -194,7 +192,7 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
           <div className="shadow-halfShadow p-3 rounded-md mb-4">
             <h2 className="text-xl font-bold mb-4">Course Material</h2>
             <ul>
-              {courseMaterials.map((material, index) => (
+              {Video.materials.map((material, index) => (
                 <li
                   key={index}
                   className="flex items-center space-x-4 p-3 border-b last:border-b-0">
@@ -230,8 +228,8 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
                 {questions.length === 0 ? (
                   <p className="text-gray-500">No comments</p>
                 ) : (
-                  questions.map((q) => (
-                    <li key={q.id} className="p-4 border rounded-lg mb-3">
+                  questions.map((q, index) => (
+                    <li key={index} className="p-4 border rounded-lg mb-3">
                       <div className="flex items-center space-x-2 mb-2">
                         <Image
                           className="w-8 h-8 rounded-full"
