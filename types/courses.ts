@@ -117,3 +117,13 @@ export interface Message {
   name: string;
   timestamp: string;
 }
+
+// Define a simple Event interface
+export interface Event {
+  id: number;
+  date: string;
+  title: string;
+  time: string;
+  color: string;
+  tags: string[];
+}
