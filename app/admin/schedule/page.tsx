@@ -12,17 +12,28 @@ import React, { useState } from "react";
 
 // Helper function to generate days for a given month/year
 function generateDays(year: number, month: number) {
-  const daysInMonth = new Date(year, month + 1, 0).getDate(); // Get last day of the month
-  const daysArray: { date: Date; events: Event[] }[] = [];
+  const firstDay = new Date(year, month, 1).getDay(); // 0 = Sunday, 6 = Saturday
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysArray: { date: Date | null; events: Event[] }[] = [];
 
+  // Adjust first day index to start from Monday (1 = Monday, 7 = Sunday)
+  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+
+  // Add empty days to align first day of the month correctly
+  for (let i = 0; i < adjustedFirstDay; i++) {
+    daysArray.push({ date: null, events: [] }); // Empty slots before the first day
+  }
+
+  // Add actual days
   for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(year, month, day); // Get date in the given month/year
+    const date = new Date(year, month, day);
     const isoDate = date.toISOString().split("T")[0];
 
     // Filter events for this day
     const dailyEvents = eventsData.filter((evt) => evt.date === isoDate);
     daysArray.push({ date, events: dailyEvents });
   }
+
   return daysArray;
 }
 
@@ -82,13 +93,16 @@ const Schedule: React.FC = () => {
 
     return `${month}/${day}/${year}`; // Format as MM/DD/YYYY
   };
+  // handel day Selected
   const handelDayClick = (day: string) => {
     setDay(day);
     setisOpen(true);
   };
+  // handlle close model menu
   const onClose = () => {
     setisOpen(false);
   };
+  // tabs data
   const tabData = [
     { label: "Lesson", content: <LessonForm Day={day} /> },
     { label: "Time off", content: <TimeoffForm Day={day} /> },
@@ -116,7 +130,6 @@ const Schedule: React.FC = () => {
               </button>
             </div>
           </div>
-
           {/* Day Names */}
           <div className="grid grid-cols-7 text-center font-medium border-b pb-2 mb-2">
             {dayNames.map((dayName) => (
@@ -125,10 +138,17 @@ const Schedule: React.FC = () => {
               </div>
             ))}
           </div>
-
           {/* Days Grid (Calendar) */}
           <div className="grid grid-cols-7 gap-2">
-            {days.map(({ date, events }) => {
+            {days.map(({ date, events }, index) => {
+              if (!date) {
+                return (
+                  <div
+                    key={`empty-${index}`}
+                    className="border rounded p-1 h-14 md:h-20 lg:h-32 bg-gray-100"></div>
+                ); // Empty placeholder
+              }
+
               const dayNumber = date.getDate();
               return (
                 <button
@@ -141,24 +161,26 @@ const Schedule: React.FC = () => {
                   {events.map((evt) => (
                     <div className="group" key={evt.id}>
                       <div
-                        key={evt.id}
-                        className={`absolute top-0 left-0 block lg:hidden w-full h-full bg-${evt.color} bg-opacity-15 `}></div>
+                        style={{ backgroundColor: evt.color, opacity: "20%" }}
+                        className={`absolute top-0 left-0 block lg:hidden w-full h-full`}></div>
                       <div
                         className={`flex items-center gap-3 z-10 w-[120px] h-[50px] md:w-[160px] md:h-[70px]  mt-1 rounded-md shadow-md overflow-hidden absolute top-0 -left-4 md:left-0 lg:relative bg-white opacity-0 lg:opacity-100  group-hover:opacity-100 link-smooth`}>
-                        <div className={`w-4 bg-${evt.color} h-full`}></div>
+                        <div
+                          style={{ backgroundColor: evt.color }}
+                          className={`w-4 bg-${evt.color} h-full`}></div>
                         <div>
                           <h2 className="text-xs font-semibold">{evt.title}</h2>
-                          <span className="text-xs text-secondary">
+                          <span className="block text-xs text-secondary mb-1">
                             {evt.time}
                           </span>
-                          {/* Render tags */}
-                          <div className="flex gap-2 flex-wrap justify-center p-1">
+                          <div className="flex justify-center gap-2">
                             {evt.tags.map((tag) => (
                               <span
                                 key={tag}
-                                className={`text-xs text-white w-2 h-2 rounded-full ${
-                                  tagColors[tag] || "bg-gray-400"
-                                }`}></span>
+                                style={{
+                                  backgroundColor: tagColors[tag] || "#6b7280",
+                                }}
+                                className="block w-2 h-2 rounded-full"></span>
                             ))}
                           </div>
                         </div>
@@ -199,7 +221,9 @@ const Schedule: React.FC = () => {
               <ul className="space-y-2">
                 {Object.entries(tagColors).map(([tag, colorClass]) => (
                   <li key={tag} className="flex items-center space-x-2">
-                    <div className={`w-4 h-4 ${colorClass} rounded-full`}></div>
+                    <div
+                      style={{ backgroundColor: colorClass }}
+                      className={`w-4 h-4 rounded-full`}></div>
                     <span className="text-sm ">{tag}</span>
                   </li>
                 ))}
@@ -218,7 +242,9 @@ const Schedule: React.FC = () => {
                     href={"#"}
                     key={evt.id}
                     className={`flex items-center gap-2 h-[80px] mb-2 rounded-lg border overflow-hidden`}>
-                    <div className={`w-5 h-full bg-${evt.color} `}></div>
+                    <div
+                      style={{ backgroundColor: evt.color }}
+                      className={`w-5 h-full } `}></div>
                     <div>
                       <div className="font-semibold mb-1">{evt.title}</div>
                       <div className="flex items-center gap-1 mb-1">
@@ -231,7 +257,11 @@ const Schedule: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex justify-end flex-1">
-                      <ChevronRight size={16} className="text-secondary mr-2" />
+                      <ChevronRight
+                        style={{ color: evt.color }}
+                        size={16}
+                        className="text-secondary mr-2"
+                      />
                     </div>
                   </Link>
                 ))

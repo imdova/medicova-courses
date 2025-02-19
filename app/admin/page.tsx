@@ -17,8 +17,8 @@ const Dashboard: React.FC = () => {
   return (
     <main className="my-12">
       <div className="mx-auto px-6 lg:max-w-[1170px] my-10">
-        <div className="flex flex-col lg:flex-row gap-6 justify-start mb-6 ">
-          <div className="xl:max-w-[800px] ">
+        <div className="flex flex-col xl:flex-row gap-6 justify-start mb-6 ">
+          <div className="xl:max-w-[650px] ">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {/* total student Chart  */}
               <div className="box-content">
@@ -55,11 +55,11 @@ const Dashboard: React.FC = () => {
               <div className="box-content flex-1 ">
                 <h2 className="text-xl py-3 font-bold">Prepaid</h2>
                 <PrepaidChart series={seriesPrepaid} />
-                <div>
-                  <h2 className="text-xl font-bold mb-2">$45,741</h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold ">$45,741</h2>
                   <span className="flex gap-2 items-center">
                     <span className="text-xs text-secondary">+15%</span>
-                    <CircleArrowUp className="text-[#3269D3]" size={22} />
+                    <CircleArrowUp className="text-[#3269D3]" size={16} />
                   </span>
                 </div>
               </div>
@@ -95,14 +95,14 @@ const Dashboard: React.FC = () => {
                     <div className="flex items-center mb-3 gap-3">
                       <div>
                         <Image
-                          className="object-cover w-14 h-14 rounded-2xl"
+                          className="object-cover w-12 h-12  rounded-2xl"
                           src={item.imageUrl}
                           width={90}
                           height={90}
                           alt="student image"
                         />
                       </div>
-                      <span>{item.name}</span>
+                      <span className="text-sm">{item.name}</span>
                     </div>
                     <div className="flex gap-4 items-center">
                       <button>

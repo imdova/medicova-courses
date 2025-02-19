@@ -127,3 +127,12 @@ export interface Event {
   color: string;
   tags: string[];
 }
+
+export type InstructorType = {
+  name: string;
+  image: string;
+  rating: number;
+  coursesType: string[];
+  achievement: number;
+  certificate: number;
+};

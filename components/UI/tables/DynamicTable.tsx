@@ -1,28 +1,27 @@
 "use client";
-import {
-  ArrowUpDown,
-  Ellipsis,
-  MessageSquareMore,
-  Search,
-  Video,
-} from "lucide-react";
+import { ArrowUpDown, Ellipsis, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 interface Student {
   name: string;
   studentId: string;
-  pricePerLesson: string;
+  courseName: string;
   joinDate: string;
   prepaidBalance: string;
   imageUrl: string;
+  category: string;
 }
 
 interface StudentTableProps {
   students: Student[];
+  columTitles: string[];
 }
 
-const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
+const DynamicTable: React.FC<StudentTableProps> = ({
+  students,
+  columTitles,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof Student | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -39,7 +38,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
     // Convert to string, number, or date where necessary
     const isDateField = sortField === "joinDate"; // Adjust if more date fields exist
     const isNumberField =
-      sortField === "studentId" || sortField === "pricePerLesson";
+      sortField === "studentId" || sortField === "courseName";
 
     if (isDateField) {
       return sortOrder === "asc"
@@ -101,13 +100,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
         <table className="w-full border-collapse">
           <thead>
             <tr className=" text-gray-700">
-              {[
-                "Name",
-                "Student ID",
-                "Price per Lesson",
-                "Join Date",
-                "Prepaid Balance",
-              ].map((header, index) => (
+              {columTitles.map((header, index) => (
                 <th
                   key={index}
                   className="p-3 text-left  cursor-pointer"
@@ -131,7 +124,6 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
                   </div>
                 </th>
               ))}
-              <th className="p-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -140,17 +132,22 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
                 <td className="p-3 flex items-center space-x-3">
                   <div>
                     <Image
-                      className="object-cover w-14 h-14 rounded-2xl"
+                      className="w-14 h-14 rounded-2xl object-cover"
                       src={student.imageUrl}
-                      width={90}
-                      height={90}
+                      width={200}
+                      height={200}
                       alt="blog image"
                     />
                   </div>
                   <span>{student.name}</span>
                 </td>
-                <td className="p-3">{student.studentId}</td>
-                <td className="p-3">{student.pricePerLesson}</td>
+                <td className="text-center p-3">{student.studentId}</td>
+                <td className="p-3">{student.courseName}</td>
+                <td className="p-3">
+                  <span className="p-2 text-sm rounded-md bg-gray-100">
+                    {student.category}
+                  </span>
+                </td>
                 <td className="p-3">{student.joinDate}</td>
                 <td className="p-3">
                   <span
@@ -162,14 +159,8 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
                     {student.prepaidBalance}
                   </span>
                 </td>
-                <td className="p-3 flex space-x-3">
-                  <button className="text-gray-500 hover:text-primary">
-                    <MessageSquareMore size={18} />
-                  </button>
-                  <button className="text-gray-500 hover:text-primary">
-                    <Video size={18} />
-                  </button>
-                  <button className="text-gray-500 hover:text-primary">
+                <td className="flex justify-center items-center space-x-3">
+                  <button className="text-gray-500 hover:text-primary h-full p-3">
                     <Ellipsis size={18} />
                   </button>
                 </td>
@@ -205,4 +196,4 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
   );
 };
 
-export default StudentTable;
+export default DynamicTable;

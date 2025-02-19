@@ -1,4 +1,4 @@
-import { Notification, UserProps } from "@/types";
+import { Notification, UserProps, UserState } from "@/types";
 
 // Define and export the users array
 export const users: UserProps = {
@@ -7,6 +7,17 @@ export const users: UserProps = {
   email: "john.doe@example.com",
   avatar: "https://randomuser.me/api/portraits/men/1.jpg",
   type: "seeker",
+};
+export const ThisUser: UserState = {
+  id: "1",
+  email: "john.doe@example.com",
+  firstName: "John",
+  lastName: "Doe",
+  type: "admin",
+  photo: "https://randomuser.me/api/portraits/men/1.jpg",
+  phone: "+1234567890",
+  companyId: "company-123",
+  permissions: ["view_jobs"],
 };
 
 export const notification: Notification[] = [

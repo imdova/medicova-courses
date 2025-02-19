@@ -84,7 +84,7 @@ const CoursesChart: React.FC<CoursesChartProps> = ({ series }) => {
         series={series}
         type="line"
         width="100%"
-        height={200}
+        height={180}
       />
     </div>
   );
