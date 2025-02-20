@@ -32,7 +32,7 @@ export default function Students() {
     },
   ];
   return (
-    <div className="box-content my-10">
+    <div className="box-content">
       <LineTabs tabs={tabData} />
     </div>
   );

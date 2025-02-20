@@ -28,7 +28,7 @@ export default function LiveVideo({ params }: SingleCourseProps) {
   if (!Video) return <NotFoundPage />;
 
   return (
-    <div className="mx-auto px-6 lg:max-w-[1170px] my-10">
+    <div className="mx-auto px-6 lg:max-w-[1170px]">
       <h1 className="text-4xl font-bold mb-6">Live Video</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
         {/* Video Player Section */}

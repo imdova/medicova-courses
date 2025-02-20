@@ -44,4 +44,7 @@ html,
   .link-smooth {
     @apply transition duration-300;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }

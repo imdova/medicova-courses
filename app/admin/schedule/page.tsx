@@ -110,7 +110,7 @@ const Schedule: React.FC = () => {
   ];
 
   return (
-    <div className="mx-auto px-6 lg:max-w-[1170px] my-10">
+    <div className="relative mx-auto px-6 lg:max-w-[1170px] ">
       <Modal onClose={onClose} isOpen={isOpen}>
         <LineTabs tabs={tabData} />
       </Modal>
@@ -139,7 +139,7 @@ const Schedule: React.FC = () => {
             ))}
           </div>
           {/* Days Grid (Calendar) */}
-          <div className="grid grid-cols-7 gap-2">
+          <div className=" grid grid-cols-7 gap-2">
             {days.map(({ date, events }, index) => {
               if (!date) {
                 return (
@@ -155,7 +155,7 @@ const Schedule: React.FC = () => {
                   key={dayNumber}
                   onClick={() => handelDayClick(formatDate(date).toString())}
                   className="relative border rounded p-1 h-14 md:h-20 lg:h-32 flex flex-col justify-start">
-                  <span className="lg:p-2 lg:text-sm text-xs font-semibold">
+                  <span className="lg:p-2 lg:text-sm text-xs font-semibold w-fit">
                     {dayNumber}
                   </span>
                   {events.map((evt) => (

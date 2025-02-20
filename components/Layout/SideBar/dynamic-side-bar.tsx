@@ -5,18 +5,21 @@ import { isCurrentPage } from "@/util";
 import { NavItem, UserState } from "@/types";
 import { getSideBarLinks } from "./LayoutRoutConfigs";
 import Image from "next/image";
-import { ChevronDown, LucideIcon } from "lucide-react";
+import { ChevronDown, LucideIcon, X } from "lucide-react";
+import LogoIcon from "@/assets/icons/logo";
 
 export interface SideBarProps {
   user?: UserState;
   status: "authenticated" | "loading" | "unauthenticated";
   pathname: string;
+  setIsActive: (active: boolean) => void;
 }
 
 export default function DynamicSideBar({
   user,
   // status,
   pathname,
+  setIsActive,
 }: SideBarProps) {
   const userType = user?.type || "admin";
   const initialLinks = getSideBarLinks(userType, pathname);
@@ -31,7 +34,15 @@ export default function DynamicSideBar({
   }, [links, pathname]);
 
   return (
-    <div className="flex flex-col bg-white border shadow-sm p-4 rounded-lg h-full w-full">
+    <div className="relative flex flex-col bg-white border p-4 rounded-lg h-full w-full pt-14 lg:pt-4 overflow-y-auto no-scrollbar shadow-md">
+      <button
+        onClick={() => setIsActive(false)}
+        className="block lg:hidden absolute right-3 top-3 p-2 text-secondary hover:text-red-500">
+        <X size={18} />
+      </button>
+      <Link className="block md:hidden relative mb-8 m-auto" href="/">
+        <LogoIcon className="text-primary h-[40px] w-auto" />
+      </Link>
       {links.map((item, index) => {
         if (item.type === "profile" && user) {
           return (
@@ -116,8 +127,10 @@ const CollapseTab: React.FC<CollapseTabProps> = ({
   return (
     <>
       <button
-        className={`p-4 rounded-lg flex justify-between items-center text-sm gap-2 mb-2  ${
-          isOpen ? "bg-[#5fbb63] text-white" : "text-gray-800"
+        className={`p-4 rounded-lg flex justify-between items-center text-sm gap-2 mb-2 hover:bg-[#eeeeeeb0] transition duration-300  ${
+          isOpen
+            ? "bg-[#5fbb6428] hover:bg-[#5fbb6428] text-primary"
+            : "text-gray-800"
         }`}
         onClick={handleActivation}>
         <div className="flex items-center gap-2">
@@ -200,8 +213,10 @@ const LinkTab: React.FC<LinkTabProps> = ({
   return (
     <Link
       href={item.path || "#"}
-      className={`p-4 rounded-lg flex items-center text-sm gap-2 mb-2  ${
-        isActive ? "bg-[#5fbb63] text-white" : "text-gray-800"
+      className={`relative p-4 rounded-lg flex items-center text-sm gap-2 mb-2 hover:bg-[#eeeeeeb0] transition duration-300 ${
+        isActive
+          ? "bg-[#5fbb6428] hover:bg-[#5fbb6428]  text-primary "
+          : "text-gray-800"
       }`}
       onClick={() => onTabChange(index)}>
       {IconComponent && <IconComponent size={15} />}

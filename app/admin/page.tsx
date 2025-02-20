@@ -15,8 +15,8 @@ import Image from "next/image";
 
 const Dashboard: React.FC = () => {
   return (
-    <main className="my-12">
-      <div className="mx-auto px-6 lg:max-w-[1170px] my-10">
+    <main>
+      <div className="mx-auto px-6 lg:max-w-[1170px] ">
         <div className="flex flex-col xl:flex-row gap-6 justify-start mb-6 ">
           <div className="xl:max-w-[650px] ">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">

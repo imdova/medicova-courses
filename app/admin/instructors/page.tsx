@@ -16,7 +16,7 @@ export default function Instructors() {
   );
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-3 py-10 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {currentinstructors.map((instructor, index) => {
           return (
             <InstructorCard

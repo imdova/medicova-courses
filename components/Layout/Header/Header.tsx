@@ -4,26 +4,36 @@ import { matchRoute } from "./routeConfigs";
 import MinimalHeader from "./MinimalHeader";
 import TransparentHeader from "./TransparentHeader";
 import { users } from "@/constants";
-// import { useSession } from "next-auth/react";
-// import { UserState } from "@/types";
-// import useValidateUser from "@/hooks/useValidateUser";
+import FullHeader from "./FullHeader";
 
-const DynamicHeader: React.FC = () => {
-  // const session = useSession();
-  // const user = session.data?.user as unknown as UserState;
-  // useValidateUser()
+interface DynamicHeaderProps {
+  isActive: boolean;
+  setIsActive: (active: boolean) => void;
+}
 
+const DynamicHeader: React.FC<DynamicHeaderProps> = ({
+  isActive,
+  setIsActive,
+}) => {
   const pathname = usePathname() || "/";
   const headerType = matchRoute(pathname)?.headerType || "minimal";
 
   const headerComponents = {
     minimal: MinimalHeader,
     transparent: TransparentHeader,
+    full: FullHeader,
   };
 
   const SelectedHeader = headerComponents[headerType];
 
-  return <SelectedHeader user={users} pathname={pathname} />;
+  return (
+    <SelectedHeader
+      user={users}
+      pathname={pathname}
+      isActive={isActive}
+      setIsActive={setIsActive}
+    />
+  );
 };
 
 export default DynamicHeader;

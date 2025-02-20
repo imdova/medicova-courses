@@ -16,7 +16,7 @@ const LiveOfflinePage = () => {
 
   return (
     <div className="p-6">
-      <div className="mx-auto px-6 lg:max-w-[1170px] my-10">
+      <div className="mx-auto px-6 lg:max-w-[1170px]">
         <div className="flex justify-between flex-col gap-2 lg:flex-row mb-8">
           <div className="flex flex-col lg:flex-row gap-2 ">
             {["All", "Live", "Offline", "Recorded"].map((category) => (

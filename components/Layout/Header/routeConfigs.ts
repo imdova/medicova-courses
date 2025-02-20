@@ -1,7 +1,7 @@
 import { commonLinks, roleBasedLinks } from "@/constants/header";
 import { RoleState } from "@/types/next-auth";
 
-type HeaderType = "minimal" | "transparent";
+type HeaderType = "minimal" | "transparent" | "full";
 type LinksType = "default" | "userType";
 
 interface RouteConfig {
@@ -13,7 +13,7 @@ interface RouteConfig {
 export const routeConfigs: RouteConfig[] = [
   // default
   { pattern: "/", headerType: "minimal", linksType: "default" },
-  { pattern: "/admin/*", headerType: "minimal", linksType: "default" },
+  { pattern: "/admin/*", headerType: "full", linksType: "default" },
   { pattern: "/courses/*", headerType: "minimal", linksType: "default" },
   { pattern: "/blogs/*", headerType: "minimal", linksType: "default" },
   { pattern: "/cart/*", headerType: "minimal", linksType: "default" },
