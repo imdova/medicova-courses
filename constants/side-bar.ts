@@ -94,7 +94,7 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
       id: 26,
       icon: MessageCircleMore,
       label: "Messsages",
-      path: "/admin/messsages",
+      path: "/admin/chat",
     },
     {
       id: 31,
