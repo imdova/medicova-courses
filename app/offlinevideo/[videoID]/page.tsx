@@ -78,6 +78,7 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
                 Video?.tabs?.[currentTab]?.items?.[currentVideoIndex]?.url || ""
               }
               priority={true}
+              height={450}
             />
           </div>
           <div className="flex justify-between mt-5">
