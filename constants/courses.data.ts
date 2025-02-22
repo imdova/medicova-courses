@@ -15,6 +15,7 @@ export const Courses: CourseType[] = [
     certifications: "Yes",
     graduation: "25K",
     price: 25,
+    videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Live",
     instructor: {
       name: "Dr. Emily Carter",
@@ -80,7 +81,8 @@ export const Courses: CourseType[] = [
     certifications: "Yes",
     graduation: "25K",
     price: 30,
-    type: "Live",
+    videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
+    type: "Offline",
     instructor: {
       name: "Prof. Robert Smith",
       image:
@@ -94,7 +96,7 @@ export const Courses: CourseType[] = [
       students: 600,
     },
     students: 550,
-    status: "Live",
+    status: "Offline",
     description: "Learn the key principles of managing businesses effectively.",
     curriculums: [
       { title: "Introduction", content: "Understanding business structures." },
@@ -141,6 +143,7 @@ export const Courses: CourseType[] = [
     certifications: "Yes",
     graduation: "25K",
     price: 40,
+    videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Live",
     instructor: {
       name: "Jane Doe",
@@ -195,6 +198,7 @@ export const Courses: CourseType[] = [
     certifications: "Yes",
     graduation: "18K",
     price: 35,
+    videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Recorded",
     instructor: {
       name: "Sarah Johnson",
@@ -249,6 +253,7 @@ export const Courses: CourseType[] = [
     certifications: "Yes",
     graduation: "20K",
     price: 20,
+    videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Live",
     instructor: {
       name: "Michael Brown",
@@ -302,6 +307,7 @@ export const Courses: CourseType[] = [
     certifications: "Yes",
     graduation: "30K",
     price: 50,
+    videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Recorded",
     instructor: {
       name: "Robert Williams",

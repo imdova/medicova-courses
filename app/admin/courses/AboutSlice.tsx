@@ -1,11 +1,13 @@
-const AboutSlice = () => {
+type AboutSliceProps = {
+  coursName: string;
+  description: string;
+};
+
+const AboutSlice = ({ coursName, description }: AboutSliceProps) => {
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">Course Name</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </p>
+      <h2 className="text-2xl font-semibold mb-2">{coursName}</h2>
+      <p className="text-sm text-secondary">{description}</p>
     </div>
   );
 };

@@ -89,8 +89,8 @@ const BarChart: React.FC<StudentChartProps> = ({ series }) => {
     plotOptions: {
       bar: {
         barHeight: "80%",
-        borderRadius: 5, // Supported in newer ApexCharts versions
-        columnWidth: "40%",
+        borderRadius: 2, // Supported in newer ApexCharts versions
+        columnWidth: "60%",
         distributed: true,
       },
     },
@@ -107,7 +107,7 @@ const BarChart: React.FC<StudentChartProps> = ({ series }) => {
         series={series}
         type="bar"
         width="100%"
-        height={400}
+        height={300}
       />
     </div>
   );

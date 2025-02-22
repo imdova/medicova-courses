@@ -35,6 +35,7 @@ export interface CourseType {
   students: number;
   status: string;
   price: number;
+  videoUrl: string;
   type: string;
   description: string;
   curriculums: curriculums[];

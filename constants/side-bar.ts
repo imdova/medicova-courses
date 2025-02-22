@@ -11,6 +11,7 @@ import {
   MessageCircleMore,
   TvMinimalPlay,
   Users,
+  Wallet,
 } from "lucide-react";
 
 export type CommonLinksType = "home";
@@ -41,7 +42,7 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
         {
           id: 21,
           label: "Live & Offline Videos",
-          path: "/courses",
+          path: "/admin/courses",
           icon: BookOpen,
           type: "text",
         },
@@ -95,6 +96,13 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
       icon: MessageCircleMore,
       label: "Messsages",
       path: "/admin/chat",
+    },
+
+    {
+      id: 27,
+      icon: Wallet,
+      label: "Wallet",
+      path: "/admin/wallet",
     },
     {
       id: 31,

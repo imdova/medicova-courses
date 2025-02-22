@@ -32,7 +32,9 @@ const LiveOfflinePage = () => {
               </button>
             ))}
           </div>
-          <AddBtn width={150}>New Course</AddBtn>
+          <AddBtn link="/admin/add-course" width={150}>
+            New Course
+          </AddBtn>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

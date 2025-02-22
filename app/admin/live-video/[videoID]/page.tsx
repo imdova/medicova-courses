@@ -28,11 +28,11 @@ export default function LiveVideo({ params }: SingleCourseProps) {
   if (!Video) return <NotFoundPage />;
 
   return (
-    <div className="mx-auto px-6 lg:max-w-[1170px]">
+    <div>
       <h1 className="text-4xl font-bold mb-6">Live Video</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
         {/* Video Player Section */}
-        <div className="shadow-halfShadow p-3 rounded-md md:col-span-2">
+        <div className="box-content md:col-span-2 ">
           <div className="flex justify-between items-center mb-3">
             <div className="mb-4">
               <h2 className="font-bold text-xl mb-3">{Video.title}</h2>
@@ -64,7 +64,7 @@ export default function LiveVideo({ params }: SingleCourseProps) {
         </div>
 
         {/* Progress Sidebar */}
-        <div className="shadow-halfShadow p-3 rounded-md md:col-span-1">
+        <div className="box-content md:col-span-1">
           <div>
             <div className="flex justify-between items-center mb-3">
               <h2 className="font-semibold text-lg mb-3">Progress</h2>

@@ -38,7 +38,9 @@ const DynamicLayout: React.FC<DynamicLayoutProps> = ({
                 />
               </div>
             </aside>
-            <main className="w-full px-0 md:px-6 lg:w-4/5 ">{children}</main>
+            <main className="w-full px-0 md:px-6 lg:w-9/12 xl:w-4/5 ">
+              {children}
+            </main>
           </div>
         );
       case "minimal":

@@ -6,11 +6,13 @@ import { Play } from "lucide-react";
 interface YouTubePlayerProps {
   videoUrl: string;
   priority?: boolean;
+  height: number;
 }
 
 const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
   videoUrl,
   priority,
+  height,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -49,9 +51,9 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
             src={thumbnailUrl}
             alt="YouTube video thumbnail"
             width={450}
-            height={450}
+            height={height}
             priority={priority}
-            className="w-full h-[450px] object-cover "
+            className="w-full object-cover "
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 transition-all group-hover:bg-opacity-50">
             <Play
@@ -66,7 +68,8 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          className="relative left-0 top-0 w-full h-[450px]"
+          height={height}
+          className="relative left-0 top-0 w-full"
         />
       )}
     </div>

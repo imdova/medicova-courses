@@ -112,7 +112,7 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
   };
 
   return (
-    <div className="mx-auto px-6 lg:max-w-[1170px] ">
+    <div>
       <h1 className="text-4xl font-bold mb-6">Offline Video</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
         {/* Video Player Section */}
@@ -143,6 +143,7 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
                 Video?.tabs?.[currentTab]?.items?.[currentVideoIndex]?.url || ""
               }
               priority={true}
+              height={450}
             />
           </div>
           <div className="flex justify-between mt-5">
