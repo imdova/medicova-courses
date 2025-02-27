@@ -71,7 +71,7 @@ const FilterContent = <
   }));
 
   return (
-    <div className="w-full md:w-[300px] block">
+    <div className="w-full lg:w-[300px] block">
       <div className="space-y-6">
         <div className="box-content flex justify-between items-center mb-5 !bg-primary !text-white">
           <span>Filter</span>

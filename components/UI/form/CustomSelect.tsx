@@ -77,8 +77,7 @@ const CustomSelect = forwardRef<HTMLSelectElement, CustomSelectProps>(
         {label && (
           <label
             htmlFor={props.id}
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
+            className="mb-1 block text-sm font-medium text-gray-700">
             {label}
           </label>
         )}
@@ -86,15 +85,13 @@ const CustomSelect = forwardRef<HTMLSelectElement, CustomSelectProps>(
         <div
           className={`relative w-full ${
             error ? "text-red-900" : "text-gray-900"
-          } `}
-        >
+          } `}>
           <select
             ref={ref}
             className="hidden"
             value={controlledValue}
             onChange={(e) => console.log(e.target.value)}
-            {...props}
-          >
+            {...props}>
             {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -108,8 +105,7 @@ const CustomSelect = forwardRef<HTMLSelectElement, CustomSelectProps>(
               error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:border-blue-500"
-            } ${className || ""} `}
-          >
+            } ${className || ""} `}>
             <span>
               {selectedOption?.label || placeholder || "Select an option"}
             </span>
@@ -122,8 +118,7 @@ const CustomSelect = forwardRef<HTMLSelectElement, CustomSelectProps>(
                 <li
                   key={option.value}
                   onClick={() => handleOptionSelect(option)}
-                  className="flex cursor-pointer items-center justify-between px-3 py-2 hover:bg-gray-100"
-                >
+                  className="flex cursor-pointer items-center justify-between px-3 py-2 hover:bg-gray-100">
                   {option.label}
                   {selectedOption?.value === option.value && (
                     <Check className="h-4 w-4 text-blue-500" />
@@ -138,8 +133,7 @@ const CustomSelect = forwardRef<HTMLSelectElement, CustomSelectProps>(
           <p
             className={`mt-1 text-xs ${
               error ? "text-red-600" : "text-gray-500"
-            } `}
-          >
+            } `}>
             {error || helperText}
           </p>
         )}

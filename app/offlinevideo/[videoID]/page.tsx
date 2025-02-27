@@ -1,93 +1,97 @@
 "use client";
-
+import NotFoundPage from "@/app/not-found";
+import { use } from "react";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, EllipsisVertical } from "lucide-react";
 import YouTubePlayer from "@/components/UI/YouTubePlayer";
 import ProgressTabs from "@/components/UI/ProgressTabs";
 import Progress from "@/components/UI/Progress";
 import Image from "next/image";
-import { Tab } from "@/types";
-import { courseVideos } from "@/constants/courses.data";
 
-// Define TypeScript Interfaces
+import { courseData } from "@/constants/VideosData.data";
+interface SingleCourseProps {
+  params: Promise<{ videoID: string }>;
+}
 
-// Progress Tabs
-const tabs: Tab[] = [
-  {
-    title: "Course Videos",
-    total: 10,
-    completed: 1,
-    items: courseVideos.map((video) => ({
-      name: video.title,
-      url: video.url,
-      locked: video.locked,
-      duration: video.duration,
-    })),
-  },
-  { title: "Audio", total: 25, completed: 1 },
-  { title: "Module", total: 50, completed: 1 },
-  { title: "Quiz", total: 10, completed: 1 },
-];
+export default function OfflineVideo({ params }: SingleCourseProps) {
+  const { videoID } = use(params);
+  const [currentTab, setCurrentTab] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
-const OfflineVideo: React.FC = () => {
-  const [currentVideo, setCurrentVideo] = useState(0);
+  const handleSetCurrentVideo = (tabIndex: number, videoIndex: number) => {
+    setCurrentTab(tabIndex);
+    setCurrentVideoIndex(videoIndex);
+  };
+  const Video = courseData.find((video) => video.id === videoID);
+
+  if (!Video) return <NotFoundPage />;
 
   const nextVideo = () => {
     if (
-      currentVideo < courseVideos.length - 1 &&
-      !courseVideos[currentVideo + 1].locked
+      (currentVideoIndex < Video.tabs.length - 1 && // Ensure it's not the last video
+        !Video?.tabs?.[currentTab]?.items?.[currentVideoIndex + 1]?.locked) ||
+      ""
     ) {
-      setCurrentVideo(currentVideo + 1);
+      setCurrentVideoIndex(currentVideoIndex + 1);
     }
   };
 
   const prevVideo = () => {
-    if (currentVideo > 0) {
-      setCurrentVideo(currentVideo - 1);
+    if (
+      (currentVideoIndex > 0 && // Ensure it's not the first video
+        !Video?.tabs?.[currentTab]?.items?.[currentVideoIndex - 1]?.locked) ||
+      ""
+    ) {
+      setCurrentVideoIndex(currentVideoIndex - 1);
     }
   };
 
   return (
-    <div className="container mx-auto px-6 lg:max-w-[1170px] my-10">
+    <div className="mx-auto px-6 lg:max-w-[1170px] my-10">
       <h1 className="text-4xl font-bold mb-6">Offline Video</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
         {/* Video Player Section */}
         <div className="shadow-halfShadow p-3 rounded-md md:col-span-2">
           <div className="flex justify-between items-center mb-3">
             <div className="mb-4">
-              <h2 className="font-bold text-xl mb-3">Course Name</h2>
+              <h2 className="font-bold text-xl mb-3">{Video.title}</h2>
               <div className="flex gap-2 items-center ">
                 <Image
                   className="w-8 h-8 rounded-full"
-                  src="https://randomuser.me/api/portraits/men/1.jpg"
+                  src={Video.instructor.image}
                   alt="avatar"
                   width={32}
                   height={32}
                 />
-                <span className="text-xs text-secondary">Instractor name</span>
+                <span className="text-xs text-secondary">
+                  {Video.instructor.name}
+                </span>
               </div>
             </div>
             <button className="text-secondary">
               <EllipsisVertical size={18} />
             </button>
           </div>
-          <div className=" overflow-hidden relative">
+          <div className="overflow-hidden relative">
             <YouTubePlayer
-              videoUrl={courseVideos[currentVideo].url}
+              videoUrl={
+                Video?.tabs?.[currentTab]?.items?.[currentVideoIndex]?.url || ""
+              }
               priority={true}
+              height={450}
             />
           </div>
           <div className="flex justify-between mt-5">
             <button
               className="p-2 border rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
               onClick={prevVideo}
-              disabled={currentVideo === 0}>
+              disabled={currentVideoIndex === 0}>
               <ChevronLeft />
             </button>
             <button
               className="p-2 border rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
               onClick={nextVideo}
-              disabled={currentVideo === courseVideos.length - 1}>
+              disabled={currentVideoIndex === Video.tabs.length}>
               <ChevronRight />
             </button>
           </div>
@@ -109,14 +113,15 @@ const OfflineVideo: React.FC = () => {
             </div>
           </div>
           <ProgressTabs
-            tabs={tabs}
-            currentVideoIndex={currentVideo}
-            setCurrentVideo={setCurrentVideo}
+            tabs={Video.tabs}
+            currentTab={currentTab}
+            currentVideoIndex={currentVideoIndex}
+            setCurrentVideo={handleSetCurrentVideo}
+            setCurrentTab={setCurrentTab}
           />
+          ;
         </div>
       </div>
     </div>
   );
-};
-
-export default OfflineVideo;
+}

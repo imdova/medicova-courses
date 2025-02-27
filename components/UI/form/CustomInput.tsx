@@ -5,10 +5,11 @@ interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string | boolean;
   helperText?: string;
+  isSearch?: boolean;
 }
 
 const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ label, error, helperText, className, ...props }, ref) => {
+  ({ label, error, helperText, className, isSearch = true, ...props }, ref) => {
     return (
       <div className="w-full mb-5">
         {label && (
@@ -19,14 +20,21 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
           </label>
         )}
         <div className="relative">
-          <Search
-            size={18}
-            className="absolute text-primary left-3 top-1/2 -translate-y-1/2"
-          />
+          {isSearch ? (
+            <Search
+              size={18}
+              className="absolute text-primary left-3 top-1/2 -translate-y-1/2"
+            />
+          ) : (
+            ""
+          )}
+
           <input
             placeholder="Search for Courses"
             ref={ref}
-            className={`w-full pl-10 rounded-md border p-4 text-sm hover:border-gold focus:outline-none  ${
+            className={`w-full ${
+              isSearch ? "pl-10" : ""
+            } rounded-md border p-4 text-sm hover:border-gold focus:outline-none  ${
               error
                 ? "border-red-500 text-red-900 focus:ring-red-500"
                 : "border-gray-300 focus:border-gold focus:ring-gold"

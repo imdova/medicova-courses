@@ -1,45 +1,53 @@
 import Image from "next/image";
-import avatar from "@/assets/images/image-1.jpg";
 import { FileVideo, SquareChartGantt, Star, UsersRound } from "lucide-react";
+import { instructor } from "@/types/courses";
 
-const InstructorsSlice: React.FC = () => {
+const InstructorsSlice: React.FC<instructor> = ({
+  name,
+  job,
+  rating,
+  reviews,
+  students,
+  courses,
+  image,
+  description,
+}) => {
   return (
-    <div>
+    <div className="box-content !p-6">
       <div className="mb-4">
-        <h2 className="text-2xl font-semibold">DR/ Mohamed Farag</h2>
-        <span className="text-secondary">micrographic surgery</span>
+        <h2 className="text-2xl font-semibold">{name}</h2>
+        <span className="text-secondary">{job}</span>
       </div>
       <div className="flex gap-5 mb-5">
-        <div className="w-24 h-24 overflow-hidden rounded-full">
-          <Image src={avatar} alt="Avater" />
+        <div>
+          <Image
+            className="w-24 h-24 object-cover rounded-full"
+            src={image}
+            alt="Avater"
+            width={500}
+            height={500}
+          />
         </div>
         <ul>
           <li className="flex items-center gap-2 font-semibold mb-2">
             <Star size={16} />
-            <span className="text-sm">4.6 Instructor Rating</span>
+            <span className="text-sm">{rating} Instructor Rating</span>
           </li>
           <li className="flex items-center gap-2 font-semibold mb-2">
             <SquareChartGantt size={16} />
-            <span className="text-sm">1,883 Reviews</span>
+            <span className="text-sm">{reviews} Reviews</span>
           </li>
           <li className="flex items-center gap-2 font-semibold mb-2">
             <UsersRound size={16} />
-            <span className="text-sm">15,552 Students</span>
+            <span className="text-sm">{students} Students</span>
           </li>
           <li className="flex items-center gap-2 font-semibold mb-2">
             <FileVideo size={16} />
-            <span className="text-sm">10 Course</span>
+            <span className="text-sm">{courses} Course</span>
           </li>
         </ul>
       </div>
-      <p className="text-secondary mb-3">
-        Lorem Ipsumis simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industrys standard Quis ipsum
-        suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.
-        Lorem Ipsumis simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industrys standard Quis ipsum
-        suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan.
-      </p>
+      <p className="text-secondary mb-3">{description}</p>
     </div>
   );
 };

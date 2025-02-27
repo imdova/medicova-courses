@@ -1,122 +1,70 @@
 export const Blogs = [
   {
     id: "1",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
+    image:
+      "https://img.freepik.com/free-photo/businesswoman-working-cafe_1157-30929.jpg?t=st=1739104648~exp=1739108248~hmac=c74aab2df54844272ec87276e7c7d4ce02a6924f4971f2805c69d738e8deb6e9&w=996",
+    title:
       "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
 
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "Lina",
-
+    user: {
+      id: "1",
+      name: "Lina",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     describtion:
       "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
     viewNuber: 300,
   },
   {
     id: "2",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
+    image:
+      "https://img.freepik.com/free-photo/businesswoman-working-cafe_1157-30929.jpg?t=st=1739104648~exp=1739108248~hmac=c74aab2df54844272ec87276e7c7d4ce02a6924f4971f2805c69d738e8deb6e9&w=996",
+    title:
       "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
 
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "ahmed",
-
+    user: {
+      id: "1",
+      name: "Lina",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     describtion:
       "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
-    viewNuber: 1200,
+    viewNuber: 300,
   },
   {
     id: "3",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
+    image:
+      "https://img.freepik.com/free-photo/businesswoman-working-cafe_1157-30929.jpg?t=st=1739104648~exp=1739108248~hmac=c74aab2df54844272ec87276e7c7d4ce02a6924f4971f2805c69d738e8deb6e9&w=996",
+    title:
       "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
 
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "salma",
-
+    user: {
+      id: "1",
+      name: "Lina",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     describtion:
       "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
-    viewNuber: 800,
+    viewNuber: 300,
   },
   {
     id: "4",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
+    image:
+      "https://img.freepik.com/free-photo/businesswoman-working-cafe_1157-30929.jpg?t=st=1739104648~exp=1739108248~hmac=c74aab2df54844272ec87276e7c7d4ce02a6924f4971f2805c69d738e8deb6e9&w=996",
+    title:
       "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
 
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "Lina",
-
+    user: {
+      id: "1",
+      name: "Lina",
+      image:
+        "https://img.freepik.com/free-photo/attractive-girl-portrait-white-shirt_158595-1446.jpg?t=st=1739104305~exp=1739107905~hmac=14da9b6d83c29cd03d523b3826c0a556d1048bc10e255d3ad2361c906a2d450d&w=740",
+    },
     describtion:
       "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
-    viewNuber: 900,
-  },
-  {
-    id: "5",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
-      "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
-
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "Lina",
-
-    describtion:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
-    viewNuber: 55,
-  },
-  {
-    id: "6",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
-      "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
-
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "Lina",
-
-    describtion:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
-    viewNuber: 600,
-  },
-  {
-    id: "7",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
-      "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
-
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "Lina",
-
-    describtion:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
-    viewNuber: 600,
-  },
-  {
-    id: "8",
-    blogImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    blogTitle:
-      "Class adds $30 million to its balance sheet for a Zoom-friendly edtech solution",
-
-    userImg:
-      "https://s3-alpha-sig.figma.com/img/8d3b/3946/46b2e5e0967cd9099d90858e7abb9411?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=T77fysH5iuE0HWqtJ1pdRrWlJiYsRbmQBSZNn3~VvGQvfE-Zg1ZavCHICUzsy1TIFu5DO-OthGcL4rTOT3BC7DXckd-FbgK6JmfxEjlc3YjfYcwfzcZLGr6sBQogYUxna9PYw82rne6o6w4LJVO0gf9nuAXaGKgYBEZm2QyVPZlwMwJ6g7tBG-xM6osvjM8wY2Ow7yLPc19kcCo-BjpOfu5uzH6ulmzgcCEm5jdvAjz5RYBcn5IBAQOxICe5OUzguBNGc3xsOBoGGIZNXjj6nUAInFbeyzGUZvudagkgbf3pvUdYy3Tdm0GURueekljPFRml2D3acQUQ-vGIb18x~Q__",
-    userName: "Lina",
-
-    describtion:
-      "Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively...",
-    viewNuber: 600,
+    viewNuber: 300,
   },
 ];

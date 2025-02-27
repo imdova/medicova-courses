@@ -3,6 +3,7 @@
 import AlertDropDown from "@/components/UI/AlertDropDown";
 import UserDropDown from "@/components/UI/UserDropDown";
 import { notification, users } from "@/constants";
+import { useAppSelector } from "@/store/hooks";
 import { UserProps } from "@/types";
 import { Search, ShoppingCart } from "lucide-react";
 // import { UserState } from "@/types";
@@ -14,6 +15,7 @@ interface UserActionProps {
 }
 
 const HeaderAction: React.FC<UserActionProps> = ({ user }) => {
+  const { courses } = useAppSelector((state) => state.cart);
   if (user && user.id) {
     return (
       <div className="flex items-center gap-1 md:gap-3 text-inherit">
@@ -23,7 +25,14 @@ const HeaderAction: React.FC<UserActionProps> = ({ user }) => {
           <Link href="/courses">
             <Search size={18} />
           </Link>
-          <Link href="/cart">
+          <Link className="relative" href="/cart">
+            {courses.length ? (
+              <span className="flex justify-center items-center absolute text-[7px] w-3 h-3 rounded-full bg-orange-500 -top-2 -right-1 ">
+                {courses.length}
+              </span>
+            ) : (
+              ""
+            )}
             <ShoppingCart size={18} />
           </Link>
           <AlertDropDown notification={notification} />

@@ -1,94 +1,55 @@
+"use client";
 import LogoIcon from "@/assets/icons/logo";
 import { BaseHeaderProps } from "@/types";
+import HeaderAction from "./HeaderAction";
 import Link from "next/link";
+import { Menu, Search } from "lucide-react";
+import { useState } from "react";
 
-// import { useState } from "react";
+interface HeaderProps extends BaseHeaderProps {
+  isActive: boolean;
+  setIsActive: (active: boolean) => void;
+}
 
-// import Image from "next/image";
-// import { commonLangouge } from "@/constants/header";
-
-// import { getNavLinks } from "./routeConfigs";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FullHeader: React.FC<BaseHeaderProps> = ({ user, pathname }) => {
-  // const links = getNavLinks(user?.type, pathname);
-  // const [langSelectedValue, setLangSelectedValue] = useState("Eng (US)");
-  // // Correctly type the event parameter as SelectChangeEvent
-  // const handleChange = (event: SelectChangeEvent<string>) => {
-  //   setLangSelectedValue(event.target.value); // Now the target value is typed as string
-  // };
+const FullHeader: React.FC<HeaderProps> = ({
+  user,
+  pathname,
+  isActive,
+  setIsActive,
+}) => {
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white text-black shadow-md transition-colors duration-300">
+    <header className="left-0 top-0 fixed z-50 w-full transition-all duration-700 bg-white shadow-md">
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
-        <div className="flex h-[70px] items-center">
-          <nav className="w-full">
-            <div className="flex flex-1 items-center justify-between">
-              <Link href="/">
-                <LogoIcon className="h-[30px] w-auto text-primary md:h-[40px]" />
-              </Link>
-              <div className="flex items-center gap-5">
-                {/* <SearchInput />
-                <FormControl
-                  className="hidden flex-row items-center lg:flex"
-                  sx={{ minWidth: 120 }}
-                >
-                  <PublicOutlined className="text-lg text-secondary" />
-                  <Select
-                    className="text-xs"
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={langSelectedValue}
-                    onChange={handleChange}
-                    sx={{
-                      border: "none", // Remove the border
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        border: "none", // Remove the outline
-                      },
-                      "& .MuiSelect-select": {
-                        padding: "10px", // Add padding for better appearance
-                      },
-                      "& .MuiButtonBase-root": {
-                        background: "#ffff",
-                      },
-                    }}
-                    MenuProps={{
-                      PaperProps: {
-                        style: {
-                          maxHeight: 200, // Optional: restrict menu height
-                          boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                        },
-                      },
-                    }}
-                    renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return langSelectedValue;
-                      }
-                      return selected;
-                    }}
-                  >
-                    {commonLangouge.map((e) => {
-                      return (
-                        <MenuItem
-                          key={e.id}
-                          className="flex gap-2 !bg-white text-xs"
-                          value={e.title}
-                        >
-                          <Image src={e.src} alt="" /> {e.title}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </div>
-              <div>
-                <div className="user-content">
-                  <Usercontent />
-                </div> */}
-                {/* <HeaderAction user={user} pathname={pathname} /> */}
-              </div>
+        <div className="flex h-[70px] justify-between items-center">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setIsActive(!isActive)} // Toggle sidebar
+              className="block lg:hidden">
+              <Menu className="text-secondary hover:text-primary link-smooth" />
+            </button>
+            <Link className="relative" href="/">
+              <LogoIcon className="text-primary h-[25px] w-auto md:h-[40px]" />
+            </Link>
+          </div>
+          <div className="hidden items-center lg:flex">
+            <div className="relative min-w-[400px] w-full">
+              <input
+                type="text"
+                placeholder="Search"
+                className="pl-10 pr-4 w-full py-2 border rounded-lg text-secondary bg-gray-100 focus:outline-none"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Search
+                size={18}
+                className="absolute left-3 top-3 text-gray-400"
+              />
             </div>
-          </nav>
+          </div>
+
+          <HeaderAction user={user} pathname={pathname} />
         </div>
       </div>
     </header>

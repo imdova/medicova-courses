@@ -1,7 +1,6 @@
 "use client";
 import NotFoundPage from "@/app/not-found";
 import Image from "next/image";
-import imageCourse from "@/assets/images/image-2.jpg";
 import Payment from "@/assets/images/payment.png";
 import {
   ArrowRight,
@@ -22,44 +21,50 @@ import CurriculumSlice from "../CurriculumSlice";
 import InstructorsSlice from "../InstructorsSlice";
 import ReviewSlice from "../ReviewSlice";
 import { use } from "react";
+import { Courses } from "@/constants/courses.data";
 
 interface SingleCourseProps {
   params: Promise<{ courseID: string }>;
 }
 
-type CoursePost = {
-  title: string;
-  content: string;
-};
-
 export default function SingleCourse({ params }: SingleCourseProps) {
   const { courseID } = use(params);
+  const course = Courses.find((course) => course.id === courseID);
+  if (!course) return <NotFoundPage />;
   const tabData = [
-    { label: "Overview", content: <OverviewSlice /> },
-    { label: "Curriculum", content: <CurriculumSlice /> },
+    {
+      label: "Overview",
+      content: (
+        <OverviewSlice
+          description={course.description}
+          accordionData={course.curriculums}
+        />
+      ),
+    },
+    {
+      label: "Curriculum",
+      content: <CurriculumSlice accordionData={course.curriculums} />,
+    },
     {
       label: "Instructors",
-      content: <InstructorsSlice />,
+      content: (
+        <InstructorsSlice
+          name={course.instructor.name}
+          job={course.instructor.job}
+          image={course.instructor.image}
+          rating={course.instructor.rating}
+          reviews={course.instructor.reviews}
+          students={course.instructor.students}
+          courses={course.instructor.courses}
+          description={course.instructor.description}
+        />
+      ),
     },
     {
       label: "Reviews",
-      content: <ReviewSlice />,
+      content: <ReviewSlice reviews={course.reviews} />,
     },
   ];
-  const coursesList: Record<string, CoursePost> = {
-    "1": {
-      title: "Next.js App Router",
-      content: "Learn about the new App Router in Next.js!",
-    },
-    "2": {
-      title: "React Server Components",
-      content: "React Server Components are powerful...",
-    },
-  };
-
-  const course = coursesList[courseID];
-
-  if (!course) return <NotFoundPage />;
 
   return (
     <main className="mb-32">
@@ -72,33 +77,40 @@ export default function SingleCourse({ params }: SingleCourseProps) {
           <div className="w-full">
             <div className="mb-3">
               <Image
-                className="object-cover w-full rounded-xl"
-                src={imageCourse}
+                className="object-cover h-[350px] w-full rounded-xl"
+                src={course.image}
                 alt="course image"
+                width={400}
+                height={150}
               />
             </div>
             <div className="flex gap-3 mb-6">
               <span className="bg-[#eee] font-semibold py-1 px-3 rounded-full">
-                Recorded
+                {course.status}
               </span>
               <span className="flex items-center gap-2">
                 <Star size={18} className="text-orange-400" />
-                <span className="text-secondary">(4.5 reviews)</span>
+                <span className="text-secondary">
+                  ({course.rating} reviews)
+                </span>
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-5">
-              Course Name Here
+              {course.title}
             </h2>
             <div className="flex items-start sm:items-center sm:flex-row flex-col gap-3 mb-5">
               <Image
-                className="w-12 h-12 rounded-full"
-                width={40}
-                height={40}
-                src={imageCourse}
+                className="w-12 h-12 rounded-full object-cover"
+                width={90}
+                height={90}
+                src={course.instructor.image}
                 alt="image Course"
               />
               <p className="text-secondary">
-                By<span className="text-black ml-2">Dr/ mohamed Farag</span>
+                By
+                <span className="text-black ml-2">
+                  {course.instructor.name}
+                </span>
               </p>
               <div className="flex gap-2 items-center text-secondary">
                 <Calendar size={17} />
@@ -106,7 +118,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
               </div>
               <div className="flex gap-2 items-center text-secondary">
                 <GraduationCap size={18} />
-                <span>250 students</span>
+                <span>{course.students} students</span>
               </div>
             </div>
             {/* Tabs Review  */}
@@ -118,7 +130,9 @@ export default function SingleCourse({ params }: SingleCourseProps) {
           <div className="box-content  lg:w-[500px] h-fit !p-6">
             <div className="bg-primary p-3 rounded-md text-white mb-4">
               <span>This Course Free:</span>
-              <h1 className="font-semibold text-xl">$18.00</h1>
+              <h1 className="font-semibold text-xl">
+                ${course.price.toFixed(2)}
+              </h1>
             </div>
             <div className="mb-4">
               <h2 className="font-semibold text-lg mb-3">Course includes:</h2>
@@ -129,7 +143,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                     <span>Level</span>
                   </div>
                   <div className="flex gap-3 items-center">
-                    <span>Expert</span>
+                    <span>{course.level}</span>
                     <div>
                       $<span className="text-primary">5</span>
                     </div>
@@ -141,7 +155,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                     <span>Duration</span>
                   </div>
                   <div className="flex gap-3 items-center">
-                    <span>11h 20m</span>
+                    <span>{course.duration}</span>
                     <div>
                       $<span className="text-primary">15</span>
                     </div>
@@ -153,7 +167,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                     <span>Lessons</span>
                   </div>
                   <div className="flex gap-3 items-center">
-                    <span>12</span>
+                    <span>{course.lessons}</span>
                     <div>
                       $<span className="text-primary">10</span>
                     </div>
@@ -165,7 +179,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                     <span>Quizzes</span>
                   </div>
                   <div className="flex gap-3 items-center">
-                    <span>145</span>
+                    <span>{course.quizzes}</span>
                     <div>
                       $<span className="text-primary">5</span>
                     </div>
@@ -177,7 +191,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                     <span>Certifications</span>
                   </div>
                   <div className="flex gap-3 items-center">
-                    <span>Yes</span>
+                    <span>{course.certifications}</span>
                     <div>
                       $<span className="text-primary">7</span>
                     </div>
@@ -189,7 +203,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
                     <span>Graduation</span>
                   </div>
                   <div className="flex gap-3 items-center">
-                    <span>25K</span>
+                    <span>{course.graduation}</span>
                     <div>
                       $<span className="text-primary">5</span>
                     </div>
