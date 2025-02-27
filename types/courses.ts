@@ -86,11 +86,24 @@ export interface question {
   timestamp: number;
 }
 export type CourseContentProps = {
+  id: string;
   title: string;
+  image: string;
+  rating: number;
+  lessons: number;
+  duration: string;
   tabs: Tab[];
   instructor: instructor;
-  questions: question[];
-  materials: CourseMaterial[];
+  type: string;
+  students: number;
+  price: number;
+  description: string;
+  questions?: question[];
+  materials?: CourseMaterial[];
+  views?: views[];
+  messages?: Message[];
+  videoPreveiw: string;
+  reviews: review[];
 };
 
 export interface CourseMaterial {

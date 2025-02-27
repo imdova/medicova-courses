@@ -17,7 +17,7 @@ import PDF from "@/assets/icons/pdf.svg";
 import DOCX from "@/assets/icons/docx.svg";
 import VideoFile from "@/assets/icons/video.svg";
 import Link from "next/link";
-import { courseData } from "@/constants/offlineVideos.data";
+import { courseData } from "@/constants/VideosData.data";
 interface SingleCourseProps {
   params: Promise<{ videoID: string }>;
 }
@@ -31,13 +31,14 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
     setCurrentTab(tabIndex);
     setCurrentVideoIndex(videoIndex);
   };
-  const Video = courseData[videoID];
+  const Video = courseData.find((video) => video.id === videoID);
   const [question, setQuestion] = useState("");
   const [reply, setReply] = useState("");
   const [replyIndex, setReplyIndex] = useState<string | null>(null);
   if (!Video) return <NotFoundPage />;
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [questions, setQuestions] = useState<question[]>(Video.questions);
+  const [questions, setQuestions] = useState<question[]>(Video.questions ?? []);
+
   const nextVideo = () => {
     if (
       (currentVideoIndex < Video.tabs.length - 1 && // Ensure it's not the last video
@@ -161,7 +162,6 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
             </button>
           </div>
         </div>
-
         {/* Progress Sidebar */}
         <div className="shadow-halfShadow p-3 rounded-md md:col-span-1">
           <div>
@@ -184,7 +184,6 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
             setCurrentVideo={handleSetCurrentVideo}
             setCurrentTab={setCurrentTab}
           />
-          ;
         </div>
       </div>
       <div>
@@ -193,7 +192,7 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
           <div className="shadow-halfShadow p-3 rounded-md mb-4">
             <h2 className="text-xl font-bold mb-4">Course Material</h2>
             <ul>
-              {Video.materials.map((material, index) => (
+              {Video?.materials?.map((material, index) => (
                 <li
                   key={index}
                   className="flex items-center space-x-4 p-3 border-b last:border-b-0">

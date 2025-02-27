@@ -1,7 +1,7 @@
 "use client";
 import AddBtn from "@/components/UI/Buttons/AddBtn";
 import VideoCard from "@/components/UI/VideoCard";
-import { Courses } from "@/constants/courses.data";
+import { courseData } from "@/constants/VideosData.data";
 import { useState } from "react";
 
 const LiveOfflinePage = () => {
@@ -11,11 +11,13 @@ const LiveOfflinePage = () => {
 
   const filteredCourses =
     filter === "All"
-      ? Courses
-      : Courses.filter((course) => course.type === filter);
+      ? courseData
+      : courseData.filter(
+          (course) => course.type.toUpperCase() === filter.toUpperCase()
+        );
 
   return (
-    <div className="p-6">
+    <div>
       <div className="mx-auto px-6 lg:max-w-[1170px]">
         <div className="flex justify-between flex-col gap-2 lg:flex-row mb-8">
           <div className="flex flex-col lg:flex-row gap-2 ">
@@ -49,7 +51,7 @@ const LiveOfflinePage = () => {
               lessons={course.lessons}
               time={course.duration}
               students={course.students}
-              status={course.status}
+              type={course.type}
               price={course.price}
               description={course.description}
             />

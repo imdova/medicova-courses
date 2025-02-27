@@ -16,10 +16,10 @@ type CardProps = {
   instructor: Instructor;
   lessons: number;
   time: string;
-  status: string;
   students: number;
   price: number;
   description: string;
+  type: string;
 };
 
 const VideoCard: React.FC<CardProps> = ({
@@ -30,22 +30,32 @@ const VideoCard: React.FC<CardProps> = ({
   instructor,
   lessons,
   time,
-  status,
+
   price,
+  type,
 }) => {
   return (
     <>
       {/* Course Card */}
       <div className="box-content relative p-5">
-        <Link href={`courses/${id}`}>
-          {status === "Online" && (
-            <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-gray-100">
+        <Link
+          href={`${
+            type.toLowerCase() === "offline" ? "offline-video" : "live-video"
+          }/${id}`}>
+          {type.toLowerCase() === "live" && (
+            <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-[#ffffffb9]">
               <Earth size={18} />
-              <span className="text-xs font-semibold">Online</span>
+              <span className="text-xs font-semibold">Live</span>
             </span>
           )}
-          {status === "Recorded" && (
-            <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-gray-100">
+          {type.toLowerCase() === "offline" && (
+            <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-[#ffffffb9]">
+              <Video size={18} />
+              <span className="text-xs font-semibold">Offline</span>
+            </span>
+          )}
+          {type.toLowerCase() === "recorded" && (
+            <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-[#ffffffb9]">
               <Video size={18} />
               <span className="text-xs font-semibold">Recorded</span>
             </span>
@@ -95,7 +105,7 @@ const VideoCard: React.FC<CardProps> = ({
           </div>
           <Link
             className="text-sm hover:underline hover:text-primary link-smooth"
-            href={`offline-video/${id}`}>
+            href={`courses/${id}`}>
             Veiw Details
           </Link>
         </div>

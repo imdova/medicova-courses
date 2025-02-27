@@ -7,9 +7,9 @@ import Link from "next/link";
 import { use } from "react";
 import AboutSlice from "../AboutSlice";
 import ReviewsSlice from "../ReviewsSlice";
-import { Courses } from "@/constants/courses.data";
 import LineTabs from "@/components/UI/LineTabs";
 import YouTubePlayer from "@/components/UI/YouTubePlayer";
+import { courseData } from "@/constants/VideosData.data";
 
 interface SingleCourseProps {
   params: Promise<{ courseID: string }>;
@@ -17,7 +17,7 @@ interface SingleCourseProps {
 
 export default function SingleCourse({ params }: SingleCourseProps) {
   const { courseID } = use(params);
-  const course = Courses.find((course) => course.id === courseID);
+  const course = courseData.find((course) => course.id === courseID);
 
   if (!course) return <NotFoundPage />;
   const tabData = [
@@ -33,7 +33,9 @@ export default function SingleCourse({ params }: SingleCourseProps) {
   return (
     <main>
       <div>
-        <Link className="flex gap-3 items-center mb-6 w-fit" href="#">
+        <Link
+          className="flex gap-3 items-center mb-6 w-fit"
+          href="/admin/courses">
           <ChevronLeft size={18} />
           <span>Back</span>
         </Link>
@@ -69,7 +71,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
           </div>
           <div className="box-content lg:w-[500px]">
             <div className="mb-4">
-              <YouTubePlayer height={250} videoUrl={course.videoUrl} />
+              <YouTubePlayer height={250} videoUrl={course.videoPreveiw} />
             </div>
             <div className="flex justify-between gap-2 md:items-center flex-col md:flex-row mb-4">
               <div className="flex gap-4 items-center justify-between md:justify-start">

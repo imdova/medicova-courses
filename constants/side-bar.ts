@@ -2,6 +2,7 @@ import { NavItem } from "@/types";
 import { RoleState } from "@/types/next-auth";
 import {
   ArrowLeftRight,
+  BadgeDollarSign,
   BookOpen,
   Calendar,
   Cog,
@@ -103,6 +104,12 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
       icon: Wallet,
       label: "Wallet",
       path: "/admin/wallet",
+    },
+    {
+      id: 28,
+      icon: BadgeDollarSign,
+      label: "Earngs",
+      path: "/admin/earngs",
     },
     {
       id: 31,

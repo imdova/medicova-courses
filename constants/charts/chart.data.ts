@@ -29,3 +29,23 @@ export const seriesForEarning: SeriesData[] = [
     data: [30, 40, 45, 50, 49, 60, 87, 55, 62, 50, 40, 64],
   },
 ];
+export const seriesForRevenue: SeriesData[] = [
+  {
+    name: "Revenue",
+    data: [30, 40, 45, 50, 49, 60, 87, 55, 62, 50, 40, 64],
+  },
+];
+export const CategoriesForRevenue: string[] = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];

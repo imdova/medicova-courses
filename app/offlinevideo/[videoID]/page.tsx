@@ -8,7 +8,7 @@ import ProgressTabs from "@/components/UI/ProgressTabs";
 import Progress from "@/components/UI/Progress";
 import Image from "next/image";
 
-import { courseData } from "@/constants/offlineVideos.data";
+import { courseData } from "@/constants/VideosData.data";
 interface SingleCourseProps {
   params: Promise<{ videoID: string }>;
 }
@@ -22,7 +22,7 @@ export default function OfflineVideo({ params }: SingleCourseProps) {
     setCurrentTab(tabIndex);
     setCurrentVideoIndex(videoIndex);
   };
-  const Video = courseData[videoID];
+  const Video = courseData.find((video) => video.id === videoID);
 
   if (!Video) return <NotFoundPage />;
 

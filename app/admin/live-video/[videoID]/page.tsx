@@ -8,7 +8,7 @@ import Progress from "@/components/UI/Progress";
 import Image from "next/image";
 import YouTubeLivePlayer from "@/components/UI/YouTubeLiverPlayer";
 import ChatLive from "@/components/UI/ChatLive";
-import { LiveVideosData } from "@/constants/liveVideos.data";
+import { courseData } from "@/constants/VideosData.data";
 
 interface SingleCourseProps {
   params: Promise<{ videoID: string }>;
@@ -23,7 +23,7 @@ export default function LiveVideo({ params }: SingleCourseProps) {
     setCurrentTab(tabIndex);
     setCurrentVideoIndex(videoIndex);
   };
-  const Video = LiveVideosData.find((video) => video.id === videoID);
+  const Video = courseData.find((video) => video.id === videoID);
 
   if (!Video) return <NotFoundPage />;
 
@@ -55,7 +55,7 @@ export default function LiveVideo({ params }: SingleCourseProps) {
           </div>
           <div className="overflow-hidden relative">
             <YouTubeLivePlayer
-              views={Video.views}
+              views={Video?.views ?? []}
               videoUrl={
                 Video?.tabs?.[currentTab]?.items?.[currentVideoIndex]?.url || ""
               }
@@ -89,7 +89,7 @@ export default function LiveVideo({ params }: SingleCourseProps) {
             <ChatLive
               name={Video.instructor.name}
               image={Video.instructor.image}
-              Messages={Video.messages}
+              Messages={Video?.messages ?? []}
             />
           </div>
         </div>
