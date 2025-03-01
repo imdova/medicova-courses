@@ -1,13 +1,8 @@
 "use client";
-import {
-  ArrowUpDown,
-  Ellipsis,
-  MessageSquareMore,
-  Search,
-  Video,
-} from "lucide-react";
+import { ArrowUpDown, MessageSquareMore, Search, Video } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import OptionsDropdown from "../OptionsDropdown";
 
 interface Student {
   name: string;
@@ -29,19 +24,15 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Handle sorting logic
+  // Sorting logic
   const sortedStudents = [...students].sort((a, b) => {
     if (!sortField) return 0;
 
-    const aValue = a[sortField as keyof Student];
-    const bValue = b[sortField as keyof Student];
+    const aValue = a[sortField];
+    const bValue = b[sortField];
 
-    // Convert to string, number, or date where necessary
-    const isDateField = sortField === "joinDate"; // Adjust if more date fields exist
-    const isNumberField =
-      sortField === "studentId" || sortField === "pricePerLesson";
-
-    if (isDateField) {
+    // Handling different data types
+    if (sortField === "joinDate") {
       return sortOrder === "asc"
         ? new Date(aValue as string).getTime() -
             new Date(bValue as string).getTime()
@@ -49,7 +40,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
             new Date(aValue as string).getTime();
     }
 
-    if (isNumberField) {
+    if (sortField === "studentId" || sortField === "pricePerLesson") {
       return sortOrder === "asc"
         ? Number(aValue) - Number(bValue)
         : Number(bValue) - Number(aValue);
@@ -60,7 +51,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
       : String(bValue).localeCompare(String(aValue));
   });
 
-  // Handle search filtering
+  // Search filter
   const filteredStudents = sortedStudents.filter((student) =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -73,24 +64,21 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
   );
 
   const toggleSort = (field: keyof Student) => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortOrder("asc");
-    }
+    setSortField(field);
+    setSortOrder(sortField === field && sortOrder === "asc" ? "desc" : "asc");
   };
 
   return (
-    <div className="overflow-auto">
-      <div className="min-w-[1000px]">
-        <div className="flex justify-between items-center pb-4 ">
+    <div>
+      <div>
+        {/* Search Bar & Heading */}
+        <div className="flex flex-col sm:flex-row justify-between items-center pb-4">
           <h2 className="text-xl font-semibold">Current Students</h2>
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <input
               type="text"
               placeholder="Search"
-              className="pl-10 pr-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
+              className="pl-10 pr-4 py-2 border rounded-lg bg-gray-100 w-full sm:w-64 focus:outline-none"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -98,91 +86,104 @@ const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
           </div>
         </div>
 
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className=" text-gray-700">
-              {[
-                "Name",
-                "Student ID",
-                "Price per Lesson",
-                "Join Date",
-                "Prepaid Balance",
-              ].map((header, index) => (
-                <th
-                  key={index}
-                  className="p-3 text-left  cursor-pointer"
-                  onClick={() =>
-                    toggleSort(
-                      header.toLowerCase().replace(/\s/g, "") as keyof Student
-                    )
-                  }>
-                  <div className="flex gap-3">
-                    {header}
-                    {sortField === header.toLowerCase().replace(/\s/g, "") &&
-                      (sortOrder === "asc" ? (
-                        <span>
-                          <ArrowUpDown className=" text-primary" size={15} />
-                        </span>
-                      ) : (
-                        <span>
-                          <ArrowUpDown className=" text-primary" size={15} />
-                        </span>
-                      ))}
-                  </div>
-                </th>
-              ))}
-              <th className="p-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedStudents.map((student, index) => (
-              <tr key={index} className="border-b">
-                <td className="p-3 flex items-center space-x-3">
-                  <div>
-                    <Image
-                      className="object-cover w-14 h-14 rounded-2xl"
-                      src={student.imageUrl}
-                      width={90}
-                      height={90}
-                      alt="blog image"
-                    />
-                  </div>
-                  <span>{student.name}</span>
-                </td>
-                <td className="p-3">{student.studentId}</td>
-                <td className="p-3">{student.pricePerLesson}</td>
-                <td className="p-3">{student.joinDate}</td>
-                <td className="p-3">
-                  <span
-                    className={`px-3 py-1 rounded-lg text-sm ${
-                      student.prepaidBalance.toLowerCase() === "prepaid"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}>
-                    {student.prepaidBalance}
-                  </span>
-                </td>
-                <td className="p-3 flex space-x-3">
-                  <button className="text-gray-500 hover:text-primary">
-                    <MessageSquareMore size={18} />
-                  </button>
-                  <button className="text-gray-500 hover:text-primary">
-                    <Video size={18} />
-                  </button>
-                  <button className="text-gray-500 hover:text-primary">
-                    <Ellipsis size={18} />
-                  </button>
-                </td>
+        {/* Responsive Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[700px] border-collapse">
+            <thead>
+              <tr className="text-gray-700 bg-gray-100">
+                {[
+                  { label: "Name", key: "name" },
+                  { label: "Student ID", key: "studentId" },
+                  { label: "Price per Lesson", key: "pricePerLesson" },
+                  { label: "Join Date", key: "joinDate" },
+                  { label: "Prepaid Balance", key: "prepaidBalance" },
+                ].map(({ label, key }) => (
+                  <th
+                    key={key}
+                    className="p-3 text-left cursor-pointer"
+                    onClick={() => toggleSort(key as keyof Student)}>
+                    <div className="flex items-center gap-2">
+                      {label}
+                      {sortField === key && (
+                        <ArrowUpDown
+                          className={`${
+                            sortOrder === "asc"
+                              ? "text-primary"
+                              : "text-red-500"
+                          }`}
+                          size={15}
+                        />
+                      )}
+                    </div>
+                  </th>
+                ))}
+                <th className="p-3">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {paginatedStudents.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center p-4 text-gray-500">
+                    No students found.
+                  </td>
+                </tr>
+              ) : (
+                paginatedStudents.map((student, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="p-3 flex items-center space-x-3">
+                      <Image
+                        className="object-cover w-12 h-12 rounded-full"
+                        src={student.imageUrl}
+                        width={50}
+                        height={50}
+                        alt="Student Image"
+                      />
+                      <span>{student.name}</span>
+                    </td>
+                    <td className="p-3">{student.studentId}</td>
+                    <td className="p-3">{student.pricePerLesson}</td>
+                    <td className="p-3">{student.joinDate}</td>
+                    <td className="p-3">
+                      <span
+                        className={`px-3 py-1 rounded-lg text-sm ${
+                          student.prepaidBalance.toLowerCase() === "prepaid"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}>
+                        {student.prepaidBalance}
+                      </span>
+                    </td>
+                    <td className="p-3 flex space-x-3">
+                      <button className="text-gray-500 hover:text-primary">
+                        <MessageSquareMore size={18} />
+                      </button>
+                      <button className="text-gray-500 hover:text-primary">
+                        <Video size={18} />
+                      </button>
+                      <div className="flex justify-center items-center">
+                        <OptionsDropdown
+                          onView={() => console.log("View clicked")}
+                          onEdit={() => console.log("Edit clicked")}
+                          onDelete={() => console.log("Delete clicked")}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
           <p className="text-sm text-gray-600">
-            Showing {currentPage * itemsPerPage - (itemsPerPage - 1)}-
-            {Math.min(currentPage * itemsPerPage, filteredStudents.length)} of{" "}
+            Showing{" "}
+            {Math.min(
+              (currentPage - 1) * itemsPerPage + 1,
+              filteredStudents.length
+            )}{" "}
+            - {Math.min(currentPage * itemsPerPage, filteredStudents.length)} of{" "}
             {filteredStudents.length} students
           </p>
           <div className="flex space-x-2">

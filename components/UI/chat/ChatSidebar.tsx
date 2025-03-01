@@ -19,7 +19,7 @@ export default function ChatSidebar({
   };
 
   return (
-    <aside className="w-full xl:max-w-[300px] bg-white rounded-md p-4 flex flex-col">
+    <aside className="w-full xl:max-w-[250px] bg-white rounded-md p-2 flex flex-col">
       {/* User Profile Info */}
       <div className="flex items-center gap-4 p-2 border-b pb-3">
         <div className="w-12">
@@ -43,7 +43,7 @@ export default function ChatSidebar({
         {contacts.map((contact) => (
           <div
             key={contact.id}
-            className="p-3 flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-md"
+            className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-md mb-2"
             onClick={() => setSelectedChat(contact.id)}>
             <div className="relative">
               <div className="w-10">

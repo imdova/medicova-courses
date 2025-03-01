@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function SharedFiles() {
   return (
-    <aside className="w-full lg:w-[400px] bg-white rounded-md p-4">
+    <aside className="w-full lg:w-[320px] bg-white rounded-md p-2">
       <h2 className="font-semibold">Shared Files</h2>
       <ul className="flex flex-col gap-2  mt-2 space-y-1">
         {files.map((file, index) => {

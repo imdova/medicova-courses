@@ -21,7 +21,7 @@ const DynamicCardSlider = ({ paymentMethods }: DynamicCardSliderProps) => {
       </div>
       {/* Card Display */}
       {paymentMethods.length > 0 && (
-        <CreditCard className="relative bg-[#463fca] text-white p-5 rounded-xl h-full overflow-hidden">
+        <CreditCard className="relative  text-white p-5 rounded-xl h-full overflow-hidden">
           <div className="absolute -bottom-8 -right-8 w-[190px] h-[190px] bg-[#7470c73b] rounded-full "></div>
           <div className="absolute -top-8 left-5 w-[100px] h-[100px] bg-[#7470c73b] rounded-full "></div>
           <div className="relative">

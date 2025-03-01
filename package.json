@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@reduxjs/toolkit": "^2.5.1",
     "apexcharts": "^4.4.0",
     "lucide-react": "^0.474.0",
