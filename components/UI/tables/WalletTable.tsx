@@ -79,7 +79,7 @@ const WalletTable: React.FC<WalletTableProps> = ({ courses }) => {
   return (
     <div className="box-content">
       <div>
-        <div className="flex justify-between items-center pb-4 ">
+        <div className="flex flex-col sm:flex-row  justify-between items-center pb-4 gap-3 ">
           <h2 className="text-xl font-semibold">Current Students</h2>
           <div className="relative">
             <input

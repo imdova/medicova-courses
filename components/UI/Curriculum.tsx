@@ -4,12 +4,20 @@ import {
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
-import { ChevronDown, ChevronUp, GripVertical, Menu, X } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  GripVertical,
+  Menu,
+  Plus,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 
 interface Lesson {
   id: string;
   title: string;
+  url: string;
 }
 
 interface Chapter {
@@ -69,7 +77,7 @@ export default function Curriculum({ Chapter }: CurriculumProps) {
               ...chapter,
               lessons: [
                 ...chapter.lessons,
-                { id: Date.now().toString(), title: "New Lesson" },
+                { id: Date.now().toString(), title: "New Lesson", url: "#" },
               ],
             }
           : chapter
@@ -142,13 +150,13 @@ export default function Curriculum({ Chapter }: CurriculumProps) {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               ref={provided.innerRef}
-                              className={`bg-gray-100 p-4 rounded-md shadow-sm flex items-center cursor-pointer ${
+                              className={`bg-gray-100 p-4 rounded-md shadow-sm flex items-center ${
                                 selectedLesson === lesson.id
                                   ? "bg-blue-200"
                                   : ""
                               }`}
                               onClick={() => setSelectedLesson(lesson.id)}>
-                              <div className="flex gap-3 items-center">
+                              <div className="flex gap-3 items-center w-full cursor-move">
                                 <GripVertical
                                   className="text-secondary"
                                   size={18}
@@ -166,8 +174,8 @@ export default function Curriculum({ Chapter }: CurriculumProps) {
                 <button
                   type="button"
                   onClick={() => addLesson(chapter.id)}
-                  className="mt-2 bg-gray-100 p-4 rounded-md shadow-sm flex items-center cursor-pointer px-4 py-2 w-full">
-                  + Create New Lesson
+                  className="mt-2 bg-gray-100 text-secondary p-4 rounded-md shadow-sm flex items-center cursor-pointer px-4 py-2 w-full">
+                  <Plus className="mr-1" size={15} /> Create New Lesson
                 </button>
               </>
             )}

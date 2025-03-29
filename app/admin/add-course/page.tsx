@@ -19,6 +19,7 @@ interface FormValues {
 interface Lesson {
   id: string;
   title: string;
+  url: string;
 }
 interface Chapter {
   id: string;
@@ -27,19 +28,23 @@ interface Chapter {
 }
 const Chapters: Chapter[] = [
   {
-    id: "1", // Unique identifier for the chapter
-    title: "Chapter 1: Medical Terminology I", // Title of the chapter
+    id: "1",
+    title: "Chapter 1: Medical Terminology I",
     lessons: [
-      { id: "1", title: "Lecture 1: Introduction to Medical Terminology" }, // Lesson inside the chapter
-      { id: "2", title: "Lecture 2: Basic Medical Terms" },
+      {
+        id: "1",
+        title: "Lecture 1: Introduction to Medical Terminology",
+        url: "#",
+      },
+      { id: "2", title: "Lecture 2: Basic Medical Terms", url: "#" },
     ],
   },
   {
     id: "2",
     title: "Chapter 2: Medical Terminology II",
     lessons: [
-      { id: "3", title: "Lecture 1: Advanced Medical Terminology" },
-      { id: "4", title: "Lecture 2: Specialized Terminology" },
+      { id: "3", title: "Lecture 1: Advanced Medical Terminology", url: "#" },
+      { id: "4", title: "Lecture 2: Specialized Terminology", url: "#" },
     ],
   },
 ];

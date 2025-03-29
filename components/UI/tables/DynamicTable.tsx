@@ -85,7 +85,7 @@ const DynamicTable: React.FC<StudentTableProps> = ({
   return (
     <div>
       <div>
-        <div className="flex justify-between items-center pb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center pb-4 gap-4">
           <h2 className="text-xl font-semibold">Current Students</h2>
           <div className="relative">
             <input

@@ -8,7 +8,9 @@ type WithdrawTableProps = {
 const WithdrawTable: React.FC<WithdrawTableProps> = ({ WithdrawData }) => {
   return (
     <div className="h-full">
-      <h2 className="text-lg font-semibold">Withdraw History</h2>
+      <h2 className="text-lg font-semibold sm:text-start text-center">
+        Withdraw History
+      </h2>
       <div className="overflow-x-auto mt-4">
         <table className="min-w-[650px] h-full border-collapse ">
           <thead>
