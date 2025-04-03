@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   Link,
   MessageCircleMore,
+  NotebookPen,
   TvMinimalPlay,
   Users,
   Wallet,
@@ -61,6 +62,12 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
       icon: Calendar,
       label: "Schedule",
       path: "/admin/schedule",
+    },
+    {
+      id: 20,
+      icon: NotebookPen,
+      label: "Quizzes",
+      path: "/admin/quizzes",
     },
     {
       id: 21,
