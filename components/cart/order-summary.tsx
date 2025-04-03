@@ -1,7 +1,6 @@
 import { CartItem } from "@/types/cart";
 import { CartItemCard } from "./cart-item";
 import { ShoppingBag } from "lucide-react";
-import Link from "next/link";
 import { useAppDispatch } from "@/store/hooks";
 import { removeItem } from "@/store/slices/cartSlice";
 import CustomAlert from "../UI/CustomAlert";
@@ -74,14 +73,11 @@ export const OrderSummary = ({
             />
           ))
         ) : (
-          <div className="text-center text-gray-500 mt-5">
-            <ShoppingBag className="m-auto mb-2 text-[#eee]" size={70} />
-            <span className="block mb-2">The cart is empty.</span>
-            <Link
-              className="bg-primary p-2 rounded-md text-white text-xs"
-              href="/courses">
-              Back To Courses
-            </Link>
+          <div className="flex justify-center items-center h-[300px] text-center text-gray-500 mt-5">
+            <div>
+              <ShoppingBag className="m-auto mb-2 text-[#eee]" size={70} />
+              <span className="block mb-2">The cart is empty.</span>
+            </div>
           </div>
         )}
       </div>

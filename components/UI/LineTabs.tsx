@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type Tab = {
   label: string;
@@ -12,25 +12,39 @@ type TabsProps = {
 
 const LineTabs: React.FC<TabsProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleTabClick = (index: number) => {
+    setActiveTab(index);
+    tabRefs.current[index]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  };
 
   return (
     <div className="w-full">
-      {/* Tab Buttons */}
-      <div className="flex flex-wrap  gap-2 mb-7 border-b">
-        {tabs.map((tab, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveTab(index)}
-            className={`px-8 transition-all duration-300 py-2 text-center  ${
-              activeTab === index
-                ? "text-primary border-b-primary font-semibold border-b"
-                : "text-secondary"
-            }`}>
-            {tab.label}
-          </button>
-        ))}
+      <div className="overflow-x-auto no-scrollbar">
+        {/* Tab Buttons */}
+        <div className="flex min-w-max gap-2 mb-7 border-b whitespace-nowrap">
+          {tabs.map((tab, index) => (
+            <button
+              key={index}
+              ref={(el) => {
+                tabRefs.current[index] = el;
+              }}
+              onClick={() => handleTabClick(index)}
+              className={`px-8 transition-all duration-300 py-2 text-center ${
+                activeTab === index
+                  ? "text-primary border-b-primary font-semibold border-b"
+                  : "text-secondary"
+              }`}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
-
       {/* Tab Content */}
       <div>{tabs[activeTab].content}</div>
     </div>

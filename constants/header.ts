@@ -38,10 +38,6 @@ export const commonLinks: CommonLinks = {
       url: "/tutors",
     },
     {
-      title: "Offline Video",
-      url: "/offlinevideo",
-    },
-    {
       title: "Admin",
       url: "/admin",
     },

@@ -1,7 +1,8 @@
 "use client";
-import { ArrowUpDown, Ellipsis, Search } from "lucide-react";
+import { ArrowUpDown, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import OptionsDropdown from "../OptionsDropdown";
 
 interface Student {
   name: string;
@@ -18,6 +19,15 @@ interface StudentTableProps {
   columTitles: string[];
 }
 
+const columnMapping: Record<string, keyof Student> = {
+  "Student Name": "name",
+  "Student ID": "studentId",
+  "Course Name": "courseName",
+  "Join Date": "joinDate",
+  Category: "category",
+  Balance: "prepaidBalance",
+};
+
 const DynamicTable: React.FC<StudentTableProps> = ({
   students,
   columTitles,
@@ -31,27 +41,13 @@ const DynamicTable: React.FC<StudentTableProps> = ({
   // Handle sorting logic
   const sortedStudents = [...students].sort((a, b) => {
     if (!sortField) return 0;
+    const aValue = a[sortField];
+    const bValue = b[sortField];
 
-    const aValue = a[sortField as keyof Student];
-    const bValue = b[sortField as keyof Student];
-
-    // Convert to string, number, or date where necessary
-    const isDateField = sortField === "joinDate"; // Adjust if more date fields exist
-    const isNumberField =
-      sortField === "studentId" || sortField === "courseName";
-
-    if (isDateField) {
+    if (sortField === "joinDate") {
       return sortOrder === "asc"
-        ? new Date(aValue as string).getTime() -
-            new Date(bValue as string).getTime()
-        : new Date(bValue as string).getTime() -
-            new Date(aValue as string).getTime();
-    }
-
-    if (isNumberField) {
-      return sortOrder === "asc"
-        ? Number(aValue) - Number(bValue)
-        : Number(bValue) - Number(aValue);
+        ? new Date(aValue).getTime() - new Date(bValue).getTime()
+        : new Date(bValue).getTime() - new Date(aValue).getTime();
     }
 
     return sortOrder === "asc"
@@ -65,13 +61,19 @@ const DynamicTable: React.FC<StudentTableProps> = ({
   );
 
   // Pagination logic
-  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredStudents.length / itemsPerPage)
+  );
   const paginatedStudents = filteredStudents.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  const toggleSort = (field: keyof Student) => {
+  const toggleSort = (columnTitle: string) => {
+    const field = columnMapping[columnTitle];
+    if (!field) return;
+
     if (sortField === field) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -81,9 +83,9 @@ const DynamicTable: React.FC<StudentTableProps> = ({
   };
 
   return (
-    <div className="overflow-auto">
-      <div className="min-w-[1000px]">
-        <div className="flex justify-between items-center pb-4 ">
+    <div>
+      <div>
+        <div className="flex flex-col sm:flex-row justify-between items-center pb-4 gap-4">
           <h2 className="text-xl font-semibold">Current Students</h2>
           <div className="relative">
             <input
@@ -97,40 +99,36 @@ const DynamicTable: React.FC<StudentTableProps> = ({
           </div>
         </div>
 
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className=" text-gray-700">
-              {columTitles.map((header, index) => (
-                <th
-                  key={index}
-                  className="p-3 text-left  cursor-pointer"
-                  onClick={() =>
-                    toggleSort(
-                      header.toLowerCase().replace(/\s/g, "") as keyof Student
-                    )
-                  }>
-                  <div className="flex gap-3">
-                    {header}
-                    {sortField === header.toLowerCase().replace(/\s/g, "") &&
-                      (sortOrder === "asc" ? (
-                        <span>
-                          <ArrowUpDown className=" text-primary" size={15} />
-                        </span>
-                      ) : (
-                        <span>
-                          <ArrowUpDown className=" text-primary" size={15} />
-                        </span>
-                      ))}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedStudents.map((student, index) => (
-              <tr key={index} className="border-b">
-                <td className="p-3 flex items-center space-x-3">
-                  <div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[900px] border-collapse">
+            <thead>
+              <tr className="text-gray-700">
+                {columTitles.map((header, index) => (
+                  <th
+                    key={index}
+                    className="p-3 text-left cursor-pointer"
+                    onClick={() => toggleSort(header)}>
+                    <div className="flex gap-3">
+                      {header}
+                      {sortField === columnMapping[header] && (
+                        <ArrowUpDown
+                          className={`${
+                            sortOrder === "asc"
+                              ? "text-primary"
+                              : "text-red-500"
+                          }`}
+                          size={15}
+                        />
+                      )}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedStudents.map((student, index) => (
+                <tr key={index} className="border-b">
+                  <td className="p-3 flex items-center space-x-3">
                     <Image
                       className="w-14 h-14 rounded-2xl object-cover"
                       src={student.imageUrl}
@@ -138,42 +136,50 @@ const DynamicTable: React.FC<StudentTableProps> = ({
                       height={200}
                       alt="blog image"
                     />
-                  </div>
-                  <span>{student.name}</span>
-                </td>
-                <td className="text-center p-3">{student.studentId}</td>
-                <td className="p-3">{student.courseName}</td>
-                <td className="p-3">
-                  <span className="p-2 text-sm rounded-md bg-gray-100">
-                    {student.category}
-                  </span>
-                </td>
-                <td className="p-3">{student.joinDate}</td>
-                <td className="p-3">
-                  <span
-                    className={`px-3 py-1 rounded-lg text-sm ${
-                      student.prepaidBalance.toLowerCase() === "prepaid"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}>
-                    {student.prepaidBalance}
-                  </span>
-                </td>
-                <td className="flex justify-center items-center space-x-3">
-                  <button className="text-gray-500 hover:text-primary h-full p-3">
-                    <Ellipsis size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <span>{student.name}</span>
+                  </td>
+                  <td className="text-center p-3">{student.studentId}</td>
+                  <td className="p-3">{student.courseName}</td>
+                  <td className="p-3">
+                    <span className="p-2 text-sm rounded-md bg-gray-100">
+                      {student.category}
+                    </span>
+                  </td>
+                  <td className="p-3">{student.joinDate}</td>
+                  <td className="p-3">
+                    <span
+                      className={`px-3 py-1 rounded-lg text-sm ${
+                        student.prepaidBalance.toLowerCase() === "prepaid"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}>
+                      {student.prepaidBalance}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="flex justify-center items-center">
+                      <OptionsDropdown
+                        onView={() => console.log("View clicked")}
+                        onEdit={() => console.log("Edit clicked")}
+                        onDelete={() => console.log("Delete clicked")}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Pagination */}
         <div className="flex justify-between items-center mt-4">
           <p className="text-sm text-gray-600">
-            Showing {currentPage * itemsPerPage - (itemsPerPage - 1)}-
-            {Math.min(currentPage * itemsPerPage, filteredStudents.length)} of{" "}
+            Showing{" "}
+            {Math.min(
+              (currentPage - 1) * itemsPerPage + 1,
+              filteredStudents.length
+            )}
+            -{Math.min(currentPage * itemsPerPage, filteredStudents.length)} of{" "}
             {filteredStudents.length} students
           </p>
           <div className="flex space-x-2">

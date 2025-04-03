@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import Curriculum from "@/components/UI/Curriculum";
 import { useForm } from "react-hook-form";
 
 interface FormValues {
@@ -17,57 +17,46 @@ interface FormValues {
   totalDuration: string;
 }
 interface Lesson {
-  id: number;
+  id: string;
   title: string;
-  duration: string;
-  details: string;
-  quzis: string;
-  material?: File;
-  lessonImage?: File;
+  url: string;
 }
-
+interface Chapter {
+  id: string;
+  title: string;
+  lessons: Lesson[];
+}
+const Chapters: Chapter[] = [
+  {
+    id: "1",
+    title: "Chapter 1: Medical Terminology I",
+    lessons: [
+      {
+        id: "1",
+        title: "Lecture 1: Introduction to Medical Terminology",
+        url: "#",
+      },
+      { id: "2", title: "Lecture 2: Basic Medical Terms", url: "#" },
+    ],
+  },
+  {
+    id: "2",
+    title: "Chapter 2: Medical Terminology II",
+    lessons: [
+      { id: "3", title: "Lecture 1: Advanced Medical Terminology", url: "#" },
+      { id: "4", title: "Lecture 2: Specialized Terminology", url: "#" },
+    ],
+  },
+];
 const AddCourseForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
-  const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [lessonTitle, setLessonTitle] = useState("");
-  const [couresDuration, setcouresDuration] = useState("");
-  const [lessonDetails, setlessonDetails] = useState("");
-  const [chooseQuiz, setchooseQuiz] = useState("");
-  const [lessonMaterial, setLessonMaterial] = useState<File | null>(null);
-  const [lessonImage, setlessonImage] = useState<File | null>(null);
-
-  // Data of lesson List
-  const addLesson = () => {
-    if (lessonTitle.trim()) {
-      setLessons([
-        ...lessons,
-        {
-          id: Date.now(),
-          title: lessonTitle,
-          duration: couresDuration,
-          details: lessonDetails,
-          quzis: chooseQuiz,
-          material: lessonMaterial || undefined,
-          lessonImage: lessonImage || undefined,
-        },
-      ]);
-      setLessonTitle("");
-      setcouresDuration("");
-      setlessonDetails("");
-      setchooseQuiz("");
-    }
-  };
-
-  const deleteLesson = (id: number) => {
-    setLessons(lessons.filter((lesson) => lesson.id !== id));
-  };
 
   const onSubmit = (data: FormValues) => {
-    console.log({ ...data, lessons });
+    console.log({ ...data });
   };
 
   return (
@@ -227,119 +216,7 @@ const AddCourseForm: React.FC = () => {
         )}
       </div>
       {/* Lesson content Fileds  */}
-      <h2 className="text-xl font-bold mb-4">Add Curriculum</h2>
-      <div className="flex flex-col md:flex-row gap-2 ">
-        <div className="w-full mb-4">
-          <label className="block text-gray-700 text-sm text-secondary mb-1">
-            Lesson Title
-          </label>
-          <div className="flex gap-2 ">
-            <input
-              type="text"
-              value={lessonTitle}
-              onChange={(e) => setLessonTitle(e.target.value)}
-              className="w-full p-3 outline-none border rounded-lg placeholder:text-sm"
-              placeholder="Lesson Title"
-            />
-          </div>
-        </div>
-        <div className="w-full mb-4">
-          <label className="block text-gray-700 text-sm text-secondary mb-1">
-            Coures Duration
-          </label>
-          <div className="flex flex-col md:flex-row gap-2 ">
-            <input
-              type="text"
-              value={couresDuration}
-              onChange={(e) => setcouresDuration(e.target.value)}
-              className="w-full p-3 outline-none border rounded-lg placeholder:text-sm"
-              placeholder="Enter Coures Duration"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="w-full mb-4">
-        <label className="block text-gray-700 text-sm text-secondary mb-1 ">
-          Lesson Details
-        </label>
-        <textarea
-          className="w-full h-[200px] p-3 border outline-none rounded-lg resize-none"
-          value={lessonDetails}
-          onChange={(e) => setlessonDetails(e.target.value)}
-          placeholder="Enter Lesson Details"></textarea>
-      </div>
-      <div className="flex flex-col md:flex-row gap-2 ">
-        <div className="w-full mb-4">
-          <label className="block text-gray-700 text-sm text-secondary mb-1">
-            Upload Material
-          </label>
-          <input
-            className="flex border text-sm text-gray-400 file:p-3 file:border-0 file:bg-[#eee]  file:text-sm file:font-medium w-full outline-none  rounded-lg placeholder:text-sm"
-            type="file"
-            onChange={(e) =>
-              setLessonMaterial(e.target.files ? e.target.files[0] : null)
-            }
-            id="file"
-          />
-        </div>
-        <div className="w-full mb-4">
-          <label className="block text-gray-700 text-sm text-secondary mb-1">
-            Upload Lesson Image
-          </label>
-          <input
-            className="flex border text-sm text-gray-400 file:p-3 file:border-0 file:bg-[#eee]  file:text-sm file:font-medium w-full outline-none  rounded-lg placeholder:text-sm"
-            type="file"
-            onChange={(e) =>
-              setlessonImage(e.target.files ? e.target.files[0] : null)
-            }
-            id="file"
-          />
-        </div>
-      </div>
-      <div className="flex justify-between items-end gap-2">
-        <div className="w-full">
-          <label className="block text-gray-700 text-sm text-secondary mb-1">
-            Choose Quiz
-          </label>
-          <select
-            onChange={(e) => setchooseQuiz(e.target.value)}
-            value={chooseQuiz}
-            className="w-full outline-none p-3 border rounded-lg text-sm text-secondary">
-            <option value="">Select a Quiz</option>
-            <option value="Quiz 1">Quiz 1</option>
-            <option value="Quiz 2">Quiz 2</option>
-            <option value="Quiz 3">Quiz 3</option>
-          </select>
-        </div>
-        <button
-          type="button"
-          onClick={addLesson}
-          className="p-3 min-w-[150px] bg-primary text-white rounded-lg hover:bg-black link-smooth">
-          Add Lesson
-        </button>
-      </div>
-      {/* List of Lessons in This Course  */}
-      <div className="my-6">
-        {lessons.length > 0 && (
-          <>
-            <h2 className="text-xl font-bold mb-4">List of Lessons</h2>
-            <ul className="mt-2 ">
-              {lessons.map((lesson) => (
-                <li
-                  key={lesson.id}
-                  className="p-3 rounded-md bg-[#f7f7f7] flex justify-between items-center mb-2">
-                  {lesson.title}
-                  <button
-                    onClick={() => deleteLesson(lesson.id)}
-                    className="text-red-500 text-xs mt-1 hover:underline">
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </div>
+      <Curriculum Chapter={Chapters} />
       {/* Information content Fileds  */}
       <h2 className="text-xl font-bold mb-4">Information</h2>
       <div className="flex flex-col md:flex-row gap-2 ">

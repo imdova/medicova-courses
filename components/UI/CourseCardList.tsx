@@ -57,10 +57,10 @@ const CourseCardList: React.FC<CourseType> = ({
           onClose={() => setAlert(null)}
         />
       )}
-      <div className="relative p-5 bg-[#f7f7f7] rounded-lg">
-        <div className="flex justify-between items-center gap-4  ">
+      <div className="bg-white border rounded-xl relative p-5">
+        <div className="flex md:flex-row flex-col justify-between items-center gap-4  ">
           <Link
-            className="flex justify-between items-center gap-8"
+            className="flex md:flex-row flex-col justify-between items-center gap-8"
             href={`courses/${id}`}>
             <div className="w-[150px] overflow-hidden rounded-md mr-3 h-24">
               <Image
@@ -71,9 +71,9 @@ const CourseCardList: React.FC<CourseType> = ({
                 height={400}
               />
             </div>
-            <div className="">
+            <div className="flex flex-col items-center md:items-start">
               <h1 className="mb-3 font-semibold">{title}</h1>
-              <div className="flex f gap-1">
+              <div className="flex  gap-1">
                 <Rating rating={rating} size={10} />
               </div>
             </div>

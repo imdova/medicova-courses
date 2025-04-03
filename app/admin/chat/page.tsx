@@ -35,11 +35,10 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col xl:flex-row  box-content">
-      <div className="flex flex-col-reverse xl:flex-row  gap-2 w-full ">
+    <div className="flex flex-col xl:flex-row gap-2">
+      <div className="flex flex-col-reverse xl:flex-row gap-2 w-full ">
         {/* Sidebar */}
         <ChatSidebar contacts={contacts} setSelectedChat={setSelectedChatId} />
-
         {/* Chat Window */}
         <ChatWindow
           selectedChat={selectedChat}
@@ -47,7 +46,6 @@ export default function ChatPage() {
           sendMessage={sendMessage}
         />
       </div>
-
       {/* Shared Files */}
       <SharedFiles />
     </div>

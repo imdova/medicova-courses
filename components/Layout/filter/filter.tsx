@@ -3,12 +3,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterOption } from "@/types";
 import { useCallback } from "react";
 import FilterItem from "./FilterItem";
-import { FilterIcon } from "lucide-react";
+import { FilterIcon, X } from "lucide-react";
 
 type Props<T extends Record<string, FilterOption[]>, K extends keyof T> = {
   className?: string;
   sections: T;
   searchKeys?: K[];
+  setIsActive: (active: boolean) => void;
+  Isactive: boolean;
 };
 
 const FilterContent = <
@@ -17,6 +19,8 @@ const FilterContent = <
 >({
   searchKeys,
   sections,
+  Isactive,
+  setIsActive,
 }: Props<T, K>) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -71,14 +75,25 @@ const FilterContent = <
   }));
 
   return (
-    <div className="w-full lg:w-[300px] block">
-      <div className="space-y-6">
-        <div className="box-content flex justify-between items-center mb-5 !bg-primary !text-white">
+    <div
+      className={`${
+        Isactive ? "left-0" : "-left-[500px]"
+      } md:sticky md:bg-transparent md:z-10 fixed top-0  bg-white z-50 p-4 md:p-2 w-[260px] h-screen max-h-screen md:h-full md:max-h-full overflow-y-auto no-scrollbar transition-all duration-500 pt-16 md:pt-0 shadow-md md:shadow-none`}>
+      <button
+        onClick={() => setIsActive(false)}
+        className="block lg:hidden absolute right-3 top-3 p-2 text-secondary hover:text-red-500">
+        <X size={18} />
+      </button>
+      <div className="min-h-full">
+        {/* Filter Header (Only visible in md screens) */}
+        <div className="hidden md:flex justify-between items-center mb-5 bg-primary text-white p-2 rounded-md">
           <span>Filter</span>
           <span>
             <FilterIcon size={18} />
           </span>
         </div>
+
+        {/* Filter Items */}
         {filteredSections.map((section, index) => (
           <FilterItem
             key={section.key}

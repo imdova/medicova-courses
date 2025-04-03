@@ -72,7 +72,7 @@ const CourseCard: React.FC<CourseType> = ({
       )}
 
       {/* Course Card */}
-      <div className="relative p-5 border rounded-lg">
+      <div className="bg-white border rounded-xl relative p-5">
         <Link href={`courses/${id}`}>
           {status === "Online" && (
             <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-gray-100">

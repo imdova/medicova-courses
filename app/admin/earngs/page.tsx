@@ -1,3 +1,4 @@
+"use client";
 import RevenueChart from "@/components/UI/Charts/RevenueChart";
 import DynamicCardSlider from "@/components/UI/DynamicCardSlider";
 import WithdrawTable from "@/components/UI/tables/WithdrawTable";

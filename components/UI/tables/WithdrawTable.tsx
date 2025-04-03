@@ -1,5 +1,5 @@
 import { Withdrawal } from "@/types/Payment";
-import { Ellipsis } from "lucide-react";
+import OptionsDropdown from "../OptionsDropdown";
 
 type WithdrawTableProps = {
   WithdrawData: Withdrawal[];
@@ -8,7 +8,9 @@ type WithdrawTableProps = {
 const WithdrawTable: React.FC<WithdrawTableProps> = ({ WithdrawData }) => {
   return (
     <div className="h-full">
-      <h2 className="text-lg font-semibold">Withdraw History</h2>
+      <h2 className="text-lg font-semibold sm:text-start text-center">
+        Withdraw History
+      </h2>
       <div className="overflow-x-auto mt-4">
         <table className="min-w-[650px] h-full border-collapse ">
           <thead>
@@ -37,9 +39,13 @@ const WithdrawTable: React.FC<WithdrawTableProps> = ({ WithdrawData }) => {
                   {withdrawal.status}
                 </td>
                 <td>
-                  <button>
-                    <Ellipsis className="text-secondary" size={18} />
-                  </button>
+                  <div className="flex justify-center items-center">
+                    <OptionsDropdown
+                      onView={() => console.log("View clicked")}
+                      onEdit={() => console.log("Edit clicked")}
+                      onDelete={() => console.log("Delete clicked")}
+                    />
+                  </div>
                 </td>
               </tr>
             ))}

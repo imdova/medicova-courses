@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-
 import { FilterOption, FilterSectionType } from "@/types";
-import { Check } from "lucide-react";
+import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import CustomInput from "@/components/UI/form/CustomInput";
 import Rating from "@/components/UI/Rating";
 
@@ -31,10 +30,8 @@ const FilterItem: React.FC<FilterItemProps> = ({
   index,
 }) => {
   const [query, setQuery] = useState("");
-  const [isExpanded, setIsExpanded] = useState(
-    index ? index === 0 || index === 1 : true
-  );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isExpanded, setIsExpanded] = useState(index === 0 || index === 1);
+
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,79 +59,83 @@ const FilterItem: React.FC<FilterItemProps> = ({
   };
 
   return (
-    <div className="box-content pb-4 last:border-b-0">
-      <div className="flex items-center justify-between">
-        <h6 className="mb-3 text-[14px] font-bold text-[#25324B]">
+    <div className="p-3 rounded-lg md:bg-[#F7F7F9] last:border-b-0 mb-6">
+      <div
+        className="flex items-center justify-between cursor-pointer"
+        onClick={toggleExpand}>
+        <h6 className=" text-[14px] font-semibold text-[#25324B]">
           {section.title}
         </h6>
-        {/* TODO: you need to add some customizations to your custom component to make it dynamic  */}
+        <div className="flex justify-center items-center w-8 h-8 rounded-full hover:bg-[#ffffffce] text-secondary">
+          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </div>
       </div>
-      {/* TODO: you will find a Collapsible component you can try to use and customize on it for better usage  */}
-
-      <div className="px-1">
-        <fieldset className="w-full">
-          <div className="grid grid-cols-1 gap-1 px-1">
-            {/* All Checkbox */}
-            <label className="flex cursor-pointer items-center rounded-md p-1 text-[#515B6F] transition-colors hover:bg-gray-50">
-              <div className="relative mr-2">
-                <input
-                  type="checkbox"
-                  checked={isAllSelected}
-                  onChange={handleAllChange}
-                  className="peer hidden"
-                />
-                <div className="h-5 w-5 rounded-sm border-2 border-[#D6DDEB] peer-checked:border-primary peer-checked:bg-primary">
-                  {isAllSelected && (
-                    <Check className="h-4 w-4 text-primary-foreground" />
-                  )}
-                </div>
-              </div>
-              <span>{`All ${section.title} (${getTotalCount(
-                filteredOptions
-              )})`}</span>
-            </label>
-
-            {/* Individual Checkboxes */}
-            {filteredOptions.map((option) => (
-              <label
-                key={option.value}
-                className="flex cursor-pointer items-center rounded-md p-1 text-[#515B6F] transition-colors hover:bg-gray-50">
+      {isExpanded && (
+        <div className="mt-3 px-1">
+          <fieldset className="w-full">
+            <div className="grid grid-cols-1 gap-1 px-1">
+              {/* All Checkbox */}
+              <label className="flex cursor-pointer items-center rounded-md p-1 text-[#515B6F] transition-colors hover:bg-gray-50">
                 <div className="relative mr-2">
                   <input
                     type="checkbox"
-                    checked={value.includes(option.value)}
-                    onChange={() => handleCheckboxChange(option.value)}
+                    checked={isAllSelected}
+                    onChange={handleAllChange}
                     className="peer hidden"
                   />
                   <div className="h-5 w-5 rounded-sm border-2 border-[#D6DDEB] peer-checked:border-primary peer-checked:bg-primary">
-                    {value.includes(option.value) && (
+                    {isAllSelected && (
                       <Check className="h-4 w-4 text-primary-foreground" />
                     )}
                   </div>
                 </div>
-                {section.title === "Rating" ? (
-                  <div className="flex gap-2 items-center">
-                    <Rating size={12} rating={Number(option.value)} />
-                    <span>({option.count})</span>
-                  </div>
-                ) : (
-                  <span>
-                    {option.label} ({option.count})
-                  </span>
-                )}
+                <span>{`All ${section.title} (${getTotalCount(
+                  filteredOptions
+                )})`}</span>
               </label>
-            ))}
-          </div>
-        </fieldset>
-        {isSearch && (
-          <CustomInput
-            placeholder="Search..."
-            value={query || ""}
-            onChange={searchHandler}
-            className="my-1 py-0"
-          />
-        )}
-      </div>
+
+              {/* Individual Checkboxes */}
+              {filteredOptions.map((option) => (
+                <label
+                  key={option.value}
+                  className="flex cursor-pointer items-center rounded-md p-1 text-[#515B6F] transition-colors hover:bg-gray-50">
+                  <div className="relative mr-2">
+                    <input
+                      type="checkbox"
+                      checked={value.includes(option.value)}
+                      onChange={() => handleCheckboxChange(option.value)}
+                      className="peer hidden"
+                    />
+                    <div className="h-5 w-5 rounded-sm border-2 border-[#D6DDEB] peer-checked:border-primary peer-checked:bg-primary">
+                      {value.includes(option.value) && (
+                        <Check className="h-4 w-4 text-primary-foreground" />
+                      )}
+                    </div>
+                  </div>
+                  {section.title === "Rating" ? (
+                    <div className="flex gap-2 items-center">
+                      <Rating size={12} rating={Number(option.value)} />
+                      <span>({option.count})</span>
+                    </div>
+                  ) : (
+                    <span>
+                      {option.label} ({option.count})
+                    </span>
+                  )}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          {isSearch && (
+            <CustomInput
+              placeholder="Search..."
+              value={query || ""}
+              onChange={searchHandler}
+              className="my-1 py-0"
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };
