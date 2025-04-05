@@ -28,7 +28,7 @@ export default function Quizzes() {
 
   return (
     <section>
-      <div className="flex flex-col justify-between sm:items-center py-4 gap-4 border-b border-gray-200 sm:flex-row">
+      <div className="flex flex-col justify-between sm:items-center py-4 gap-4  sm:flex-row">
         <div className="flex gap-6 items-center">
           <Link
             className="p-2 border text-secondary rounded-md"
@@ -48,7 +48,7 @@ export default function Quizzes() {
 
       {/* Pass the search query handler function to the SearchBar */}
       <SearchBar placeholder="Search for Quizzes" onSearch={handleSearch} />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredQuizzes.map((quiz) => (
           <div className="box-content border" key={quiz.id}>
             <h2 className="text-lg font-bold mb-3">{quiz.title}</h2>

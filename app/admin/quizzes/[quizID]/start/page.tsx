@@ -45,7 +45,7 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
+    <div className="mx-auto px-4 py-8 max-w-4xl">
       <div className="text-center">
         <h1 className="text-3xl font-bold mb-2">{quiz.title}</h1>
         <p className="text-sm text-secondary mb-4">{quiz.instructions}</p>
@@ -62,7 +62,32 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
             <span className="block text-sm text-secondary mb-2">
               Time Limit:
             </span>
-            <span className="font-semibold">{quiz.timeLimit} min</span>
+            <span className="font-semibold">
+              {" "}
+              {quiz.timeLimit && quiz.timeLimit > 0
+                ? (() => {
+                    const totalSeconds = quiz.timeLimit;
+                    const hours = Math.floor(totalSeconds / 3600); // Total hours
+                    const minutes = Math.floor((totalSeconds % 3600) / 60); // Remaining minutes
+                    const seconds = totalSeconds % 60; // Remaining seconds
+                    return hours > 0
+                      ? `${hours} hour${hours > 1 ? "s" : ""} ${
+                          minutes > 0
+                            ? `${minutes} minute${minutes > 1 ? "s" : ""}`
+                            : ""
+                        } ${
+                          seconds > 0
+                            ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                            : ""
+                        }`
+                      : `${minutes} minute${minutes > 1 ? "s" : ""} ${
+                          seconds > 0
+                            ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                            : ""
+                        }`;
+                  })()
+                : "No limit"}
+            </span>
           </div>
           <div className="flex flex-col gap-2">
             <span className="block text-sm text-secondary mb-2">
@@ -93,7 +118,7 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
               onChange={(e) =>
                 setQuestionOrder(e.target.value as QuestionOrder)
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none">
               <option value="regular">Regular</option>
               <option value="random">Random</option>
             </select>
@@ -103,7 +128,7 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
             <select
               value={quizMode}
               onChange={(e) => setQuizMode(e.target.value as QuizMode)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none">
               <option value="quiz">Quiz</option>
               <option value="test">Test</option>
             </select>
@@ -113,7 +138,7 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
             <select
               value={timerType}
               onChange={(e) => setTimerType(e.target.value as TimerMode)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none">
               <option value="no-limit">No limit</option>
               <option value="hidden">Hidden</option>
               <option value="normal">Normal</option>

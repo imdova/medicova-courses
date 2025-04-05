@@ -2,6 +2,8 @@ interface Option {
   id: string;
   text: string;
   isCorrect: boolean;
+  imageUrl?: string;
+  imageAlt?: string;
 }
 
 interface Question {
@@ -11,7 +13,9 @@ interface Question {
   points: number;
   options?: Option[];
   explanation: string;
-  answerCorrect?: number;
+  answerCorrect?: number | string;
+  imageUrl?: string;
+  imageAlt?: string;
 }
 
 export interface Quiz {
