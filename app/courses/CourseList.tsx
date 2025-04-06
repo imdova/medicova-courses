@@ -93,6 +93,17 @@ const CoursesList: React.FC = () => {
     router.replace(`${pathname}?${params.toString()}`);
   };
 
+  // Update search query in URL
+  const handleSearch = (query: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (query) {
+      params.set("q", query);
+    } else {
+      params.delete("q");
+    }
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <main className="relative mb-8">
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
@@ -128,7 +139,8 @@ const CoursesList: React.FC = () => {
                 </button>
               ))}
             </div>
-            <SearchBar />
+            {/* SearchBar Component */}
+            <SearchBar onSearch={handleSearch} />
             {/* Sorting & View Controls */}
             <div className="flex flex-col sm:flex-row justify-between items-center mb-5 gap-3">
               <span className="hidden md:block text-sm text-secondary">

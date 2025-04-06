@@ -24,7 +24,7 @@ const DynamicLayout: React.FC<DynamicLayoutProps> = ({
     switch (sideBarType) {
       case "full":
         return (
-          <div className="relative flex w-full flex-row p-4 pt-[100px] bg-[#f7f7f7]">
+          <div className="relative container mx-auto my-4 flex min-h-[calc(100vh-150px)] w-full flex-row p-2 md:my-8 pt-16 bg-[#F9F9FA]">
             <aside>
               <div
                 className={`fixed top-0 transition-all duration-300 ${

@@ -3,16 +3,20 @@
 import CustomInput from "@/components/UI/form/CustomInput";
 import { createUrl } from "@/util";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { KeyboardEvent, Suspense, useState } from "react";
+import { KeyboardEvent, Suspense, useState, useEffect } from "react";
 
+// Extend the SearchProps to accept the search handler function.
 interface SearchProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  onClick?: () => void;
+  onSearch: (query: string) => void; // Prop for passing search query to parent
   pathname?: string;
   children?: React.ReactNode;
   parentClassName?: string;
+  label?: string;
+  placeholder?: string;
 }
 
 let timer: NodeJS.Timeout;
+
 function debounce<T extends (...args: string[]) => void>(
   func: T,
   delay: number
@@ -24,10 +28,12 @@ function debounce<T extends (...args: string[]) => void>(
 }
 
 const Input: React.FC<SearchProps> = ({
-  onClick,
+  onSearch,
   pathname: initialPathname,
   children,
   parentClassName,
+  label,
+  placeholder,
   ...props
 }) => {
   const searchParams = useSearchParams();
@@ -38,17 +44,21 @@ const Input: React.FC<SearchProps> = ({
   const initialSearchText = searchParams.get("q") || "";
   const [query, setQuery] = useState(initialSearchText);
 
+  useEffect(() => {
+    const newSearchText = searchParams.get("q") || "";
+    setQuery(newSearchText);
+  }, [searchParams]);
+
   function submit() {
     const newParams = new URLSearchParams(searchParams.toString());
-
     if (query) {
       newParams.set("q", query);
       newParams.delete("page");
     } else {
       newParams.delete("q");
     }
-    onClick?.();
     router.push(createUrl(newPathname, newParams));
+    onSearch(query); // Trigger the search query change in the parent component
   }
 
   const updateSearchParams = debounce((value: string) => {
@@ -56,6 +66,7 @@ const Input: React.FC<SearchProps> = ({
     newParams.set("q", value);
     newParams.delete("page");
     router.push(createUrl(pathname, newParams));
+    onSearch(value); // Update search query in the parent component
   }, 500);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +76,7 @@ const Input: React.FC<SearchProps> = ({
       updateSearchParams(value);
     }
   };
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && query.trim()) {
       e.preventDefault();
@@ -79,6 +91,8 @@ const Input: React.FC<SearchProps> = ({
         value={query}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        label={label}
+        placeholder={placeholder}
       />
       <input type="submit" hidden />
       {children}
@@ -93,4 +107,5 @@ const SearchBar: React.FC<SearchProps> = (props) => {
     </Suspense>
   );
 };
+
 export default SearchBar;
