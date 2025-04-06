@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { quizzes } from "@/constants/quizzes.data";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { use, useState } from "react";
 
 interface StartQuizPageProps {
@@ -50,7 +50,7 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
         <h1 className="text-3xl font-bold mb-2">{quiz.title}</h1>
         <p className="text-sm text-secondary mb-4">{quiz.instructions}</p>
       </div>
-      <div className="box-content p-6">
+      <div className="box-content p-6 border">
         <div className="grid grid-cols-1 sm:grid-cols-2 space-y-4 mb-8">
           <div className="flex flex-col gap-2">
             <span className="block text-sm text-secondary mb-2">
@@ -108,7 +108,7 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between gap-3 mb-8 md:flex-row">
+        <div className="flex flex-col justify-between gap-3 mb-8 md:flex-row border-b pb-4">
           <div className="w-full">
             <span className="block text-sm text-secondary mb-2">
               Question Order:
@@ -146,18 +146,12 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <Link
-            href="/admin/quizzes"
-            className="flex gap-2 items-center border shadow-sm py-2 px-4 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
-            <ChevronLeft size={15} />
-            Back To Quizzes
-          </Link>
+        <div className="flex items-center justify-end">
           <Link
             href={handleStartQuiz()}
             className="flex gap-2 items-center bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">
-            <ChevronRight size={15} />
             Start Quiz
+            <ChevronRight size={15} />
           </Link>
         </div>
       </div>

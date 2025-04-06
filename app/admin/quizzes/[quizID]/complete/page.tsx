@@ -48,8 +48,20 @@ export default function QuizCompletePage({ params }: QuizCompletePageProps) {
   const searchParams = useSearchParams();
   const quiz = quizzes.find((q) => q.id === quizID) as Quiz | undefined;
   const [result, setResult] = useState<QuizResult | null>(null);
+  const [timeTaken, setTimeTaken] = useState<number>(0);
 
   const urlScore = searchParams.get("score");
+
+  useEffect(() => {
+    const data = localStorage.getItem(`quizTimer_${quizID}`);
+
+    if (data) {
+      const parsedData = JSON.parse(data);
+      setTimeTaken(parsedData.timeTaken);
+    } else {
+      setTimeTaken(0); // Default value if no data is found
+    }
+  }, [quizID]); // Make sure to include quizID as a dependency if it's changing
 
   useEffect(() => {
     const savedResult = localStorage.getItem(`quizResult_${quizID}`);
@@ -160,7 +172,24 @@ export default function QuizCompletePage({ params }: QuizCompletePageProps) {
 
     return correctAnswer;
   };
+  // calclute Score
   const score = Math.round((correctAnswers / result.totalQuestions) * 100);
+  // format time
+  const formatTime = (seconds: number): string => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    // Return as 'hh:mm:ss' or 'mm:ss' if there are no hours
+    return hours > 0
+      ? `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
+      : `${minutes.toString().padStart(2, "0")}:${secs
+          .toString()
+          .padStart(2, "0")}`;
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="text-center">
@@ -175,8 +204,8 @@ export default function QuizCompletePage({ params }: QuizCompletePageProps) {
         <div className="box-content my-5 border rounded-lg">
           <div className="grid grid-cols-2 gap-4 text-left max-w-xs mx-auto mb-4 p-4">
             <div className="text-center">
-              <p className="text-secondary text-sm mb-2">Score</p>
-              <p className="text-lg font-semibold">{result.score}%</p>
+              <p className="text-secondary text-sm mb-2">Time Taken</p>
+              <p className="text-lg font-semibold">{formatTime(timeTaken)}</p>
             </div>
             <div className="text-center">
               <p className="text-secondary text-sm mb-2">Correct Answers</p>

@@ -74,7 +74,7 @@ const QuizProgress: React.FC<QuizProgressProps> = ({
       </p>
 
       {/* Score display */}
-      <div className="mt-4 text-xl font-bold text-gray-800">
+      <div className="mt-4 text-sm font-semibold text-gray-800">
         {questionsCorrect} / {totalQuestions}
         <span className="text-sm font-normal ml-2 text-gray-500">Points</span>
       </div>

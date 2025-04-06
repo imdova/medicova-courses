@@ -5,9 +5,9 @@ import Link from "next/link";
 import Timer from "@/components/UI/Timer";
 import { quizzes } from "@/constants/quizzes.data";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { use } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Info, X } from "lucide-react";
 import Image from "next/image";
 
 interface QuizQuestionPageProps {
@@ -55,9 +55,12 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
   const [questionsStatus, setQuestionsStatus] = useState<
     Record<number, QuestionStatus>
   >({});
+  const initialized = useRef(false);
 
-  // Load quiz options and saved answers
+  // 1. Initial load - set options once
   useEffect(() => {
+    if (initialized.current) return;
+
     const urlOptions = {
       questionOrder: (searchParams.get("order") as QuestionOrder) || "regular",
       quizMode: (searchParams.get("mode") as QuizMode) || "quiz",
@@ -67,17 +70,28 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
     const storedOptions = JSON.parse(
       localStorage.getItem("quizOptions") || "{}"
     );
+
     setQuizOptions({
       questionOrder: storedOptions.questionOrder || urlOptions.questionOrder,
       quizMode: storedOptions.quizMode || urlOptions.quizMode,
       timerMode: storedOptions.timerMode || urlOptions.timerMode,
     });
 
+    initialized.current = true;
+  }, [searchParams]);
+
+  // 2. Separate effect for loading answers when quizID changes
+  useEffect(() => {
     const savedAnswers = JSON.parse(
       localStorage.getItem(`quizAnswers_${quizID}`) || "{}"
     ) as UserAnswers;
     setAnswers(savedAnswers);
-  }, [searchParams, quizID]);
+  }, [quizID]);
+
+  // 3. Save options whenever they change
+  useEffect(() => {
+    localStorage.setItem("quizOptions", JSON.stringify(quizOptions));
+  }, [quizOptions]);
 
   if (!quiz || isNaN(questionNum)) {
     notFound();
@@ -180,7 +194,6 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
   const showCorrectAnswers = !isTestMode;
 
   // Timer configuration
-  const showTimer = quizOptions.timerMode !== "hidden";
   const hasTimeLimit = quizOptions.timerMode === "normal";
   const timerLimit = hasTimeLimit ? quiz.timeLimit : 0;
 
@@ -220,7 +233,6 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
     localStorage.removeItem("quizSessionSeed");
     window.location.href = `${completePageUrl}`;
   };
-
   return (
     <div className="relative flex flex-col gap-6 px-4 py-8 lg:flex-row">
       <form
@@ -231,18 +243,19 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
             handleSubmit();
           }
         }}>
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="box-content border p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-xl font-semibold">
               {quiz.title} ({isTestMode ? "Test Mode" : "Quiz Mode"})
             </h1>
-            {showTimer && (
-              <Timer
-                timeLimit={timerLimit}
-                mode={quizOptions.timerMode}
-                onTimeUp={handleSubmit}
-              />
-            )}
+            <Timer
+              timeLimit={timerLimit}
+              mode={quizOptions.timerMode}
+              onTimeUp={handleSubmit}
+              resetKey={quiz.id} // Changes when starting new quiz
+              storageKey={`quizTimer_${quiz.id}`} // Unique per quiz
+              onTimeUpdate={(taken) => console.log(`Time used: ${taken}s`)}
+            />
           </div>
 
           <div className="mb-4">
@@ -252,7 +265,7 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                 {quizOptions.questionOrder === "random" && "(Random Order)"}
               </span>
               <span className="text-sm font-semibold">
-                {quiz.questions.length} Questions
+                {`${(questionNum / quiz.questions.length) * 100}% Complete`}
               </span>
             </div>
 
@@ -360,9 +373,9 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
 
                         <label
                           htmlFor={`option-${index}`}
-                          className="block flex-1 cursor-pointer">
-                          <div className="flex flex-col justify-center h-full">
-                            {option.text}
+                          className="flex items-center gap-3 flex-1 cursor-pointer">
+                          <div className="flex flex-col justify-center h-full flex-1">
+                            <h2> {option.text}</h2>
                             {option.imageUrl && (
                               <div className="relative w-full max-w-[200px] rounded-md overflow-hidden mt-2">
                                 <Image
@@ -375,25 +388,23 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                               </div>
                             )}
                           </div>
+                          {(showCorrect || showIncorrect) && isSelected && (
+                            <span
+                              className={`flex justify-center items-center w-8 h-8 rounded-full bg-white ${
+                                isCorrect ? "text-green-500" : "text-red-500"
+                              }`}>
+                              {isCorrect ? (
+                                <Check size={15} />
+                              ) : (
+                                <X size={15} />
+                              )}
+                            </span>
+                          )}
                         </label>
                       </div>
                     </div>
                   );
                 })}
-                {/* Explanation shown only in quiz mode for incorrect answers */}
-                {!isTestMode &&
-                  selectedOption !== null &&
-                  selectedOption !== currentQuestion.answerCorrect &&
-                  currentQuestion.explanation && (
-                    <div className="mt-4 p-4 col-span-1 sm:col-span-2 bg-red-50 border border-red-200 rounded-lg">
-                      <p className="text-sm text-main">
-                        <span className="font-semibold text-sm">
-                          Explanation:
-                        </span>{" "}
-                        {currentQuestion.explanation}
-                      </p>
-                    </div>
-                  )}
               </div>
             )}
 
@@ -422,17 +433,14 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                       onClick={() => handleAnswerSelect(index)}>
                       <div className="flex items-center gap-2">
                         <span
-                          className={`flex justify-center items-center w-8 h-8 rounded-full text-sm font-medium text-main  ${
-                            isSelected && !showCorrect
-                              ? "bg-white"
-                              : showCorrect
-                              ? "bg-white"
-                              : showIncorrect
+                          className={`flex justify-center items-center w-8 h-8 rounded-full text-sm font-medium text-main ${
+                            isSelected || showCorrect || showIncorrect
                               ? "bg-white"
                               : "bg-gray-200"
                           }`}>
                           {optionLetters[index]}
                         </span>
+
                         <div>
                           {" "}
                           <input
@@ -454,23 +462,14 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                     </div>
                   );
                 })}
-                {/* Explanation shown only in quiz mode for incorrect answers */}
-                {!isTestMode &&
-                  selectedOption !== null &&
-                  selectedOption !== currentQuestion.answerCorrect &&
-                  currentQuestion.explanation && (
-                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                      <p className="text-sm text-red-800">
-                        <span className="font-semibold">Explanation:</span>{" "}
-                        {currentQuestion.explanation}
-                      </p>
-                    </div>
-                  )}
               </div>
             )}
 
             {currentQuestion.type === "fill-in-the-blank" && (
               <div className="mt-3">
+                <label className="block text-sm text-secondary mb-1">
+                  Answer
+                </label>
                 <input
                   type="text"
                   value={answers[questionNum - 1]?.textAnswer || ""}
@@ -483,6 +482,9 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
 
             {currentQuestion.type === "short-answer" && (
               <div className="mt-3">
+                <label className="block text-sm text-secondary mb-1">
+                  Answer
+                </label>
                 <textarea
                   value={answers[questionNum - 1]?.textAnswer || ""}
                   onChange={(e) => handleTextAnswerChange(e.target.value)}
@@ -494,28 +496,25 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
           </div>
 
           <div className="flex justify-between">
-            <Link
-              href={
-                questionNum > 1
-                  ? `/admin/quizzes/${quizID}/${questionNum - 1}`
-                  : startPageUrl
-              }
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm bg-gray-100 hover:bg-gray-200 text-secondary
+            {questionNum === 1 ? (
+              <div></div>
+            ) : (
+              <Link
+                href={
+                  questionNum > 1
+                    ? `/admin/quizzes/${quizID}/${questionNum - 1}`
+                    : startPageUrl
+                }
+                className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm bg-gray-100 hover:bg-gray-200 text-secondary
                `}>
-              <ChevronLeft size={15} />{" "}
-              {questionNum === 1 ? "Back to start" : "Previous"}
-            </Link>
+                <ChevronLeft size={15} /> Previous
+              </Link>
+            )}
 
             {questionNum === orderedQuestions.length ? (
               <button
                 type="submit"
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md disabled:opacity-50"
-                disabled={
-                  currentQuestion.type === "multiple-choice" ||
-                  currentQuestion.type === "true-false"
-                    ? selectedOption === null
-                    : !answers[questionNum - 1]?.textAnswer
-                }>
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md disabled:opacity-50">
                 {isTestMode ? "Submit Test" : "Finish Quiz"}
               </button>
             ) : (
@@ -527,9 +526,22 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
             )}
           </div>
         </div>
+        {/* Explanation shown only in quiz mode for incorrect answers */}
+        {!isTestMode &&
+          selectedOption !== null &&
+          selectedOption !== currentQuestion.answerCorrect &&
+          currentQuestion.explanation && (
+            <div className="mt-4 p-4 col-span-1 sm:col-span-2 bg-red-50 border border-red-200 rounded-lg">
+              <p className="flex items-center gap-2 text-sm text-main">
+                <Info className="text-red-600" size={15} />
+                <span className="font-semibold text-sm">Explanation:</span>{" "}
+                {currentQuestion.explanation}
+              </p>
+            </div>
+          )}
       </form>
       {!isTestMode && (
-        <div className="box-content md:w-[300px] h-fit p-6">
+        <div className="box-content border md:w-[300px] h-fit p-6">
           <div className="flex justify-between mb-4">
             <h2 className="font-semibold">Qustions</h2>
             <span className="text-secondary text-sm font-semibold">
