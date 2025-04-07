@@ -69,7 +69,7 @@ export default function Timer({
   }, [timeLeft, timeTaken, mode, timeLimit, resetKey, hasMounted]);
 
   useEffect(() => {
-    if (!hasMounted || mode === "no-limit" || mode === "hidden") return;
+    if (!hasMounted || mode === "no-limit") return;
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -119,12 +119,7 @@ export default function Timer({
   };
 
   const saveTimerData = () => {
-    if (
-      typeof window === "undefined" ||
-      mode === "no-limit" ||
-      mode === "hidden"
-    )
-      return;
+    if (typeof window === "undefined" || mode === "no-limit") return;
 
     const data = {
       timeLeft,
@@ -157,6 +152,7 @@ export default function Timer({
   };
 
   if (!hasMounted || mode === "hidden") return null;
+  if (!hasMounted || mode === "no-limit") return null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -164,7 +160,7 @@ export default function Timer({
         className={`flex items-center gap-2 px-3 py-1 rounded-md text-sm font-medium ${getTimerColor()}`}
         aria-label="Time remaining">
         <TimerIcon size={15} />
-        {mode === "no-limit" ? "Unlimited" : formatTime(timeLeft)}
+        {formatTime(timeLeft)}
         <span className="text-xs opacity-75">remaining</span>
       </div>
     </div>

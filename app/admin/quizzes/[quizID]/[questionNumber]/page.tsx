@@ -194,7 +194,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
   const showCorrectAnswers = !isTestMode;
 
   // Timer configuration
-  const hasTimeLimit = quizOptions.timerMode === "normal";
+  const hasTimeLimit =
+    quizOptions.timerMode === "normal" || quizOptions.timerMode === "hidden";
   const timerLimit = hasTimeLimit ? quiz.timeLimit : 0;
 
   // Calculate score

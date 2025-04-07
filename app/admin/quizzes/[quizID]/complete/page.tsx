@@ -202,14 +202,14 @@ export default function QuizCompletePage({ params }: QuizCompletePageProps) {
           totalQuestions={result.totalQuestions}
         />
         <div className="box-content my-5 border rounded-lg">
-          <div className="grid grid-cols-2 gap-4 text-left max-w-xs mx-auto mb-4 p-4">
-            <div className="text-center">
-              <p className="text-secondary text-sm mb-2">Time Taken</p>
-              <p className="text-lg font-semibold">{formatTime(timeTaken)}</p>
+          <div className="grid grid-cols-2 gap-4 text-left  mx-auto mb-4 p-4">
+            <div className="text-center col-span-2 sm:col-span-1 ">
+              <p className="text-secondary text-lg mb-2">Time Taken</p>
+              <p className="text-xl font-semibold">{formatTime(timeTaken)}</p>
             </div>
-            <div className="text-center">
-              <p className="text-secondary text-sm mb-2">Correct Answers</p>
-              <p className="text-lg font-semibold">
+            <div className="text-center col-span-2 sm:col-span-1 ">
+              <p className="text-secondary text-lg mb-2">Correct Answers</p>
+              <p className="text-xl font-semibold">
                 {correctAnswers} / {result.totalQuestions}
               </p>
             </div>
