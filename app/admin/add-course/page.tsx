@@ -10,18 +10,55 @@ import { useState } from "react";
 import {
   BookOpen,
   Check,
+  ChevronDown,
   ChevronRight,
+  ChevronUp,
   Eye,
   FileImage,
+  FileWarning,
+  GripVertical,
   Info,
+  Pencil,
   Plus,
   Save,
   Settings,
+  Trash,
+  UploadIcon,
+  Video,
+  VideoIcon,
   X,
 } from "lucide-react";
 import TextEditor from "@/components/UI/form/TextEditor";
 import Toggle from "@/components/UI/form/Toggle";
 import Image from "next/image";
+import CustomCheckbox from "@/components/UI/form/CustomCheckbox ";
+import Link from "next/link";
+
+// Type for curriculum items
+type Lecture = {
+  isExpanded: boolean;
+  id: string;
+  title: string;
+  videoUri: string;
+  materialUris: string[];
+  noEnrollmentRequired: boolean;
+  quizId: string | null;
+};
+
+type Quiz = {
+  isExpanded: boolean;
+  id: string;
+  title: string;
+};
+
+type Section = {
+  isExpanded: boolean;
+  id: string;
+  title: string;
+  description: string;
+  lectures: Lecture[];
+  quizzes: Quiz[];
+};
 
 // Define types for the form
 type CourseFormValues = {
@@ -49,19 +86,17 @@ type CourseFormValues = {
   discountedPrice: number;
   level: string;
   noEnrollmentRequirement: boolean;
-  tags: string;
+  tags: string[];
   tagsInput: string[];
   courseImage: FileList | null;
   previewVideo: string;
-};
-
-// Type for curriculum items
-type CurriculumItem = {
-  id: string;
-  title: string;
-  type: "section" | "lecture" | "quiz";
-  duration?: number;
-  description?: string;
+  publishing: {
+    reqFieldsComplete: boolean;
+    courseStructureOrganized: boolean;
+    pricingSet: boolean;
+    instructorInfoProvided: boolean;
+  };
+  sections: Section[];
 };
 
 export default function AddCoursePage() {
@@ -84,15 +119,50 @@ export default function AddCoursePage() {
       learningOutcomes: [
         "Lorem Ipsum is simply dummy text of the printing and typesetting induct",
       ],
+      publishing: {
+        reqFieldsComplete: true,
+        courseStructureOrganized: true,
+        pricingSet: false,
+        instructorInfoProvided: false,
+      },
+      sections: [
+        {
+          id: "section-1",
+          title: "Introduction to Healthcare",
+          description: "Describe what this Section covers",
+          lectures: [
+            {
+              id: "lecture-1",
+              title: "Title of the lecture",
+              videoUri: "",
+              materialUris: [],
+              noEnrollmentRequired: false,
+              quizId: null,
+            },
+          ],
+          quizzes: [{ id: "quiz-1", title: "Quiz 1" }],
+        },
+        {
+          id: "section-2",
+          title: "Healthcare Fundamentals",
+          description: "",
+          lectures: [],
+          quizzes: [],
+        },
+      ],
     },
     mode: "onBlur",
   });
 
-  // State for curriculum items
-  const [curriculumItems, setCurriculumItems] = useState<CurriculumItem[]>([]);
   const [activeTab, setActiveTab] = useState<
     "information" | "curriculum" | "preview"
   >("information");
+  const [categories, setCategories] = useState([
+    "Healthcare",
+    "Nursing",
+    "Medicine",
+  ]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const onSubmit = (data: CourseFormValues) => {
     console.log(data);
@@ -100,6 +170,27 @@ export default function AddCoursePage() {
   };
   const courseOverview = watch("courseOverview");
   const requirements = watch("requirements");
+  const publishing = watch("publishing");
+  const sections = watch("sections");
+
+  // handel categories
+  const filteredCategories = categories.filter((cat) =>
+    cat.toLowerCase().includes(watch("mainCategory")?.toLowerCase())
+  );
+
+  const handleSelect = (value: string) => {
+    setValue("mainCategory", value);
+    trigger("mainCategory");
+    setShowDropdown(false);
+  };
+
+  const handleAddNew = () => {
+    const newCategory = watch("mainCategory")?.trim();
+    if (newCategory && !categories.includes(newCategory)) {
+      setCategories([...categories, newCategory]);
+      setShowDropdown(false);
+    }
+  };
 
   const addListItem = (field: keyof CourseFormValues, value: string) => {
     const currentValues = (watch(field) as string[]) || [];
@@ -127,40 +218,221 @@ export default function AddCoursePage() {
   };
 
   // Curriculum functions
-  const addCurriculumItem = (type: "section" | "lecture" | "quiz") => {
-    const newItem: CurriculumItem = {
-      id: `item-${Date.now()}`,
-      title: `New ${type}`,
-      type,
-      duration: type === "lecture" ? 0 : undefined,
-      description: type === "lecture" ? "" : undefined,
-    };
-    setCurriculumItems([...curriculumItems, newItem]);
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const { source, destination, type } = result;
+
+    const newSections = [...sections];
+
+    if (type === "lectures") {
+      const sectionId = source.droppableId;
+      const sectionIndex = newSections.findIndex((s) => s.id === sectionId);
+      if (sectionIndex === -1) return;
+
+      const newLectures = [...newSections[sectionIndex].lectures];
+      const [movedLecture] = newLectures.splice(source.index, 1);
+      newLectures.splice(destination.index, 0, movedLecture);
+
+      newSections[sectionIndex] = {
+        ...newSections[sectionIndex],
+        lectures: newLectures,
+      };
+
+      setValue("sections", newSections);
+    } else if (type === "sections") {
+      const [movedSection] = newSections.splice(source.index, 1);
+      newSections.splice(destination.index, 0, movedSection);
+      setValue("sections", newSections);
+    } else if (type === "quizzes") {
+      const sectionId = source.droppableId.split("-")[1]; // e.g., "quizzes-sectionId"
+      const sectionIndex = newSections.findIndex((s) => s.id === sectionId);
+      if (sectionIndex === -1) return;
+
+      const newQuizzes = [...newSections[sectionIndex].quizzes];
+      const [movedQuiz] = newQuizzes.splice(source.index, 1);
+      newQuizzes.splice(destination.index, 0, movedQuiz);
+
+      newSections[sectionIndex] = {
+        ...newSections[sectionIndex],
+        quizzes: newQuizzes,
+      };
+
+      setValue("sections", newSections);
+    }
   };
 
-  const updateCurriculumItem = (
-    id: string,
-    updates: Partial<CurriculumItem>
-  ) => {
-    setCurriculumItems(
-      curriculumItems.map((item) =>
-        item.id === id ? { ...item, ...updates } : item
+  const toggleSection = (sectionId: string) => {
+    setValue(
+      "sections",
+      sections.map((section) =>
+        section.id === sectionId
+          ? { ...section, isExpanded: !section.isExpanded }
+          : section
       )
     );
   };
 
-  const removeCurriculumItem = (id: string) => {
-    setCurriculumItems(curriculumItems.filter((item) => item.id !== id));
+  const toggleLecture = (sectionId: string, lectureId: string) => {
+    setValue(
+      "sections",
+      sections.map((section) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          lectures: section.lectures.map((lecture) =>
+            lecture.id === lectureId
+              ? { ...lecture, isExpanded: !lecture.isExpanded }
+              : lecture
+          ),
+        };
+      })
+    );
   };
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
+  const toggleQuiz = (sectionId: string, quizId: string) => {
+    setValue(
+      "sections",
+      sections.map((section) => {
+        if (section.id !== sectionId) return section;
 
-    const items = Array.from(curriculumItems);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+        return {
+          ...section,
+          quizzes: section.quizzes.map((quiz) =>
+            quiz.id === quizId
+              ? { ...quiz, isExpanded: !quiz.isExpanded }
+              : quiz
+          ),
+        };
+      })
+    );
+  };
 
-    setCurriculumItems(items);
+  const addSection = () => {
+    const newSection: Section = {
+      id: `section-${Date.now()}`,
+      title: "New Section",
+      description: "",
+      isExpanded: true,
+      lectures: [],
+      quizzes: [],
+    };
+    setValue("sections", [...sections, newSection]);
+  };
+
+  const addLecture = (sectionId: string) => {
+    const newLecture: Lecture = {
+      id: `lecture-${Date.now()}`,
+      title: "New Lecture",
+      videoUri: "",
+      materialUris: [],
+      noEnrollmentRequired: false,
+      quizId: null,
+      isExpanded: true,
+    };
+
+    setValue(
+      "sections",
+      sections.map((section) =>
+        section.id === sectionId
+          ? { ...section, lectures: [...section.lectures, newLecture] }
+          : section
+      )
+    );
+  };
+
+  const addQuiz = (sectionId: string) => {
+    const newQuiz: Quiz = {
+      id: `quiz-${Date.now()}`,
+      title: `Quiz ${
+        (sections.find((s) => s.id === sectionId)?.quizzes?.length ?? 0) + 1
+      }`,
+      isExpanded: false,
+    };
+
+    setValue(
+      "sections",
+      sections.map((section) =>
+        section.id === sectionId
+          ? { ...section, quizzes: [...section.quizzes, newQuiz] }
+          : section
+      )
+    );
+  };
+
+  const updateSection = (sectionId: string, updates: Partial<Section>) => {
+    setValue(
+      "sections",
+      sections.map((section) =>
+        section.id === sectionId ? { ...section, ...updates } : section
+      )
+    );
+  };
+
+  const updateLecture = (
+    sectionId: string,
+    lectureId: string,
+    updates: Partial<Lecture>
+  ) => {
+    setValue(
+      "sections",
+      sections.map((section) => {
+        if (section.id !== sectionId) return section;
+
+        return {
+          ...section,
+          lectures: section.lectures.map((lecture) =>
+            lecture.id === lectureId ? { ...lecture, ...updates } : lecture
+          ),
+        };
+      })
+    );
+  };
+
+  const deleteSection = (sectionId: string) => {
+    setValue(
+      "sections",
+      sections.filter((section) => section.id !== sectionId)
+    );
+  };
+
+  const deleteLecture = (sectionId: string, lectureId: string) => {
+    setValue(
+      "sections",
+      sections.map((section) => {
+        if (section.id !== sectionId) return section;
+        return {
+          ...section,
+          lectures: section.lectures.filter(
+            (lecture) => lecture.id !== lectureId
+          ),
+        };
+      })
+    );
+  };
+
+  const deleteQuiz = (sectionId: string, quizId: string) => {
+    setValue(
+      "sections",
+      sections.map((section) => {
+        if (section.id !== sectionId) return section;
+
+        // Remove this quiz from any lectures that reference it
+        const lectures = section.lectures.map((lecture) => {
+          if (lecture.quizId === quizId) {
+            return { ...lecture, quizId: null };
+          }
+          return lecture;
+        });
+
+        return {
+          ...section,
+          quizzes: section.quizzes.filter((quiz) => quiz.id !== quizId),
+          lectures,
+        };
+      })
+    );
   };
 
   return (
@@ -168,23 +440,23 @@ export default function AddCoursePage() {
       onSubmit={handleSubmit(onSubmit)}
       onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       className="container mx-auto px-4 py-8">
-      <div className="flex flex-col gap-3 items-center justify-between md:flex-row mb-4">
-        <div>
+      <div className="flex flex-col gap-3 items-center justify-between xl:flex-row mb-4">
+        <div className="text-center xl:text-start">
           <h1 className="text-2xl font-bold mb-3">Add a New Course</h1>
           <p className="text-secondary mb-8 text-sm">
             Create, manage, and publish a course on the healthcare platform
           </p>
         </div>
         {/* Form Actions */}
-        <div className="flex flex-col items-center gap-2 sm:flex-row">
+        <div className="flex justify-center items-center gap-2  flex-wrap sm:justify-start">
           <button
             type="button"
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            className="flex items-center gap-2 px-4 py-2 border  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
             <Save size={14} className="text-primary" /> Save Draft
           </button>
           <button
             type="button"
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            className="flex items-center gap-2 px-4 py-2 border  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             onClick={() => setActiveTab("preview")}>
             <Eye size={14} className="text-primary" /> Preview
           </button>
@@ -200,7 +472,8 @@ export default function AddCoursePage() {
           {/* Navigation Tabs */}
           <div className="flex flex-col p-1 bg-gray-200 mb-4 rounded-2xl md:flex-row gap-3">
             <button
-              className={`flex justify-center items-center gap-2 px-8 py-2 font-medium rounded-2xl w-full ${
+              type="button"
+              className={`flex justify-center items-center gap-2 px-8 py-3 font-medium rounded-2xl w-full ${
                 activeTab === "information"
                   ? "text-primary bg-white"
                   : "text-gray-500"
@@ -210,7 +483,8 @@ export default function AddCoursePage() {
               Information
             </button>
             <button
-              className={`flex justify-center items-center gap-2 px-8 py-2 font-medium rounded-2xl w-full ${
+              type="button"
+              className={`flex justify-center items-center gap-2 px-8 py-3 font-medium rounded-2xl w-full ${
                 activeTab === "curriculum"
                   ? "text-primary bg-white"
                   : "text-gray-500"
@@ -220,7 +494,8 @@ export default function AddCoursePage() {
               Curriculum
             </button>
             <button
-              className={`flex justify-center items-center gap-2 px-8 py-2 font-medium rounded-2xl w-full ${
+              type="button"
+              className={`flex justify-center items-center gap-2 px-8 py-3 font-medium rounded-2xl w-full ${
                 activeTab === "preview"
                   ? "text-primary bg-white"
                   : "text-gray-500"
@@ -255,7 +530,7 @@ export default function AddCoursePage() {
                           required: "Course name is required",
                         })}
                         type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                        className="w-full px-3 py-2 border  rounded-md focus:outline-none "
                         placeholder="Enter the title of your course"
                         onBlur={() => trigger("courseName")}
                       />
@@ -265,29 +540,52 @@ export default function AddCoursePage() {
                         </p>
                       )}
                     </div>
-                    <div className="grid grid-cols-2 gap-6 mb-4">
+                    <div className="grid grid-cols-2 items-center gap-6 mb-4">
                       {/* Main Category */}
-                      <div>
+                      <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Main Category *
                         </label>
-                        <select
+                        <input
                           {...register("mainCategory", {
                             required: "Main category is required",
                           })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
-                          onBlur={() => trigger("mainCategory")}>
-                          <option value="">Select Categories</option>
-                          <option value="Healthcare">Healthcare</option>
-                          <option value="Nursing">Nursing</option>
-                          <option value="Medicine">Medicine</option>
-                        </select>
+                          type="text"
+                          placeholder="Add or select a category"
+                          onFocus={() => setShowDropdown(true)}
+                          onBlur={() =>
+                            setTimeout(() => setShowDropdown(false), 150)
+                          }
+                          className="w-full px-3 py-2 border  rounded-md focus:outline-none"
+                        />
                         {errors.mainCategory && (
                           <p className="mt-1 text-sm text-red-600">
                             {errors.mainCategory.message}
                           </p>
                         )}
+
+                        {showDropdown && (
+                          <div className="absolute z-10 w-full mt-1 bg-white border  rounded-md shadow-md max-h-40 overflow-y-auto">
+                            {filteredCategories.length > 0 ? (
+                              filteredCategories.map((cat, index) => (
+                                <div
+                                  key={index}
+                                  onMouseDown={() => handleSelect(cat)}
+                                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm">
+                                  {cat}
+                                </div>
+                              ))
+                            ) : (
+                              <div
+                                onMouseDown={handleAddNew}
+                                className="px-3 py-2 hover:bg-green-100 cursor-pointer text-sm text-green-700">
+                                + Add &quot;{watch("mainCategory")}&quot;
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
+
                       {/* Sub Category */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -295,7 +593,7 @@ export default function AddCoursePage() {
                         </label>
                         <select
                           {...register("subCategory")}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none ">
+                          className="w-full px-3 py-2 border  rounded-md focus:outline-none ">
                           <option value="">Select sub Categories</option>
                           <option value="Anatomy">Anatomy</option>
                           <option value="Physiology">Physiology</option>
@@ -311,7 +609,7 @@ export default function AddCoursePage() {
                           {...register("courseType", {
                             required: "Course type is required",
                           })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                          className="w-full px-3 py-2 border  rounded-md focus:outline-none "
                           onBlur={() => trigger("courseType")}>
                           <option value="Online Recorded">
                             Online Recorded
@@ -346,14 +644,14 @@ export default function AddCoursePage() {
                     <textarea
                       {...register("attendDescribe")}
                       rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                      className="w-full px-3 py-2 border  rounded-md focus:outline-none "
                       placeholder="Describe what this Section covers"
                       onBlur={() => trigger("attendDescribe")}></textarea>
 
                     <div className="flex gap-3 mt-4">
                       <input
                         type="text"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+                        className="flex-1 px-3 py-2 border  rounded-md focus:outline-none"
                         placeholder="Add item"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -402,7 +700,7 @@ export default function AddCoursePage() {
                           <button
                             type="button"
                             onClick={() => removeListItem("attendees", index)}
-                            className="ml-2 text-red-500">
+                            className="ml-2 text-secondary hover:text-red-500 transition">
                             <X size={15} />
                           </button>
                         </div>
@@ -417,14 +715,14 @@ export default function AddCoursePage() {
                     <textarea
                       {...register("learnDescribe")}
                       rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                      className="w-full px-3 py-2 border  rounded-md focus:outline-none "
                       placeholder="Describe what this Section covers"
                       onBlur={() => trigger("learnDescribe")}></textarea>
 
                     <div className="flex gap-3 mt-4">
                       <input
                         type="text"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                        className="flex-1 px-3 py-2 border  rounded-md focus:outline-none "
                         placeholder="Add item"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -469,7 +767,7 @@ export default function AddCoursePage() {
                             onClick={() =>
                               removeListItem("learningOutcomes", index)
                             }
-                            className="ml-2 text-red-500">
+                            className="ml-2 text-secondary hover:text-red-500 transition">
                             <X size={15} />
                           </button>
                         </div>
@@ -519,7 +817,7 @@ export default function AddCoursePage() {
                             },
                           })}
                           type="number"
-                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none "
+                          className="w-full px-3 py-2 text-sm border  rounded-md focus:outline-none "
                           placeholder="0 for lifetime access"
                           onBlur={() => trigger("courseDuration")}
                         />
@@ -542,7 +840,7 @@ export default function AddCoursePage() {
                             min: { value: 0, message: "Must be 0 or more" },
                           })}
                           type="number"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                          className="w-full px-3 py-2 border  rounded-md focus:outline-none "
                           value={watch("numberOfLectures")}
                           onChange={(e) =>
                             setValue(
@@ -571,7 +869,7 @@ export default function AddCoursePage() {
                             min: { value: 0, message: "Must be 0 or more" },
                           })}
                           type="number"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                          className="w-full px-3 py-2 border  rounded-md focus:outline-none "
                           value={watch("fakeStudentsEnrolled")}
                           onChange={(e) =>
                             setValue(
@@ -600,7 +898,7 @@ export default function AddCoursePage() {
                             min: { value: 0, message: "Must be 0 or more" },
                           })}
                           type="number"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none text-sm "
+                          className="w-full px-3 py-2 border  rounded-md focus:outline-none text-sm "
                           placeholder="Introduction to Healthcare
 "
                           onBlur={() => trigger("retakeCourse")}
@@ -619,7 +917,7 @@ export default function AddCoursePage() {
                         </label>
                         <select
                           {...register("repurchaseAction")}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none text-sm text-secondary">
+                          className="w-full px-3 py-2 border  rounded-md focus:outline-none text-sm text-secondary">
                           <option value="">Select Repurchase Action</option>
                           <option value="Introduction to Healthcare">
                             Introduction to Healthcare
@@ -656,125 +954,681 @@ export default function AddCoursePage() {
             )}
 
             {activeTab === "curriculum" && (
-              <div className="mb-12">
-                <h2 className="text-xl font-semibold mb-6">
-                  Course Curriculum
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Organize your course content into sections, lectures, and
-                  quizzes
-                </p>
-
-                {/* Add Curriculum Items */}
-                <div className="flex space-x-4 mb-6">
+              <div className="bg-white border rounded-2xl p-6">
+                <div className="flex flex-col items-center justify-between md:flex-row mb-4">
+                  <div>
+                    <h1 className="text-2xl font-bold mb-4">
+                      Course Curriculum & Structure
+                    </h1>
+                    <p className="text-gray-600 mb-6">
+                      Build your course structure with modules, lectures, and
+                      resources
+                    </p>
+                  </div>
                   <button
                     type="button"
-                    onClick={() => addCurriculumItem("section")}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                    Add Section
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => addCurriculumItem("lecture")}
-                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
-                    Add Lecture
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => addCurriculumItem("quiz")}
-                    className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600">
-                    Add Quiz
+                    onClick={addSection}
+                    className="px-4 py-2 text-sm bg-green-500 text-white rounded-md hover:bg-green-600">
+                    + Add Section
                   </button>
                 </div>
-
-                {/* Drag and Drop Curriculum */}
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <Droppable droppableId="curriculum">
-                    {(provided) => (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className="space-y-4">
-                        {curriculumItems.map((item, index) => (
-                          <Draggable
-                            key={item.id}
-                            draggableId={item.id}
-                            index={index}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
-                                <div className="flex justify-between items-start">
-                                  <div className="flex-1">
-                                    <input
-                                      type="text"
-                                      value={item.title}
-                                      onChange={(e) =>
-                                        updateCurriculumItem(item.id, {
-                                          title: e.target.value,
-                                        })
-                                      }
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none  font-medium"
-                                    />
-                                    {item.type === "lecture" && (
-                                      <>
-                                        <div className="mt-2">
-                                          <label className="block text-sm text-gray-700 mb-1">
-                                            Duration (minutes)
-                                          </label>
-                                          <input
-                                            type="number"
-                                            value={item.duration || 0}
-                                            onChange={(e) =>
-                                              updateCurriculumItem(item.id, {
-                                                duration:
-                                                  parseInt(e.target.value) || 0,
-                                              })
-                                            }
-                                            className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
-                                          />
-                                        </div>
-                                        <div className="mt-2">
-                                          <label className="block text-sm text-gray-700 mb-1">
-                                            Description
-                                          </label>
-                                          <textarea
-                                            value={item.description || ""}
-                                            onChange={(e) =>
-                                              updateCurriculumItem(item.id, {
-                                                description: e.target.value,
-                                              })
-                                            }
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
-                                            rows={3}
-                                          />
-                                        </div>
-                                      </>
-                                    )}
+                <div>
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="sections" type="sections">
+                      {(provided) => (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          className="space-y-4">
+                          {sections.map((section, sectionIndex) => (
+                            <Draggable
+                              key={section.id}
+                              draggableId={section.id}
+                              index={sectionIndex}>
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  className="border border-gray-200 rounded-lg overflow-hidden">
+                                  <div className="bg-gray-50 px-4 py-3 border-b flex flex-col justify-between items-center sm:flex-row ">
+                                    <div className="flex w-full md:w-fit items-center">
+                                      <span
+                                        {...provided.dragHandleProps}
+                                        className="mr-2 cursor-move">
+                                        <GripVertical
+                                          size={16}
+                                          className="text-secondary"
+                                        />
+                                      </span>
+                                      <div>
+                                        <h2 className="text-sm font-bold">
+                                          Section {sectionIndex + 1}:{" "}
+                                          {section.title}
+                                        </h2>
+                                        <span className="text-xs text-gray-500">
+                                          {section.lectures.length} lectures
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          toggleSection(section.id)
+                                        }
+                                        className="text-green-500 hover:text-green-700 text-xs">
+                                        {section.isExpanded ? (
+                                          <span className="flex items-center gap-1 text-xs">
+                                            Collapse
+                                            <ChevronUp
+                                              className="hidden md:block"
+                                              size={15}
+                                            />
+                                          </span>
+                                        ) : (
+                                          <span className="flex items-center gap-1 text-xs">
+                                            Expand
+                                            <ChevronDown
+                                              className="hidden md:block"
+                                              size={15}
+                                            />
+                                          </span>
+                                        )}
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="flex gap-2 items-center p-2  text-green-500 hover:text-green-700 text-xs">
+                                        Edit
+                                        <Pencil
+                                          className="hidden sm:block"
+                                          size={15}
+                                        />
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          deleteSection(section.id)
+                                        }
+                                        className="flex gap-2 items-center p-2  text-red-500 hover:text-red-700 text-xs">
+                                        Delete
+                                        <Trash
+                                          className="hidden sm:block"
+                                          size={15}
+                                        />
+                                      </button>
+                                    </div>
                                   </div>
-                                  <button
-                                    type="button"
-                                    onClick={() =>
-                                      removeCurriculumItem(item.id)
-                                    }
-                                    className="ml-4 text-red-500 hover:text-red-700">
-                                    Delete
-                                  </button>
+
+                                  {section.isExpanded && (
+                                    <div className="p-4">
+                                      <div className="mb-4">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                          Section Title
+                                        </label>
+                                        <input
+                                          type="text"
+                                          placeholder={section.title}
+                                          onChange={(e) =>
+                                            updateSection(section.id, {
+                                              title: e.target.value,
+                                            })
+                                          }
+                                          className="w-full px-3 py-2 border  rounded-md"
+                                        />
+                                      </div>
+
+                                      <div className="mb-6">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                          Section Description
+                                        </label>
+                                        <textarea
+                                          placeholder={section.description}
+                                          onChange={(e) =>
+                                            updateSection(section.id, {
+                                              description: e.target.value,
+                                            })
+                                          }
+                                          className="w-full px-3 py-2 border  rounded-md"
+                                          rows={3}
+                                        />
+                                      </div>
+
+                                      <div className="mb-6">
+                                        <div className="flex justify-between items-center mb-3">
+                                          <h3 className="font-medium">
+                                            Lectures
+                                          </h3>
+                                          <div className="flex gap-2">
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                addLecture(section.id)
+                                              }
+                                              className="flex items-center gap-1 px-3 py-1 border rounded-md text-sm">
+                                              <Plus
+                                                className="text-primary"
+                                                size={15}
+                                              />{" "}
+                                              Lecture
+                                            </button>
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                addQuiz(section.id)
+                                              }
+                                              className="flex items-center gap-1 px-3 py-1 border rounded-md  text-sm">
+                                              <Plus
+                                                className="text-primary"
+                                                size={15}
+                                              />{" "}
+                                              Quiz
+                                            </button>
+                                          </div>
+                                        </div>
+
+                                        <Droppable
+                                          droppableId={section.id}
+                                          type="lectures">
+                                          {(provided) => (
+                                            <div
+                                              ref={provided.innerRef}
+                                              {...provided.droppableProps}
+                                              className="space-y-2">
+                                              {section.lectures.map(
+                                                (lecture, lectureIndex) => (
+                                                  <Draggable
+                                                    key={lecture.id}
+                                                    draggableId={lecture.id}
+                                                    index={lectureIndex}>
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        className="border rounded-lg overflow-hidden">
+                                                        <div className="bg-gray-100 px-4 py-3 flex justify-between items-center flex-col md:flex-row ">
+                                                          <div className="flex w-full md:w-fit items-center">
+                                                            <span
+                                                              {...provided.dragHandleProps}
+                                                              className="mr-2 cursor-move">
+                                                              <GripVertical
+                                                                size={16}
+                                                                className="text-secondary"
+                                                              />
+                                                            </span>
+                                                            <span className="flex justify-center items-center rounded-full w-6 h-6 text-[#4286F7] bg-[#EFF6FF] mr-2">
+                                                              <VideoIcon
+                                                                size={15}
+                                                              />
+                                                            </span>
+                                                            <span className="text-sm font-bold">
+                                                              Lecture{" "}
+                                                              {lectureIndex + 1}
+                                                              : {lecture.title}
+                                                            </span>
+                                                          </div>
+                                                          <div className="flex space-x-2">
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                toggleLecture(
+                                                                  section.id,
+                                                                  lecture.id
+                                                                )
+                                                              }
+                                                              className="text-green-500 hover:text-green-700 text-sm">
+                                                              {lecture.isExpanded ? (
+                                                                <span className="flex items-center gap-1 text-xs">
+                                                                  Collapse
+                                                                  <ChevronUp
+                                                                    className="hidden md:block"
+                                                                    size={15}
+                                                                  />
+                                                                </span>
+                                                              ) : (
+                                                                <span className="flex items-center gap-1 text-xs">
+                                                                  Expand
+                                                                  <ChevronDown
+                                                                    className="hidden md:block"
+                                                                    size={15}
+                                                                  />
+                                                                </span>
+                                                              )}
+                                                            </button>
+                                                            <button
+                                                              type="button"
+                                                              className="flex gap-2 items-center p-2  text-green-500 hover:text-green-700 text-xs">
+                                                              Edit
+                                                              <Pencil
+                                                                className="hidden sm:block"
+                                                                size={15}
+                                                              />
+                                                            </button>
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                deleteLecture(
+                                                                  section.id,
+                                                                  lecture.id
+                                                                )
+                                                              }
+                                                              className="flex gap-2 items-center p-2  text-red-500 hover:text-red-700 text-xs">
+                                                              Delete
+                                                              <Trash
+                                                                className="hidden sm:block"
+                                                                size={15}
+                                                              />
+                                                            </button>
+                                                          </div>
+                                                        </div>
+
+                                                        {lecture.isExpanded && (
+                                                          <div className="p-4 bg-white">
+                                                            <div className="mb-4">
+                                                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                                Lecture Title
+                                                              </label>
+                                                              <input
+                                                                type="text"
+                                                                placeholder={
+                                                                  lecture.title
+                                                                }
+                                                                onChange={(e) =>
+                                                                  updateLecture(
+                                                                    section.id,
+                                                                    lecture.id,
+                                                                    {
+                                                                      title:
+                                                                        e.target
+                                                                          .value,
+                                                                    }
+                                                                  )
+                                                                }
+                                                                className="w-full px-3 py-2 border  rounded-md outline-none"
+                                                              />
+                                                            </div>
+                                                            <div className="mb-4">
+                                                              <h4 className="font-medium mb-2">
+                                                                Video Uri
+                                                              </h4>
+                                                              <div className="relative flex items-center gap-2">
+                                                                <VideoIcon
+                                                                  size={15}
+                                                                  className="absolute top-1/2 -translate-y-1/2 left-2 text-secondary"
+                                                                />
+                                                                <input
+                                                                  type="text"
+                                                                  value={
+                                                                    lecture.videoUri
+                                                                  }
+                                                                  onChange={(
+                                                                    e
+                                                                  ) =>
+                                                                    updateLecture(
+                                                                      section.id,
+                                                                      lecture.id,
+                                                                      {
+                                                                        videoUri:
+                                                                          e
+                                                                            .target
+                                                                            .value,
+                                                                      }
+                                                                    )
+                                                                  }
+                                                                  placeholder="Enter video URL or upload (mp4)"
+                                                                  className="pl-8 w-full px-3 py-2 border  rounded-md focus:outline-none"
+                                                                />
+                                                              </div>
+                                                            </div>
+
+                                                            <div className="mb-4">
+                                                              <h4 className="font-medium mb-2">
+                                                                Material Uri
+                                                              </h4>
+                                                              <div className="flex relative">
+                                                                <UploadIcon
+                                                                  size={15}
+                                                                  className="absolute top-1/2 -translate-y-1/2 left-2 text-secondary"
+                                                                />
+                                                                {/* Enter Material URL */}
+                                                                <div className="flex items-center gap-2  w-full">
+                                                                  <input
+                                                                    type="text"
+                                                                    value={
+                                                                      lecture
+                                                                        .materialUris[0] ||
+                                                                      ""
+                                                                    }
+                                                                    onChange={(
+                                                                      e
+                                                                    ) =>
+                                                                      updateLecture(
+                                                                        section.id,
+                                                                        lecture.id,
+                                                                        {
+                                                                          materialUris:
+                                                                            [
+                                                                              e
+                                                                                .target
+                                                                                .value,
+                                                                            ],
+                                                                        }
+                                                                      )
+                                                                    }
+                                                                    placeholder="Enter material URL (PDF / PPT)"
+                                                                    className="pl-8 w-full px-3 py-2 border  rounded-l-lg focus:outline-none"
+                                                                  />
+                                                                </div>
+
+                                                                {/* Upload File */}
+                                                                <div className="flex items-center gap-2">
+                                                                  <label
+                                                                    className="flex items-center gap-2 border rounded-r-lg p-2 cursor-pointer"
+                                                                    htmlFor="material-file">
+                                                                    <UploadIcon
+                                                                      size={15}
+                                                                      className="text-primary"
+                                                                    />
+                                                                    Upload
+                                                                  </label>
+                                                                  <input
+                                                                    id="material-file"
+                                                                    type="file"
+                                                                    accept=".pdf,.ppt,.pptx"
+                                                                    onChange={(
+                                                                      e
+                                                                    ) => {
+                                                                      const file =
+                                                                        e.target
+                                                                          .files?.[0];
+                                                                      if (
+                                                                        file
+                                                                      ) {
+                                                                        // Replace this with your file upload logic (e.g. to S3 or Firebase)
+                                                                        const fakeUploadedUrl =
+                                                                          URL.createObjectURL(
+                                                                            file
+                                                                          );
+                                                                        updateLecture(
+                                                                          section.id,
+                                                                          lecture.id,
+                                                                          {
+                                                                            materialUris:
+                                                                              [
+                                                                                fakeUploadedUrl,
+                                                                              ],
+                                                                          }
+                                                                        );
+                                                                      }
+                                                                    }}
+                                                                    className="hidden"
+                                                                  />
+                                                                </div>
+                                                              </div>
+                                                            </div>
+
+                                                            <div className="flex justify-between items-center mt-4">
+                                                              <div>
+                                                                <h1>
+                                                                  No Enrollment
+                                                                  Requirement
+                                                                </h1>
+                                                                <span className="text-sm text-secondary">
+                                                                  Allow students
+                                                                  to view this
+                                                                  lecture
+                                                                  without
+                                                                  enrolling in
+                                                                  the course.
+                                                                </span>
+                                                              </div>
+                                                              <label className="flex items-center cursor-pointer">
+                                                                <div className="relative">
+                                                                  <input
+                                                                    type="checkbox"
+                                                                    checked={
+                                                                      lecture.noEnrollmentRequired
+                                                                    }
+                                                                    onChange={(
+                                                                      e
+                                                                    ) =>
+                                                                      updateLecture(
+                                                                        section.id,
+                                                                        lecture.id,
+                                                                        {
+                                                                          noEnrollmentRequired:
+                                                                            e
+                                                                              .target
+                                                                              .checked,
+                                                                        }
+                                                                      )
+                                                                    }
+                                                                    className="sr-only peer"
+                                                                  />
+                                                                  <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-colors"></div>
+                                                                  <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-full"></div>
+                                                                </div>
+                                                              </label>
+                                                            </div>
+                                                          </div>
+                                                        )}
+                                                      </div>
+                                                    )}
+                                                  </Draggable>
+                                                )
+                                              )}
+                                              {provided.placeholder}
+                                            </div>
+                                          )}
+                                        </Droppable>
+                                      </div>
+
+                                      <div className="mb-6">
+                                        <div className="flex justify-between items-center mb-3">
+                                          <h3 className="font-medium">
+                                            Quizzes
+                                          </h3>
+                                        </div>
+
+                                        <Droppable
+                                          droppableId={`quizzes-${section.id}`}
+                                          type="quizzes">
+                                          {(provided) => (
+                                            <div
+                                              ref={provided.innerRef}
+                                              {...provided.droppableProps}
+                                              className="space-y-2">
+                                              {section.quizzes.map(
+                                                (quiz, quizIndex) => (
+                                                  <Draggable
+                                                    key={quiz.id}
+                                                    draggableId={quiz.id}
+                                                    index={quizIndex}>
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        className="border rounded-lg overflow-hidden">
+                                                        <div className="bg-gray-100 px-4 py-3 flex justify-between items-center flex-col md:flex-row">
+                                                          <div className="flex w-full md:w-fit items-center">
+                                                            <span
+                                                              {...provided.dragHandleProps}
+                                                              className="mr-2 cursor-move">
+                                                              <GripVertical
+                                                                size={16}
+                                                                className="text-secondary"
+                                                              />
+                                                            </span>
+                                                            <span className="flex justify-center items-center rounded-full w-8 h-8 bg-[#FFFBEB] text-[#F6A927] mr-2">
+                                                              <FileWarning
+                                                                size={15}
+                                                              />
+                                                            </span>
+                                                            <span className="text-sm font-bold">
+                                                              Quiz{" "}
+                                                              {quizIndex + 1}:{" "}
+                                                              {quiz.title}
+                                                            </span>
+                                                          </div>
+                                                          <div className="flex space-x-2">
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                toggleQuiz(
+                                                                  section.id,
+                                                                  quiz.id
+                                                                )
+                                                              }
+                                                              className="text-green-500 hover:text-green-700 text-sm">
+                                                              {quiz.isExpanded ? (
+                                                                <span className="flex items-center gap-1 text-xs">
+                                                                  Collapse
+                                                                  <ChevronUp
+                                                                    className="hidden md:block"
+                                                                    size={15}
+                                                                  />
+                                                                </span>
+                                                              ) : (
+                                                                <span className="flex items-center gap-1 text-xs">
+                                                                  Expand
+                                                                  <ChevronDown
+                                                                    className="hidden md:block"
+                                                                    size={15}
+                                                                  />
+                                                                </span>
+                                                              )}
+                                                            </button>
+
+                                                            <button
+                                                              type="button"
+                                                              className="flex gap-2 items-center p-2  text-green-500 hover:text-green-700 text-xs">
+                                                              Edit
+                                                              <Pencil
+                                                                className="hidden sm:block"
+                                                                size={15}
+                                                              />
+                                                            </button>
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                deleteQuiz(
+                                                                  section.id,
+                                                                  quiz.id
+                                                                )
+                                                              }
+                                                              className="flex gap-2 items-center p-2  text-red-500 hover:text-red-700 text-xs">
+                                                              Delete
+                                                              <Trash
+                                                                className="hidden sm:block"
+                                                                size={15}
+                                                              />
+                                                            </button>
+                                                          </div>
+                                                        </div>
+
+                                                        {quiz.isExpanded && (
+                                                          <div className="flex items-center flex-col gap-3 p-4 bg-white md:flex-row w-full">
+                                                            <div className="mb-4 flex-1 w-full md:w-fit">
+                                                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                                Select Quiz
+                                                              </label>
+                                                              <select
+                                                                value={quiz.id}
+                                                                onChange={(
+                                                                  e
+                                                                ) => {
+                                                                  const selectedQuiz =
+                                                                    section.quizzes.find(
+                                                                      (q) =>
+                                                                        q.id ===
+                                                                        e.target
+                                                                          .value
+                                                                    );
+                                                                  if (
+                                                                    !selectedQuiz
+                                                                  )
+                                                                    return;
+
+                                                                  const updatedSections =
+                                                                    sections.map(
+                                                                      (s) => {
+                                                                        if (
+                                                                          s.id !==
+                                                                          section.id
+                                                                        )
+                                                                          return s;
+
+                                                                        return {
+                                                                          ...s,
+                                                                          quizzes:
+                                                                            s.quizzes.map(
+                                                                              (
+                                                                                q
+                                                                              ) =>
+                                                                                q.id ===
+                                                                                quiz.id
+                                                                                  ? {
+                                                                                      ...q,
+                                                                                      ...selectedQuiz,
+                                                                                    }
+                                                                                  : q
+                                                                            ),
+                                                                        };
+                                                                      }
+                                                                    );
+
+                                                                  setValue(
+                                                                    "sections",
+                                                                    updatedSections
+                                                                  );
+                                                                }}
+                                                                className="w-full px-3 py-2 border rounded-md outline-none">
+                                                                <option value="">
+                                                                  Select a quiz
+                                                                </option>
+                                                                {section.quizzes.map(
+                                                                  (q) => (
+                                                                    <option
+                                                                      key={q.id}
+                                                                      value={
+                                                                        q.id
+                                                                      }>
+                                                                      {q.title}
+                                                                    </option>
+                                                                  )
+                                                                )}
+                                                              </select>
+                                                            </div>
+                                                            <Link
+                                                              className="h-fit mt-2 py-2 px-8 rounded-lg bg-primary text-white"
+                                                              href={
+                                                                "/admin/add-quiz"
+                                                              }>
+                                                              + Create Quiz
+                                                            </Link>
+                                                          </div>
+                                                        )}
+                                                      </div>
+                                                    )}
+                                                  </Draggable>
+                                                )
+                                              )}
+                                              {provided.placeholder}
+                                            </div>
+                                          )}
+                                        </Droppable>
+                                      </div>
+                                    </div>
+                                  )}
                                 </div>
-                                <div className="mt-2 text-xs text-gray-500">
-                                  Type: {item.type} | ID: {item.id}
-                                </div>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                </div>
               </div>
             )}
 
@@ -815,7 +1669,7 @@ export default function AddCoursePage() {
                   <div className="space-y-2 w-full">
                     {/* Multi-select dropdown */}
                     <select
-                      className="w-full text-sm text-secondary px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full text-sm text-secondary px-3 py-2 border  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       value="" // Always reset after selection
                       onChange={(e) => {
                         if (e.target.value) {
@@ -867,7 +1721,7 @@ export default function AddCoursePage() {
                   <input
                     {...register("regularPrice", { valueAsNumber: true })}
                     type="number"
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                    className="w-full text-sm px-3 py-2 border  rounded-md focus:outline-none "
                     placeholder="$ Leave blank for free e.g., Starting from"
                   />
                 </div>
@@ -882,7 +1736,7 @@ export default function AddCoursePage() {
                       valueAsNumber: true,
                     })}
                     type="number"
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
+                    className="w-full text-sm px-3 py-2 border  rounded-md focus:outline-none "
                     placeholder="e.g., Starting from"
                   />
                 </div>
@@ -894,7 +1748,7 @@ export default function AddCoursePage() {
                 </label>
                 <select
                   {...register("level")}
-                  className="w-full text-sm text-secondary px-3 py-2 border border-gray-300 rounded-md focus:outline-none ">
+                  className="w-full text-sm text-secondary px-3 py-2 border  rounded-md focus:outline-none ">
                   <option value="">Select level</option>
                   <option value="Beginner">Beginner</option>
                   <option value="Intermediate">Intermediate</option>
@@ -906,7 +1760,7 @@ export default function AddCoursePage() {
               <div className="mt-4">
                 <Toggle
                   id="noEnrollmentRequirement"
-                  label=" No Enrollment Requirement"
+                  label="No Enrollment Requirement"
                   description="Let users repurchase expired courses"
                   {...register("noEnrollmentRequirement")}
                 />
@@ -920,23 +1774,20 @@ export default function AddCoursePage() {
 
               <div className="relative">
                 <input
-                  {...register("tagsInput")} // Register a separate field for input
+                  {...register("tagsInput")}
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-                  placeholder="Type tag and press Enter"
+                  className="w-full px-3 py-2 border  rounded-md focus:outline-none"
+                  placeholder="Type tag and press Enter or comma"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === ",") {
                       e.preventDefault();
                       const value = e.currentTarget.value.trim();
                       if (value) {
-                        const currentTags =
-                          watch("tags")
-                            ?.split(",")
-                            .filter((tag) => tag.trim()) || [];
+                        const currentTags: string[] = watch("tags") || [];
                         if (!currentTags.includes(value)) {
-                          setValue("tags", [...currentTags, value].join(","));
+                          setValue("tags", [...currentTags, value]);
                         }
-                        setValue("tagsInput", []); // Clear input
+                        setValue("tagsInput", []); // clear input
                       }
                     }
                   }}
@@ -945,29 +1796,26 @@ export default function AddCoursePage() {
 
               {/* Tags display */}
               <div className="flex flex-wrap gap-2 mt-2">
-                {watch("tags")
-                  ?.split(",")
-                  .filter((tag) => tag.trim())
-                  .map((tag, index) => (
-                    <div
-                      key={`${tag}-${index}`}
-                      className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
-                      {tag.trim()}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const currentTags = watch("tags")?.split(",") || [];
-                          setValue(
-                            "tags",
-                            currentTags.filter((t, i) => i !== index).join(",")
-                          );
-                        }}
-                        className="ml-1.5 text-green-600 hover:text-green-800 focus:outline-none"
-                        aria-label={`Remove tag ${tag}`}>
-                        <X size={15} />
-                      </button>
-                    </div>
-                  ))}
+                {(watch("tags") || []).map((tag: string, index: number) => (
+                  <div
+                    key={`${tag}-${index}`}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const currentTags: string[] = watch("tags") || [];
+                        const updated = currentTags.filter(
+                          (_, i) => i !== index
+                        );
+                        setValue("tags", updated);
+                      }}
+                      className="ml-1.5 text-green-600 hover:text-green-800 focus:outline-none"
+                      aria-label={`Remove tag ${tag}`}>
+                      <X size={15} />
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -1047,7 +1895,7 @@ export default function AddCoursePage() {
               <div className="h-full">
                 <label
                   htmlFor="course-image"
-                  className="flex h-[200px] w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white p-2  hover:border-primary hover:text-primary">
+                  className="flex h-[200px] w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed  bg-white p-2  hover:border-primary hover:text-primary">
                   <div className="flex flex-col gap-3 items-center justify-center">
                     <FileImage size={25} />
                     <span className="text-sm  text-center">
@@ -1072,12 +1920,19 @@ export default function AddCoursePage() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Preview Video
               </label>
-              <input
-                {...register("previewVideo")}
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
-                placeholder="Enter Video url or upload"
-              />
+
+              <div className="relative">
+                <input
+                  {...register("previewVideo")}
+                  type="text"
+                  className="w-full  px-3 py-2 pl-10 border  rounded-md focus:outline-none "
+                  placeholder="Enter Video url or upload"
+                />
+                <Video
+                  className="absolute top-1/2 -translate-y-1/2 left-2 text-secondary"
+                  size={18}
+                />
+              </div>
             </div>
           </div>
 
@@ -1085,66 +1940,45 @@ export default function AddCoursePage() {
           <div className="bg-white p-4 rounded-2xl border mb-8">
             <h3 className="text-lg font-medium mb-4">Publishing</h3>
 
-            <div className="space-y-2 mb-6">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="reqFields"
-                  checked={true}
-                  readOnly
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="reqFields"
-                  className="ml-2 block text-sm text-gray-700">
-                  All required fields are complete
-                </label>
-              </div>
+            <div className="space-y-4 mb-6">
+              <CustomCheckbox
+                id="reqFields"
+                checked={publishing.reqFieldsComplete}
+                label="All required fields are complete"
+                onChange={(checked) =>
+                  setValue("publishing.reqFieldsComplete", checked)
+                }
+              />
 
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="courseStructure"
-                  checked={true}
-                  readOnly
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="courseStructure"
-                  className="ml-2 block text-sm text-gray-700">
-                  Course structure is organized
-                </label>
-              </div>
+              <CustomCheckbox
+                id="courseStructure"
+                checked={publishing.courseStructureOrganized}
+                label="Course structure is organized"
+                onChange={(checked) =>
+                  setValue("publishing.courseStructureOrganized", checked)
+                }
+                readOnly
+              />
 
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="pricingSet"
-                  checked={true}
-                  readOnly
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="pricingSet"
-                  className="ml-2 block text-sm text-gray-700">
-                  Pricing and enrollment options are set
-                </label>
-              </div>
+              <CustomCheckbox
+                id="pricingSet"
+                checked={publishing.pricingSet}
+                label="Pricing and enrollment options are set"
+                onChange={(checked) =>
+                  setValue("publishing.pricingSet", checked)
+                }
+                readOnly
+              />
 
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="instructorInfo"
-                  checked={true}
-                  readOnly
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="instructorInfo"
-                  className="ml-2 block text-sm text-gray-700">
-                  Instructor information is provided
-                </label>
-              </div>
+              <CustomCheckbox
+                id="instructorInfo"
+                checked={publishing.instructorInfoProvided}
+                label="Instructor information is provided"
+                onChange={(checked) =>
+                  setValue("publishing.instructorInfoProvided", checked)
+                }
+                readOnly
+              />
             </div>
             {/* Form Actions */}
             <div className="flex flex-col gap-2 pt-6">
@@ -1155,12 +1989,12 @@ export default function AddCoursePage() {
               </button>
               <button
                 type="button"
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                className="px-4 py-2 border  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                 Save Draft
               </button>
               {/* <button
                 type="button"
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                className="px-4 py-2 border  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                 onClick={() => setActiveTab("preview")}>
                 Preview
               </button> */}
