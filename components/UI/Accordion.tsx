@@ -21,16 +21,16 @@ const Accordion: React.FC<AccordionProps> = ({ items }) => {
   return (
     <div>
       {items.map((item, index) => (
-        <div key={index}>
+        <div className="mb-2" key={index}>
           <button
             onClick={() => toggleAccordion(index)}
-            className="w-full flex items-center justify-between p-4 text-left font-semibold text-gray-800">
-            <span className="group flex items-center gap-2">
+            className="w-full flex items-center justify-between py-2 text-left font-semibold text-gray-800">
+            <span className="group flex items-center text-sm gap-2">
               <span
-                className={` w-7 h-7 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-white link-smooth  ${
+                className={` w-7 h-7 rounded-full flex items-center justify-center group-hover:bg-green-700  link-smooth  ${
                   openIndex === index
-                    ? "bg-primary text-white"
-                    : "bg-green-200 text-green-600"
+                    ? "bg-green-700 text-white"
+                    : "bg-green-600 text-white"
                 }`}>
                 {openIndex === index ? (
                   <ChevronUp size={16} />
@@ -42,7 +42,7 @@ const Accordion: React.FC<AccordionProps> = ({ items }) => {
             </span>
           </button>
           {openIndex === index && (
-            <div className="ml-10 p-2 text-gray-600">{item.content}</div>
+            <div className="ml-8 text-sm text-gray-600">{item.content}</div>
           )}
         </div>
       ))}

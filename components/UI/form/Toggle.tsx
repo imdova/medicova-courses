@@ -19,9 +19,9 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
               {label}
             </label>
             <div className="group cursor-pointer z-20">
-              <Info className="text-secondary" size={10} />
+              <Info className="text-secondary" size={15} />
               {description && (
-                <p className="hidden absolute top-0  bg-white border shadow-md rounded-md p-2 group-hover:block  text-xs text-gray-500">
+                <p className="invisible opacity-0 absolute top-0  bg-white border shadow-md rounded-md p-2 group-hover:visible group-hover:opacity-100 transition-all  text-xs text-gray-500">
                   {description}
                 </p>
               )}
