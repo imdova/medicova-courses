@@ -35,11 +35,10 @@ import {
 import TextEditor from "@/components/UI/form/TextEditor";
 import Toggle from "@/components/UI/form/Toggle";
 import Image from "next/image";
-import CustomCheckbox from "@/components/UI/form/CustomCheckbox ";
 import Link from "next/link";
 import YouTubePlayer from "@/components/UI/YouTubePlayer";
-import Accordion from "@/components/UI/Accordion";
 import InfoAlert from "@/components/UI/InfoAlert";
+import { quizzes } from "@/constants/quizzes.data";
 
 // Type for curriculum items
 type Lecture = {
@@ -69,10 +68,6 @@ type Section = {
   lectures: Lecture[];
   quizzes: Quiz[];
 };
-type Attend = {
-  title: string;
-  content: string;
-};
 
 // Define types for the form
 type CourseFormValues = {
@@ -81,7 +76,7 @@ type CourseFormValues = {
   courseType: string;
   courseOverview: string;
   subCategory: string;
-  attendees: Attend[];
+  attendees: string[];
   attendDescribe: string;
   learningOutcomes: string[];
   learnDescribe: string;
@@ -104,12 +99,6 @@ type CourseFormValues = {
   tagsInput: string[];
   courseImage: FileList | null;
   previewVideo: string;
-  publishing: {
-    reqFieldsComplete: boolean;
-    courseStructureOrganized: boolean;
-    pricingSet: boolean;
-    instructorInfoProvided: boolean;
-  };
   sections: Section[];
 };
 
@@ -121,7 +110,9 @@ export default function AddCoursePage() {
     setValue,
     watch,
     trigger,
+    getValues,
   } = useForm<CourseFormValues>({
+    mode: "onBlur",
     defaultValues: {
       courseType: "Online Recorded",
       fakeStudentsEnrolled: 1500,
@@ -129,25 +120,10 @@ export default function AddCoursePage() {
       instructors: ["Mohamed Ahmed", "Sayed Saleh"],
       selectedinstructors: [],
       tagsInput: [],
-      attendees: [
-        {
-          title: "Introduction",
-          content: "An overview of psychology and its history.",
-        },
-        {
-          title: "Cognitive Development",
-          content: "Study of cognitive growth in individuals.",
-        },
-      ],
+      attendees: ["Medical and Nursing Directors"],
       learningOutcomes: [
         "Lorem Ipsum is simply dummy text of the printing and typesetting induct",
       ],
-      publishing: {
-        reqFieldsComplete: true,
-        courseStructureOrganized: true,
-        pricingSet: false,
-        instructorInfoProvided: false,
-      },
       sections: [
         {
           id: "section-1",
@@ -166,17 +142,18 @@ export default function AddCoursePage() {
           ],
           quizzes: [{ id: "quiz-1", title: "Quiz 1", isLocked: true }],
         },
-        {
-          id: "section-2",
-          title: "Healthcare Fundamentals",
-          description: "",
-          lectures: [],
-          quizzes: [],
-        },
       ],
     },
-    mode: "onBlur",
   });
+
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">(
+    "idle"
+  );
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
 
   const [activeTab, setActiveTab] = useState<
     "information" | "curriculum" | "preview"
@@ -190,44 +167,68 @@ export default function AddCoursePage() {
   const [expandedSections, setExpandedSections] = useState<
     Record<string, boolean>
   >({});
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const onSubmit = (data: CourseFormValues) => {
-    console.log(data);
-    // Handle form submission
-  };
   const courseOverview = watch("courseOverview");
   const requirements = watch("requirements");
-  const publishing = watch("publishing");
   const sections = watch("sections");
-  const attendees = watch("attendees");
 
-  // handell  Accordion
-  const toggleAccordion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  // handdle form submit
+  const onSubmit = async (data: CourseFormValues) => {
+    try {
+      setIsSubmitting(true);
+      setSubmitStatus("idle");
 
-  // add attends
-  const [attendeeTitle, setAttendeeTitle] = useState<string>("");
-  const [attendeeContent, setAttendeeContent] = useState<string>("");
+      const response = await fetch("/api/courses/publish", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-  const addListItemAttends = (
-    field: keyof CourseFormValues,
-    value: Attend
-  ): void => {
-    const currentValues = watch(field) as Attend[];
-    setValue(field, [...currentValues, value]);
-  };
-  const handleAddAttendee = (): void => {
-    const title = attendeeTitle.trim();
-    const content = attendeeContent.trim();
+      if (!response.ok) {
+        throw new Error("Failed to publish course");
+      }
 
-    if (title && content) {
-      addListItemAttends("attendees", { title, content });
-      setAttendeeTitle("");
-      setAttendeeContent("");
+      setSubmitStatus("success");
+    } catch (error) {
+      console.error("Publish error:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  // handdle save Draft
+  const handleSaveDraft = () => {
+    setIsSaving(true);
+    setSaveStatus("idle");
+
+    try {
+      // Get all form values without validation
+      const formData = getValues();
+
+      // Save to localStorage (or your preferred storage)
+      localStorage.setItem(
+        "courseDraft",
+        JSON.stringify({
+          ...formData,
+          lastSaved: new Date().toISOString(),
+        })
+      );
+
+      setSaveStatus("success");
+
+      // Optional: Auto-clear success message after delay
+      setTimeout(() => setSaveStatus("idle"), 3000);
+    } catch (error) {
+      console.error("Error saving draft:", error);
+      setSaveStatus("error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   // collapse section preview
   const toggleSectionPreview = (sectionId: string) => {
     setExpandedSections((prev) => ({
@@ -324,6 +325,103 @@ export default function AddCoursePage() {
       setValue("sections", newSections);
     }
   };
+  // handdle up and down for Lectures
+  const moveLectureUp = (sectionId: string, lectureId: string) => {
+    const newSections = [...sections];
+    const sectionIndex = newSections.findIndex((s) => s.id === sectionId);
+    if (sectionIndex === -1) return;
+
+    const lectureIndex = newSections[sectionIndex].lectures.findIndex(
+      (l) => l.id === lectureId
+    );
+    if (lectureIndex <= 0) return; // Can't move first lecture up
+
+    const newLectures = [...newSections[sectionIndex].lectures];
+    [newLectures[lectureIndex - 1], newLectures[lectureIndex]] = [
+      newLectures[lectureIndex],
+      newLectures[lectureIndex - 1],
+    ];
+
+    newSections[sectionIndex] = {
+      ...newSections[sectionIndex],
+      lectures: newLectures,
+    };
+
+    setValue("sections", newSections);
+  };
+
+  const moveLectureDown = (sectionId: string, lectureId: string) => {
+    const newSections = [...sections];
+    const sectionIndex = newSections.findIndex((s) => s.id === sectionId);
+    if (sectionIndex === -1) return;
+
+    const lectureIndex = newSections[sectionIndex].lectures.findIndex(
+      (l) => l.id === lectureId
+    );
+    if (lectureIndex >= newSections[sectionIndex].lectures.length - 1) return; // Can't move last lecture down
+
+    const newLectures = [...newSections[sectionIndex].lectures];
+    [newLectures[lectureIndex], newLectures[lectureIndex + 1]] = [
+      newLectures[lectureIndex + 1],
+      newLectures[lectureIndex],
+    ];
+
+    newSections[sectionIndex] = {
+      ...newSections[sectionIndex],
+      lectures: newLectures,
+    };
+
+    setValue("sections", newSections);
+  };
+
+  // handdle up and down Quizzes
+  const moveQuizUp = (sectionId: string, quizId: string) => {
+    const newSections = [...sections];
+    const sectionIndex = newSections.findIndex((s) => s.id === sectionId);
+    if (sectionIndex === -1) return;
+
+    const quizIndex = newSections[sectionIndex].quizzes.findIndex(
+      (q) => q.id === quizId
+    );
+    if (quizIndex <= 0) return; // Can't move first quiz up
+
+    const newQuizzes = [...newSections[sectionIndex].quizzes];
+    [newQuizzes[quizIndex - 1], newQuizzes[quizIndex]] = [
+      newQuizzes[quizIndex],
+      newQuizzes[quizIndex - 1],
+    ];
+
+    newSections[sectionIndex] = {
+      ...newSections[sectionIndex],
+      quizzes: newQuizzes,
+    };
+
+    setValue("sections", newSections);
+  };
+
+  const moveQuizDown = (sectionId: string, quizId: string) => {
+    const newSections = [...sections];
+    const sectionIndex = newSections.findIndex((s) => s.id === sectionId);
+    if (sectionIndex === -1) return;
+
+    const quizIndex = newSections[sectionIndex].quizzes.findIndex(
+      (q) => q.id === quizId
+    );
+    if (quizIndex >= newSections[sectionIndex].quizzes.length - 1) return; // Can't move last quiz down
+
+    const newQuizzes = [...newSections[sectionIndex].quizzes];
+    [newQuizzes[quizIndex], newQuizzes[quizIndex + 1]] = [
+      newQuizzes[quizIndex + 1],
+      newQuizzes[quizIndex],
+    ];
+
+    newSections[sectionIndex] = {
+      ...newSections[sectionIndex],
+      quizzes: newQuizzes,
+    };
+
+    setValue("sections", newSections);
+  };
 
   const toggleSection = (sectionId: string) => {
     setValue(
@@ -378,8 +476,26 @@ export default function AddCoursePage() {
       title: "New Section",
       description: "",
       isExpanded: true,
-      lectures: [],
-      quizzes: [],
+      lectures: [
+        {
+          id: "lecture-1",
+          title: "Title of the lecture",
+          videoUri: "",
+          materialUris: [],
+          noEnrollmentRequired: false,
+          quizId: null,
+          preview: true,
+          isExpanded: false,
+        },
+      ],
+      quizzes: [
+        {
+          id: "quiz-1",
+          title: "Quiz 1",
+          isLocked: true,
+          isExpanded: false,
+        },
+      ],
     };
     setValue("sections", [...sections, newSection]);
   };
@@ -498,6 +614,27 @@ export default function AddCoursePage() {
     );
   };
 
+  // Validation checks publishing
+  const isFormValid = Boolean(
+    watch("courseName") &&
+      watch("mainCategory") &&
+      watch("courseType") &&
+      watch("courseOverview") &&
+      watch("courseDuration")
+  );
+
+  const isCurriculumValid = watch("sections")?.length > 0;
+  const isPricingValid = Boolean(
+    watch("regularPrice") || watch("discountedPrice")
+  );
+  const isInstructorValid = watch("selectedinstructors")?.length > 0;
+  const isSubmitDisabled = !(
+    isFormValid &&
+    isCurriculumValid &&
+    isPricingValid &&
+    isInstructorValid
+  );
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -514,8 +651,42 @@ export default function AddCoursePage() {
         <div className="flex justify-center items-center gap-2  flex-wrap sm:justify-start">
           <button
             type="button"
-            className="flex items-center gap-2 px-4 py-2 border  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-            <Save size={14} className="text-primary" /> Save Draft
+            onClick={handleSaveDraft}
+            disabled={isSaving}
+            className={`px-4 py-2 border rounded-md text-sm font-medium transition ${
+              isSaving
+                ? "border-gray-300 text-gray-500 bg-gray-100 cursor-not-allowed"
+                : "border-gray-300 text-gray-700 bg-white hover:bg-gray-50"
+            }`}>
+            {isSaving ? (
+              <>
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-600 inline"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                Saving...
+              </>
+            ) : (
+              <div className="flex items-center gap-1 text-sm">
+                <Save size={15} className="text-primary" />
+                Save Draft
+              </div>
+            )}
           </button>
           <button
             type="button"
@@ -525,13 +696,43 @@ export default function AddCoursePage() {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
-            Publish Course
+            disabled={isSubmitDisabled}
+            className={`px-4 py-2 border rounded-md shadow-sm text-sm font-medium text-white ${
+              !isSubmitDisabled
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-green-600 opacity-65 cursor-not-allowed"
+            }`}>
+            {isSubmitting ? (
+              <>
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              "Publish Course"
+            )}
           </button>
         </div>
       </div>
       <div className="flex flex-col gap-4 xl:flex-row">
-        <div className="w-full">
+        <div className="w-full max-w-[750px]">
           {/* Navigation Tabs */}
           <div className="flex flex-col p-1 bg-[#eee] mb-4 rounded-2xl md:flex-row gap-3">
             <button
@@ -603,7 +804,7 @@ export default function AddCoursePage() {
                         </p>
                       )}
                     </div>
-                    <div className="grid grid-cols-2 items-center gap-6 mb-4">
+                    <div className="grid grid-cols-1 items-center gap-6 mb-4 sm:grid-cols-2 ">
                       {/* Main Category */}
                       <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -688,7 +889,7 @@ export default function AddCoursePage() {
                       </div>
                     </div>
                     {/* Course Overview */}
-                    <div className="mb-6">
+                    <div className="xl:max-w-[600px] 2xl:max-w-[750px] mb-6">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Course Overview
                       </label>
@@ -707,41 +908,40 @@ export default function AddCoursePage() {
                     <textarea
                       {...register("attendDescribe")}
                       rows={4}
-                      className="w-full px-3 py-2 border  rounded-md focus:outline-none "
+                      className="w-full px-3 py-2 border resize-none min-h-[150px] rounded-md focus:outline-none "
                       placeholder="Describe what this Section covers"
                       onBlur={() => trigger("attendDescribe")}></textarea>
 
-                    <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                    <div className="flex gap-3 mt-4">
                       <input
+                        id="attendees-input"
                         type="text"
-                        className="flex-1 px-3 py-2 border rounded-md focus:outline-none"
-                        placeholder="Title"
-                        value={attendeeTitle}
-                        onChange={(e) => setAttendeeTitle(e.target.value)}
+                        className="flex-1 px-3 py-2 border  rounded-md focus:outline-none "
+                        placeholder="Add item"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
-                            handleAddAttendee();
-                          }
-                        }}
-                      />
-                      <input
-                        type="text"
-                        className="flex-1 px-3 py-2 border rounded-md focus:outline-none"
-                        placeholder="Content"
-                        value={attendeeContent}
-                        onChange={(e) => setAttendeeContent(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            handleAddAttendee();
+                            const value = e.currentTarget.value.trim();
+                            if (value) {
+                              addListItem("attendees", value);
+                              e.currentTarget.value = "";
+                            }
                           }
                         }}
                       />
                       <button
                         type="button"
-                        className="flex justify-center items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-                        onClick={handleAddAttendee}>
+                        className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                        onClick={() => {
+                          const input = document.getElementById(
+                            "attendees-input"
+                          ) as HTMLInputElement;
+                          const value = input.value.trim();
+                          if (value) {
+                            addListItem("attendees", value);
+                            input.value = "";
+                          }
+                        }}>
                         <Plus size={15} />
                       </button>
                     </div>
@@ -753,47 +953,26 @@ export default function AddCoursePage() {
                     )}
 
                     <div className="mt-6">
-                      {attendees?.map((item, index) => {
-                        const isOpen = openIndex === index;
-
-                        return (
-                          <div
-                            key={index}
-                            className="border border-gray-200 rounded-md mb-4 overflow-hidden">
-                            <button
-                              type="button"
-                              onClick={() => toggleAccordion(index)}
-                              className="w-full flex justify-between items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 transition">
-                              <div className="flex items-center">
-                                <span className="flex justify-center items-center w-7 h-7 bg-primary rounded-full text-white mr-2">
-                                  {isOpen ? (
-                                    <ChevronDown size={15} />
-                                  ) : (
-                                    <ChevronRight size={15} />
-                                  )}
-                                </span>
-                                <span className="text-sm font-medium text-left">
-                                  {item.title}
-                                </span>
-                              </div>
-                              <X
-                                size={15}
-                                className="text-secondary hover:text-red-500"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  removeListItem("attendees", index);
-                                }}
-                              />
-                            </button>
-
-                            {isOpen && (
-                              <div className="px-4 py-2 text-sm text-gray-700 bg-white">
-                                {item.content}
-                              </div>
-                            )}
+                      {watch("attendees")?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center p-2 bg-[#eeeeee8e] rounded-md mb-4">
+                          <div className="flex gap-2 items-center">
+                            <div className="w-7">
+                              <span className="flex justify-center items-center w-7 h-7 bg-primary rounded-full text-white mr-2">
+                                <ChevronRight size={15} />
+                              </span>
+                            </div>
+                            <span className="text-sm">{item}</span>
                           </div>
-                        );
-                      })}
+                          <button
+                            type="button"
+                            onClick={() => removeListItem("attendees", index)}
+                            className="ml-2 text-secondary hover:text-red-500 transition">
+                            <X size={15} />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
                   {/* What will you learn */}
@@ -804,12 +983,13 @@ export default function AddCoursePage() {
                     <textarea
                       {...register("learnDescribe")}
                       rows={4}
-                      className="w-full px-3 py-2 border  rounded-md focus:outline-none "
+                      className="w-full px-3 py-2 border resize-none min-h-[150px] rounded-md focus:outline-none "
                       placeholder="Describe what this Section covers"
                       onBlur={() => trigger("learnDescribe")}></textarea>
 
                     <div className="flex gap-3 mt-4">
                       <input
+                        id="learning-outcome-input"
                         type="text"
                         className="flex-1 px-3 py-2 border  rounded-md focus:outline-none "
                         placeholder="Add item"
@@ -828,8 +1008,8 @@ export default function AddCoursePage() {
                         type="button"
                         className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                         onClick={() => {
-                          const input = document.querySelector(
-                            'input[placeholder="Add item"]'
+                          const input = document.getElementById(
+                            "learning-outcome-input"
                           ) as HTMLInputElement;
                           const value = input.value.trim();
                           if (value) {
@@ -844,7 +1024,7 @@ export default function AddCoursePage() {
                       {watch("learningOutcomes")?.map((item, index) => (
                         <div
                           key={index}
-                          className="flex justify-between items-center p-2 bg-gray-100 rounded-md mb-4">
+                          className="flex justify-between items-center p-2 bg-[#eeeeee8e] rounded-md mb-4">
                           <div className="flex gap-2 items-center">
                             <div className="w-7">
                               <span className="flex justify-center items-center w-7 h-7 bg-primary rounded-full text-white mr-2">
@@ -871,7 +1051,7 @@ export default function AddCoursePage() {
                     )}
                   </div>
                   {/* Course Requirements */}
-                  <div className="mb-12">
+                  <div className="xl:max-w-[600px] 2xl:max-w-[750px] mb-6">
                     <h3 className="text-lg font-medium mb-2">
                       Course Requirements
                     </h3>
@@ -1089,7 +1269,7 @@ export default function AddCoursePage() {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   className="border border-gray-200 rounded-lg overflow-hidden">
-                                  <div className="bg-gray-50 px-4 py-3 border-b flex flex-col justify-between items-center sm:flex-row ">
+                                  <div className="bg-gray-50 px-4 py-3 border-b flex  justify-between items-center ">
                                     <div className="flex w-full md:w-fit items-center">
                                       <span
                                         {...provided.dragHandleProps}
@@ -1115,45 +1295,24 @@ export default function AddCoursePage() {
                                         onClick={() =>
                                           toggleSection(section.id)
                                         }
-                                        className="text-green-500 hover:text-green-700 text-xs">
+                                        className="text-main hover:text-green-700 text-xs">
                                         {section.isExpanded ? (
                                           <span className="flex items-center gap-1 text-xs">
-                                            Collapse
-                                            <ChevronUp
-                                              className="hidden md:block"
-                                              size={15}
-                                            />
+                                            <ChevronUp size={18} />
                                           </span>
                                         ) : (
                                           <span className="flex items-center gap-1 text-xs">
-                                            Expand
-                                            <ChevronDown
-                                              className="hidden md:block"
-                                              size={15}
-                                            />
+                                            <ChevronDown size={18} />
                                           </span>
                                         )}
-                                      </button>
-                                      <button
-                                        type="button"
-                                        className="flex gap-2 items-center p-2  text-green-500 hover:text-green-700 text-xs">
-                                        Edit
-                                        <Pencil
-                                          className="hidden sm:block"
-                                          size={15}
-                                        />
                                       </button>
                                       <button
                                         type="button"
                                         onClick={() =>
                                           deleteSection(section.id)
                                         }
-                                        className="flex gap-2 items-center p-2  text-red-500 hover:text-red-700 text-xs">
-                                        Delete
-                                        <Trash
-                                          className="hidden sm:block"
-                                          size={15}
-                                        />
+                                        className="flex gap-2 items-center p-2  text-main hover:text-red-700 text-xs">
+                                        <X size={15} />
                                       </button>
                                     </div>
                                   </div>
@@ -1244,7 +1403,7 @@ export default function AddCoursePage() {
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         className="border rounded-lg overflow-hidden">
-                                                        <div className="bg-gray-100 px-4 py-3 flex justify-between items-center flex-col md:flex-row ">
+                                                        <div className="bg-gray-100 px-4 py-3 flex gap-2 justify-between items-start  flex-col md:items-center md:flex-row ">
                                                           <div className="flex w-full md:w-fit items-center">
                                                             <span
                                                               {...provided.dragHandleProps}
@@ -1266,6 +1425,65 @@ export default function AddCoursePage() {
                                                             </span>
                                                           </div>
                                                           <div className="flex space-x-2">
+                                                            {/* Up Button - Disabled for first lecture */}
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                moveLectureUp(
+                                                                  section.id,
+                                                                  lecture.id
+                                                                )
+                                                              }
+                                                              disabled={
+                                                                lectureIndex ===
+                                                                0
+                                                              }
+                                                              className={`flex gap-1 items-center p-2 text-xs ${
+                                                                lectureIndex ===
+                                                                0
+                                                                  ? "text-gray-400 cursor-not-allowed"
+                                                                  : "text-green-500 hover:text-green-700"
+                                                              }`}>
+                                                              <span className="text-inherit text-xs">
+                                                                Up
+                                                              </span>
+                                                              <ChevronUp
+                                                                size={15}
+                                                              />
+                                                            </button>
+
+                                                            {/* Down Button - Disabled for last lecture */}
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                moveLectureDown(
+                                                                  section.id,
+                                                                  lecture.id
+                                                                )
+                                                              }
+                                                              disabled={
+                                                                lectureIndex ===
+                                                                section.lectures
+                                                                  .length -
+                                                                  1
+                                                              }
+                                                              className={`flex gap-1 items-center p-2 text-xs ${
+                                                                lectureIndex ===
+                                                                section.lectures
+                                                                  .length -
+                                                                  1
+                                                                  ? "text-gray-400 cursor-not-allowed"
+                                                                  : "text-green-500 hover:text-green-700"
+                                                              }`}>
+                                                              <span className="text-inherit text-xs">
+                                                                Down
+                                                              </span>
+
+                                                              <ChevronDown
+                                                                size={15}
+                                                              />
+                                                            </button>
+
                                                             <button
                                                               type="button"
                                                               onClick={() =>
@@ -1274,34 +1492,22 @@ export default function AddCoursePage() {
                                                                   lecture.id
                                                                 )
                                                               }
-                                                              className="text-green-500 hover:text-green-700 text-sm">
+                                                              className="text-main hover:text-green-700 text-sm">
                                                               {lecture.isExpanded ? (
                                                                 <span className="flex items-center gap-1 text-xs">
                                                                   Collapse
-                                                                  <ChevronUp
-                                                                    className="hidden md:block"
-                                                                    size={15}
-                                                                  />
                                                                 </span>
                                                               ) : (
                                                                 <span className="flex items-center gap-1 text-xs">
-                                                                  Expand
-                                                                  <ChevronDown
-                                                                    className="hidden md:block"
-                                                                    size={15}
+                                                                  Edit
+                                                                  <Pencil
+                                                                    className="hidden sm:block"
+                                                                    size={12}
                                                                   />
                                                                 </span>
                                                               )}
                                                             </button>
-                                                            <button
-                                                              type="button"
-                                                              className="flex gap-2 items-center p-2  text-green-500 hover:text-green-700 text-xs">
-                                                              Edit
-                                                              <Pencil
-                                                                className="hidden sm:block"
-                                                                size={15}
-                                                              />
-                                                            </button>
+
                                                             <button
                                                               type="button"
                                                               onClick={() =>
@@ -1515,13 +1721,7 @@ export default function AddCoursePage() {
                                                   </Draggable>
                                                 )
                                               )}
-                                              {section.lectures.length === 0 ? (
-                                                <span className="text-sm text-secondary">
-                                                  Not found Any Lecures
-                                                </span>
-                                              ) : (
-                                                ""
-                                              )}
+
                                               {provided.placeholder}
                                             </div>
                                           )}
@@ -1554,7 +1754,7 @@ export default function AddCoursePage() {
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         className="border rounded-lg overflow-hidden">
-                                                        <div className="bg-gray-100 px-4 py-3 flex justify-between items-center flex-col md:flex-row">
+                                                        <div className="bg-gray-100 px-4 py-3 flex gap-2 justify-between items-start flex-col md:items-center md:flex-row">
                                                           <div className="flex w-full md:w-fit items-center">
                                                             <span
                                                               {...provided.dragHandleProps}
@@ -1576,6 +1776,61 @@ export default function AddCoursePage() {
                                                             </span>
                                                           </div>
                                                           <div className="flex space-x-2">
+                                                            {/* Up Button - Disabled for first quiz */}
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                moveQuizUp(
+                                                                  section.id,
+                                                                  quiz.id
+                                                                )
+                                                              }
+                                                              disabled={
+                                                                quizIndex === 0
+                                                              }
+                                                              className={`flex gap-1 items-center p-2 text-xs ${
+                                                                quizIndex === 0
+                                                                  ? "text-gray-400 cursor-not-allowed"
+                                                                  : "text-green-500 hover:text-green-700"
+                                                              }`}>
+                                                              <span className="text-inherit text-xs">
+                                                                Up
+                                                              </span>
+                                                              <ChevronUp
+                                                                size={15}
+                                                              />
+                                                            </button>
+
+                                                            {/* Down Button - Disabled for last quiz */}
+                                                            <button
+                                                              type="button"
+                                                              onClick={() =>
+                                                                moveQuizDown(
+                                                                  section.id,
+                                                                  quiz.id
+                                                                )
+                                                              }
+                                                              disabled={
+                                                                quizIndex ===
+                                                                section.quizzes
+                                                                  .length -
+                                                                  1
+                                                              }
+                                                              className={`flex gap-1 items-center p-2 text-xs ${
+                                                                quizIndex ===
+                                                                section.quizzes
+                                                                  .length -
+                                                                  1
+                                                                  ? "text-gray-400 cursor-not-allowed"
+                                                                  : "text-green-500 hover:text-green-700"
+                                                              }`}>
+                                                              <span className="text-inherit text-xs">
+                                                                Down
+                                                              </span>
+                                                              <ChevronDown
+                                                                size={15}
+                                                              />
+                                                            </button>
                                                             <button
                                                               type="button"
                                                               onClick={() =>
@@ -1584,34 +1839,20 @@ export default function AddCoursePage() {
                                                                   quiz.id
                                                                 )
                                                               }
-                                                              className="text-green-500 hover:text-green-700 text-sm">
+                                                              className="text-main hover:text-green-700 text-sm">
                                                               {quiz.isExpanded ? (
                                                                 <span className="flex items-center gap-1 text-xs">
                                                                   Collapse
-                                                                  <ChevronUp
-                                                                    className="hidden md:block"
-                                                                    size={15}
-                                                                  />
                                                                 </span>
                                                               ) : (
                                                                 <span className="flex items-center gap-1 text-xs">
-                                                                  Expand
-                                                                  <ChevronDown
-                                                                    className="hidden md:block"
-                                                                    size={15}
+                                                                  Edit
+                                                                  <Pencil
+                                                                    className="hidden sm:block"
+                                                                    size={12}
                                                                   />
                                                                 </span>
                                                               )}
-                                                            </button>
-
-                                                            <button
-                                                              type="button"
-                                                              className="flex gap-2 items-center p-2  text-green-500 hover:text-green-700 text-xs">
-                                                              Edit
-                                                              <Pencil
-                                                                className="hidden sm:block"
-                                                                size={15}
-                                                              />
                                                             </button>
                                                             <button
                                                               type="button"
@@ -1633,6 +1874,7 @@ export default function AddCoursePage() {
 
                                                         {quiz.isExpanded && (
                                                           <div className="flex items-center flex-col gap-3 p-4 bg-white md:flex-row w-full">
+                                                            {/* Quiz Selector */}
                                                             <div className="mb-4 flex-1 w-full md:w-fit">
                                                               <label className="block text-sm font-medium text-gray-700 mb-1">
                                                                 Select Quiz
@@ -1643,7 +1885,7 @@ export default function AddCoursePage() {
                                                                   e
                                                                 ) => {
                                                                   const selectedQuiz =
-                                                                    section.quizzes.find(
+                                                                    quizzes.find(
                                                                       (q) =>
                                                                         q.id ===
                                                                         e.target
@@ -1691,7 +1933,7 @@ export default function AddCoursePage() {
                                                                 <option value="">
                                                                   Select a quiz
                                                                 </option>
-                                                                {section.quizzes.map(
+                                                                {quizzes.map(
                                                                   (q) => (
                                                                     <option
                                                                       key={q.id}
@@ -1704,11 +1946,11 @@ export default function AddCoursePage() {
                                                                 )}
                                                               </select>
                                                             </div>
+
+                                                            {/* Create New Quiz Link */}
                                                             <Link
                                                               className="h-fit mt-2 py-2 px-8 rounded-lg bg-primary text-white"
-                                                              href={
-                                                                "/admin/add-quiz"
-                                                              }>
+                                                              href="/admin/add-quiz">
                                                               + Create Quiz
                                                             </Link>
                                                           </div>
@@ -1717,13 +1959,6 @@ export default function AddCoursePage() {
                                                     )}
                                                   </Draggable>
                                                 )
-                                              )}
-                                              {section.quizzes.length === 0 ? (
-                                                <span className="text-sm text-secondary">
-                                                  Not found Any Quizzes
-                                                </span>
-                                              ) : (
-                                                ""
                                               )}
 
                                               {provided.placeholder}
@@ -1743,6 +1978,11 @@ export default function AddCoursePage() {
                     </Droppable>
                   </DragDropContext>
                 </div>
+                {sections.length === 0 && (
+                  <p className="text-secondary text-sm text-center">
+                    There is sections here
+                  </p>
+                )}
               </div>
             )}
 
@@ -1751,12 +1991,12 @@ export default function AddCoursePage() {
                 {watch("previewVideo") ? (
                   <YouTubePlayer
                     videoUrl={watch("previewVideo")}
-                    height={300}
+                    height={320}
                   />
                 ) : (
                   <div
                     className="flex items-center w-full justify-center bg-gray-100 rounded-lg"
-                    style={{ height: "300px" }}>
+                    style={{ height: "320px" }}>
                     <div className="text-center p-4">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -1794,10 +2034,26 @@ export default function AddCoursePage() {
                     <h2 className="text-xl font-semibold mb-2">
                       Course Overview{" "}
                     </h2>
-                    <p className="text-secondary">
-                      {watch("courseOverview") ||
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}
-                    </p>
+                    <div className=" overflow-hidden w-full ">
+                      <div className="relative">
+                        <div className="min-h-[200px] p-4 prose max-w-none w-full">
+                          {watch("courseOverview") ? (
+                            <p
+                              className="text-secondary w-full"
+                              dangerouslySetInnerHTML={{
+                                __html: watch("courseOverview"),
+                              }}
+                            />
+                          ) : (
+                            <p className="text-gray-400 w-full">
+                              Lorem Ipsum is simply dummy text of the printing
+                              and typesetting industry. Lorem Ipsum has been the
+                              industrys standard dummy text ever since the 1500s
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="mb-6">
                     <h2 className="text-xl font-semibold mb-2">
@@ -1807,8 +2063,21 @@ export default function AddCoursePage() {
                       {watch("attendDescribe") ||
                         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}
                     </p>
-                    <ul>
-                      <Accordion items={watch("attendees")} />
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {watch("attendees").map((attend, index) => {
+                        return (
+                          <li
+                            key={index}
+                            className="flex items-center gap-2 mb-4 text-sm font-semibold">
+                            <div className="w-8">
+                              <div className="flex justify-center items-center w-7 h-7 rounded-full bg-primary text-white">
+                                <ChevronRight size={15} />
+                              </div>{" "}
+                            </div>
+                            {attend}
+                          </li>
+                        );
+                      })}{" "}
                     </ul>
                   </div>
                   <div className="mb-6">
@@ -2252,64 +2521,278 @@ export default function AddCoursePage() {
           <div className="bg-white p-4 rounded-2xl border mb-8">
             <h3 className="text-lg font-medium mb-4">Publishing</h3>
 
-            <div className="space-y-4 mb-6">
-              <CustomCheckbox
-                id="reqFields"
-                checked={publishing.reqFieldsComplete}
-                label="All required fields are complete"
-                onChange={(checked) =>
-                  setValue("publishing.reqFieldsComplete", checked)
-                }
-              />
+            <div className="space-y-3">
+              {/* Validation fields  */}
+              <div className="flex items-start">
+                <div
+                  className={`flex items-center justify-center h-5 w-5 rounded-full border-2 mr-3 mt-0.5 ${
+                    isFormValid
+                      ? "border-green-500 bg-green-500 text-white"
+                      : "border-gray-300"
+                  }`}>
+                  {isFormValid && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <span
+                  className={`${
+                    isFormValid ? "text-primary" : "text-gray-500"
+                  }`}>
+                  All required fields are complete
+                </span>
+              </div>
 
-              <CustomCheckbox
-                id="courseStructure"
-                checked={publishing.courseStructureOrganized}
-                label="Course structure is organized"
-                onChange={(checked) =>
-                  setValue("publishing.courseStructureOrganized", checked)
-                }
-                readOnly
-              />
+              {/* Validation Course structure */}
+              <div className="flex items-start">
+                <div
+                  className={`flex items-center justify-center h-5 w-5 rounded-full border-2 mr-3 mt-0.5 ${
+                    isCurriculumValid
+                      ? "border-green-500 bg-green-500 text-white"
+                      : "border-gray-300"
+                  }`}>
+                  {isCurriculumValid && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <span
+                  className={`${
+                    isCurriculumValid ? "text-primary" : "text-gray-500"
+                  }`}>
+                  Course structure is organized
+                </span>
+              </div>
 
-              <CustomCheckbox
-                id="pricingSet"
-                checked={publishing.pricingSet}
-                label="Pricing and enrollment options are set"
-                onChange={(checked) =>
-                  setValue("publishing.pricingSet", checked)
-                }
-                readOnly
-              />
+              {/* Validation Pricing and enrollment */}
+              <div className="flex items-start">
+                <div
+                  className={`flex items-center justify-center h-5 w-5 rounded-full border-2 mr-3 mt-0.5 ${
+                    isPricingValid
+                      ? "border-green-500 bg-green-500 text-white"
+                      : "border-gray-300"
+                  }`}>
+                  {isPricingValid && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <span
+                  className={`${
+                    isPricingValid ? "text-primary" : "text-gray-500"
+                  }`}>
+                  Pricing and enrollment options are set
+                </span>
+              </div>
 
-              <CustomCheckbox
-                id="instructorInfo"
-                checked={publishing.instructorInfoProvided}
-                label="Instructor information is provided"
-                onChange={(checked) =>
-                  setValue("publishing.instructorInfoProvided", checked)
-                }
-                readOnly
-              />
+              {/* Validation Instructor */}
+              <div className="flex items-start">
+                <div
+                  className={`flex items-center justify-center h-5 w-5 rounded-full border-2 mr-3 mt-0.5 ${
+                    isInstructorValid
+                      ? "border-green-500 bg-green-500 text-white"
+                      : "border-gray-300"
+                  }`}>
+                  {isInstructorValid && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <span
+                  className={`${
+                    isInstructorValid ? "text-primary" : "text-gray-500"
+                  }`}>
+                  Instructor information is provided
+                </span>
+              </div>
             </div>
+
             {/* Form Actions */}
             <div className="flex flex-col gap-2 pt-6">
               <button
                 type="submit"
-                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
-                Publish Course
+                disabled={isSubmitDisabled}
+                className={`px-4 py-2 border rounded-md shadow-sm text-sm font-medium text-white ${
+                  !isSubmitDisabled
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-green-600 opacity-65 cursor-not-allowed"
+                }`}>
+                {isSubmitting ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24">
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  "Publish Course"
+                )}
               </button>
-              <button
-                type="button"
-                className="px-4 py-2 border  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                Save Draft
-              </button>
-              {/* <button
-                type="button"
-                className="px-4 py-2 border  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                onClick={() => setActiveTab("preview")}>
-                Preview
-              </button> */}
+              <div className="flex flex-col gap-2 space-x-3">
+                <button
+                  type="button"
+                  onClick={handleSaveDraft}
+                  disabled={isSaving}
+                  className={`flex justify-center px-4 py-2 border rounded-md text-sm w-full font-medium transition ${
+                    isSaving
+                      ? "border-gray-300 text-gray-500 bg-gray-100 cursor-not-allowed"
+                      : "border-gray-300 text-gray-700 bg-white hover:bg-gray-50"
+                  }`}>
+                  {isSaving ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-600 inline"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Saving...
+                    </>
+                  ) : (
+                    <div className="flex items-center gap-1 text-sm">
+                      <Save size={15} className="text-primary" />
+                      Save Draft
+                    </div>
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="mt-2">
+              {saveStatus === "success" && (
+                <div className="text-sm text-green-600 flex items-center">
+                  <svg
+                    className="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Draft saved successfully
+                </div>
+              )}
+
+              {submitStatus === "success" && (
+                <div className="text-sm text-green-600 flex items-center">
+                  <svg
+                    className="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Draft saved successfully
+                </div>
+              )}
+
+              {saveStatus === "error" && (
+                <div className="text-sm text-red-600 flex items-center">
+                  <svg
+                    className="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Failed to save draft
+                </div>
+              )}
+              {submitStatus === "error" && (
+                <div className="text-sm text-red-600 flex items-center">
+                  <svg
+                    className="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Failed to submit
+                </div>
+              )}
             </div>
           </div>
         </div>

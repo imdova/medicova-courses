@@ -35,6 +35,9 @@ const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>(
     const [internalValue, setInternalValue] = useState(
       defaultValue || initialContent
     );
+    const [showPlaceholder, setShowPlaceholder] = useState(
+      !(defaultValue || initialContent)
+    );
 
     // Combine the forwarded ref with our local ref
     const combinedRef = (node: HTMLDivElement) => {
@@ -52,12 +55,16 @@ const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>(
 
       const currentValue = isControlled ? value : internalValue;
       editorRef.current.innerHTML = currentValue || "";
+      setShowPlaceholder(!currentValue);
     }, [value, internalValue, isControlled]);
 
     const handleInput = () => {
       if (!editorRef.current) return;
 
       const newContent = editorRef.current.innerHTML;
+
+      // Check if content is empty
+      setShowPlaceholder(!newContent);
 
       // Check active formats
       const selection = window.getSelection();
@@ -103,6 +110,19 @@ const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>(
       const text = e.clipboardData.getData("text/plain");
       document.execCommand("insertText", false, text);
       handleInput();
+    };
+
+    const handleFocus = () => {
+      if (showPlaceholder && editorRef.current) {
+        editorRef.current.innerHTML = "";
+        setShowPlaceholder(false);
+      }
+    };
+
+    const handleBlur = () => {
+      if (editorRef.current && !editorRef.current.innerHTML) {
+        setShowPlaceholder(true);
+      }
     };
 
     return (
@@ -170,17 +190,25 @@ const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>(
         </div>
 
         {/* Editor */}
-        <div
-          ref={combinedRef}
-          className="min-h-[200px] p-4 focus:outline-none prose max-w-none"
-          contentEditable
-          onInput={handleInput}
-          onPaste={handlePaste}
-          onMouseUp={handleInput}
-          onKeyUp={handleInput}
-          data-placeholder={placeholder}
-          suppressContentEditableWarning
-        />
+        <div className="relative">
+          <div
+            ref={combinedRef}
+            className="min-h-[200px] p-4 focus:outline-none prose max-w-none"
+            contentEditable
+            onInput={handleInput}
+            onPaste={handlePaste}
+            onMouseUp={handleInput}
+            onKeyUp={handleInput}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            suppressContentEditableWarning
+          />
+          {showPlaceholder && (
+            <div className="absolute top-0 left-0 p-4 text-gray-400 pointer-events-none">
+              {placeholder}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
