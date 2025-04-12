@@ -15,6 +15,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -138,6 +143,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -233,6 +243,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -276,6 +291,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -314,6 +334,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -357,6 +382,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -478,6 +508,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -558,6 +593,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -630,6 +670,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -703,6 +748,11 @@ export const courseData: CourseContentProps[] = [
       "Learn Python from scratch, including data structures and automation.",
     students: 850,
     price: 20,
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
+    status: "Published",
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {

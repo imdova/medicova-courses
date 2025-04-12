@@ -33,6 +33,10 @@ export interface CourseType {
   instructor: instructor;
   lessons: number;
   students: number;
+  date: string;
+  category: string;
+  supCategory: string;
+  revenue: string;
   status: string;
   price: number;
   videoUrl: string;
@@ -93,6 +97,11 @@ export type CourseContentProps = {
   lessons: number;
   duration: string;
   tabs: Tab[];
+  date: string;
+  category: string;
+  supCategory: string;
+  revenue: string;
+  status: string;
   instructor: instructor;
   type: string;
   students: number;
