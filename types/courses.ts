@@ -102,6 +102,7 @@ export type CourseContentProps = {
   supCategory: string;
   revenue: string;
   status: string;
+  isActive: boolean;
   instructor: instructor;
   type: string;
   students: number;

@@ -3,22 +3,23 @@ import AddBtn from "@/components/UI/Buttons/AddBtn";
 import CoursesTable from "@/components/UI/tables/CoursesTable";
 import VideoCard from "@/components/UI/VideoCard";
 import { courseData } from "@/constants/VideosData.data";
-import { LayoutGrid, List, Search } from "lucide-react";
+import { CircleCheck, LayoutGrid, List, Search, SquarePen } from "lucide-react";
 import { useState } from "react";
 
 const LiveOfflinePage = () => {
-  const [filter, setFilter] = useState<"All" | "Live" | "Offline" | "Recorded">(
-    "All"
-  );
   const [viewMode, setViewMode] = useState("grid");
   const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState<"All" | "Active Course" | "Draft">(
+    "All"
+  );
 
   const filteredCourses =
     filter === "All"
       ? courseData
-      : courseData.filter(
-          (course) => course.type.toUpperCase() === filter.toUpperCase()
+      : courseData.filter((course) =>
+          filter === "Active Course" ? course.isActive : !course.isActive
         );
+
   // handlle view mode
   const handleViewChange = (mode: "grid" | "list") => {
     if (mode === "grid") {
@@ -29,7 +30,7 @@ const LiveOfflinePage = () => {
   };
 
   return (
-    <div className="p-4 border rounded-lg bg-white">
+    <div className="p-4 border rounded-lg bg-white shadow-sm">
       <div className="flex flex-col items-center justify-between gap-4 mb-5 md:flex-row">
         <div className="text-center md:text-start">
           <h1 className="text-2xl font-bold mb-2">My Courses</h1>
@@ -42,22 +43,44 @@ const LiveOfflinePage = () => {
         </AddBtn>
       </div>
       <div className="flex items-center justify-between flex-col gap-4 lg:flex-row mb-8">
-        <div className="flex flex-col md:flex-row gap-2 flex-wrap w-full">
-          {["All", "Live", "Offline", "Recorded"].map((category) => (
-            <button
-              key={category}
-              onClick={() =>
-                setFilter(category as "All" | "Live" | "Offline" | "Recorded")
-              }
-              className={`px-4 py-2 h-fit text-sm rounded-md border min-w-[120px] w-full md:w-fit ${
-                filter === category ? "bg-primary text-white" : "bg-gray-200"
-              }`}
-            >
-              {category} Courses
-            </button>
-          ))}
+        <div className="flex items-center flex-wrap justify-center gap-2 sm:justify-start">
+          <button
+            onClick={() =>
+              setFilter("All" as "All" | "Active Course" | "Draft")
+            }
+            className={`px-4 py-2 h-fit text-sm rounded-md    ${
+              filter === "All" ? "bg-primary text-white" : "text-secondary"
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() =>
+              setFilter("Active Course" as "All" | "Active Course" | "Draft")
+            }
+            className={`flex items-center gap-2 px-4 py-2 h-fit text-sm rounded-md    ${
+              filter === "Active Course"
+                ? "bg-primary text-white"
+                : "text-secondary"
+            }`}
+          >
+            <CircleCheck size={15} />
+            Active Course (
+            {courseData.filter((course) => course.isActive).length})
+          </button>
+          <button
+            onClick={() =>
+              setFilter("Draft" as "All" | "Active Course" | "Draft")
+            }
+            className={`flex items-center gap-2 px-4 py-2 h-fit text-sm rounded-md    ${
+              filter === "Draft" ? "bg-primary text-white" : "text-secondary"
+            }`}
+          >
+            <SquarePen size={15} />
+            Draft ({courseData.filter((course) => !course.isActive).length})
+          </button>
         </div>
-        <div className="flex justify-between items-center gap-3 pb-4 md:justify-end  w-full md:w-fit">
+        <div className="flex justify-between items-center gap-3 lg:justify-end  w-full lg:w-fit">
           {/* Search Bar & Heading */}
           <div className="">
             <div className="relative w-full sm:w-auto">
@@ -78,7 +101,7 @@ const LiveOfflinePage = () => {
             <button
               onClick={() => handleViewChange("list")}
               className={`flex justify-center items-center w-10 h-10 border ${
-                viewMode === "list" ? "bg-primary text-white" : "text-primary"
+                viewMode === "list" ? "bg-primary text-white" : "text-secondary"
               } rounded-md`}
             >
               <List size={18} />
@@ -86,7 +109,7 @@ const LiveOfflinePage = () => {
             <button
               onClick={() => handleViewChange("grid")}
               className={`flex justify-center items-center w-10 h-10 border ${
-                viewMode === "grid" ? "bg-primary text-white" : "text-primary"
+                viewMode === "grid" ? "bg-primary text-white" : "text-secondary"
               } rounded-md`}
             >
               <LayoutGrid size={18} />

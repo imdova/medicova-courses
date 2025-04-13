@@ -28,11 +28,12 @@ export default function Quizzes() {
 
   return (
     <section>
-      <div className="flex flex-col justify-between sm:items-center py-4 gap-4  sm:flex-row">
+      <div className="flex flex-col justify-between sm:items-center pb-4 gap-4  sm:flex-row">
         <div className="flex gap-6 items-center">
           <Link
             className="p-2 border text-secondary rounded-md"
-            href={"/admin"}>
+            href={"/admin"}
+          >
             <ArrowLeft size={15} />
           </Link>
           <h1 className="text-2xl font-bold text-gray-800">My Quizzes</h1>
@@ -40,7 +41,8 @@ export default function Quizzes() {
         <div className="flex items-center gap-3">
           <Link
             href={"/admin/add-quiz"}
-            className="flex items-center gap-2 px-5 py-2 bg-primary border rounded-md text-sm text-white">
+            className="flex items-center gap-2 px-5 py-2 bg-primary border rounded-md text-sm text-white"
+          >
             <Plus size={15} /> Create New Quiz
           </Link>
         </div>
@@ -100,7 +102,8 @@ export default function Quizzes() {
                 </button>
                 <Link
                   href={`quizzes/${quiz.id}/start`}
-                  className="flex items-center gap-2 p-2 border rounded-md shadow-sm bg-primary text-white">
+                  className="flex items-center gap-2 p-2 border rounded-md shadow-sm bg-primary text-white"
+                >
                   <Play size={15} />
                   <span className="text-xs font-medium">Start</span>
                 </Link>

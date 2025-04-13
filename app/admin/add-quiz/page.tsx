@@ -300,9 +300,7 @@ export default function CreateQuiz() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="min-h-screen text-main relative py-8 px-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="text-main relative">
       {/* Global Alert Display */}
       {alert && (
         <CustomAlert
@@ -339,7 +337,8 @@ export default function CreateQuiz() {
             <div className="flex gap-6 items-center">
               <Link
                 className="p-2 border text-secondary rounded-md"
-                href={"/admin"}>
+                href={"/admin"}
+              >
                 <ArrowLeft size={15} />
               </Link>
               <h1 className="text-2xl font-bold text-gray-800">Create Quiz</h1>
@@ -348,13 +347,15 @@ export default function CreateQuiz() {
               <button
                 type="button"
                 className="flex items-center gap-2 px-5 py-2 bg-white border rounded-md text-sm text-primary"
-                onClick={() => setActiveTab("preview")}>
+                onClick={() => setActiveTab("preview")}
+              >
                 <Eye size={15} />
                 Preview
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-2 px-5 py-2 bg-primary border rounded-md text-sm text-white">
+                className="flex items-center gap-2 px-5 py-2 bg-primary border rounded-md text-sm text-white"
+              >
                 <Save size={15} />
                 Save Quiz
               </button>
@@ -368,7 +369,8 @@ export default function CreateQuiz() {
               className={`p-2 w-full rounded-md font-medium ${
                 activeTab === "editor" ? "bg-white" : ""
               }`}
-              onClick={() => setActiveTab("editor")}>
+              onClick={() => setActiveTab("editor")}
+            >
               Editor
             </button>
             <button
@@ -376,7 +378,8 @@ export default function CreateQuiz() {
               className={`p-2 w-full font-medium rounded-md ${
                 activeTab === "preview" ? "bg-white" : ""
               }`}
-              onClick={() => setActiveTab("preview")}>
+              onClick={() => setActiveTab("preview")}
+            >
               Preview
             </button>
           </div>
@@ -436,7 +439,8 @@ export default function CreateQuiz() {
                       <button
                         type="button"
                         onClick={addQuestion}
-                        className="mt-4 px-4 py-2 w-fit bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none  focus:ring-offset-2 flex items-center">
+                        className="mt-4 px-4 py-2 w-fit bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none  focus:ring-offset-2 flex items-center"
+                      >
                         <Plus className="w-5 h-5 mr-1" />
                         Add Question
                       </button>
@@ -448,22 +452,26 @@ export default function CreateQuiz() {
                             <div
                               {...provided.droppableProps}
                               ref={provided.innerRef}
-                              className="space-y-4">
+                              className="space-y-4"
+                            >
                               {fields.map((question, index) => (
                                 <Draggable
                                   key={question.id}
                                   draggableId={question.id}
-                                  index={index}>
+                                  index={index}
+                                >
                                   {(provided, snapshot) => (
                                     <div
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       className={`border border-gray-200 rounded-lg overflow-hidden bg-white ${
                                         snapshot.isDragging ? "shadow-lg" : ""
-                                      }`}>
+                                      }`}
+                                    >
                                       <div
                                         {...provided.dragHandleProps}
-                                        className="flex justify-between items-center p-4 cursor-pointer bg-gray-50">
+                                        className="flex justify-between items-center p-4 cursor-pointer bg-gray-50"
+                                      >
                                         <div className="flex items-center space-x-2">
                                           <div className="cursor-grab">
                                             <GripVertical className="w-5 h-5 text-gray-400" />
@@ -480,7 +488,8 @@ export default function CreateQuiz() {
                                             onClick={() =>
                                               toggleQuestion(index)
                                             }
-                                            className="text-gray-500 hover:text-gray-700">
+                                            className="text-gray-500 hover:text-gray-700"
+                                          >
                                             {watch(
                                               `questions.${index}.isExpanded`
                                             ) ? (
@@ -492,7 +501,8 @@ export default function CreateQuiz() {
                                           <button
                                             type="button"
                                             onClick={() => remove(index)}
-                                            className="text-red-500 hover:text-red-700">
+                                            className="text-red-500 hover:text-red-700"
+                                          >
                                             <Trash2 className="w-5 h-5" />
                                           </button>
                                         </div>
@@ -530,7 +540,8 @@ export default function CreateQuiz() {
                                                         e.target
                                                           .value as QuestionType
                                                       );
-                                                    }}>
+                                                    }}
+                                                  >
                                                     <option value="multiple-choice">
                                                       Multiple Choice
                                                     </option>
@@ -619,7 +630,8 @@ export default function CreateQuiz() {
                                                   )
                                                 }
                                                 className="p-2 text-gray-500 hover:text-green-500 hover:border-green-500 rounded-md border border-gray-300"
-                                                title="Add image to question">
+                                                title="Add image to question"
+                                              >
                                                 <ImageIcon className="w-5 h-5" />
                                               </button>
                                             </div>
@@ -648,7 +660,8 @@ export default function CreateQuiz() {
                                                       undefined
                                                     )
                                                   }
-                                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                                                >
                                                   <Minus className="w-3 h-3" />
                                                 </button>
                                               </div>
@@ -681,7 +694,8 @@ export default function CreateQuiz() {
                                                     onClick={() =>
                                                       addOption(index)
                                                     }
-                                                    className="flex items-center p-2 gap-3 bg-white rounded-md border shadow-sm text-xs w-fit font-semibold">
+                                                    className="flex items-center p-2 gap-3 bg-white rounded-md border shadow-sm text-xs w-fit font-semibold"
+                                                  >
                                                     <Plus className="w-4 h-4 mr-1" />
                                                     Add Option
                                                   </button>
@@ -694,7 +708,8 @@ export default function CreateQuiz() {
                                                   (option, optionIndex) => (
                                                     <div
                                                       key={option.id}
-                                                      className="space-y-2">
+                                                      className="space-y-2"
+                                                    >
                                                       <div className="flex items-center space-x-2">
                                                         <input
                                                           type={
@@ -780,7 +795,8 @@ export default function CreateQuiz() {
                                                                 )
                                                               }
                                                               className="p-2 text-gray-500 hover:text-green-500 rounded-md border border-gray-300 hover:border-green-500 transition-colors"
-                                                              title="Add image to option">
+                                                              title="Add image to option"
+                                                            >
                                                               <ImageIcon className="w-5 h-5" />
                                                             </button>
                                                           </div>
@@ -798,7 +814,8 @@ export default function CreateQuiz() {
                                                                 optionIndex
                                                               )
                                                             }
-                                                            className="text-red-500 hover:text-red-700">
+                                                            className="text-red-500 hover:text-red-700"
+                                                          >
                                                             <Minus className="w-5 h-5" />
                                                           </button>
                                                         )}
@@ -837,7 +854,8 @@ export default function CreateQuiz() {
                                                                 currentOptions
                                                               );
                                                             }}
-                                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                                                          >
                                                             <Minus className="w-3 h-3" />
                                                           </button>
                                                         </div>
@@ -976,7 +994,8 @@ export default function CreateQuiz() {
                               {currentQuestion.options.map((option, index) => (
                                 <div
                                   key={option.id}
-                                  className="flex items-start space-x-2 p-3 border rounded-md">
+                                  className="flex items-start space-x-2 p-3 border rounded-md"
+                                >
                                   <input
                                     type="radio"
                                     name={`preview-${currentQuestion.id}`}
@@ -1010,7 +1029,8 @@ export default function CreateQuiz() {
                               {currentQuestion.options.map((option) => (
                                 <div
                                   key={option.id}
-                                  className="flex items-center p-3 border rounded-md ">
+                                  className="flex items-center p-3 border rounded-md "
+                                >
                                   <input
                                     type="radio"
                                     name={`preview-${currentQuestion.id}`}
@@ -1060,7 +1080,8 @@ export default function CreateQuiz() {
                           : "bg-green-600 text-white hover:bg-green-700"
                       }`}
                       onClick={handlePrevious}
-                      disabled={currentIndex === 0}>
+                      disabled={currentIndex === 0}
+                    >
                       Previous
                     </button>
 
@@ -1072,7 +1093,8 @@ export default function CreateQuiz() {
                           : "bg-green-600 text-white hover:bg-green-700"
                       }`}
                       onClick={handleNext}
-                      disabled={currentIndex === questions.length - 1}>
+                      disabled={currentIndex === questions.length - 1}
+                    >
                       Next
                     </button>
                   </div>
@@ -1092,7 +1114,8 @@ export default function CreateQuiz() {
               <div>
                 <label
                   htmlFor="randomizeQuestions"
-                  className="flex justify-between items-center cursor-pointer">
+                  className="flex justify-between items-center cursor-pointer"
+                >
                   <div>
                     <h2 className="text-sm font-bold">Randomize Questions</h2>
                     <span className="text-xs font-medium text-secondary">
@@ -1114,7 +1137,8 @@ export default function CreateQuiz() {
               <div className="mt-4">
                 <label
                   htmlFor="immediateFeedback"
-                  className="flex justify-between items-center cursor-pointer">
+                  className="flex justify-between items-center cursor-pointer"
+                >
                   <div>
                     <h2 className="text-sm font-bold">Immediate Feedback</h2>
                     <span className="text-xs font-medium text-secondary">
@@ -1136,7 +1160,8 @@ export default function CreateQuiz() {
               <div className="mt-4">
                 <label
                   htmlFor="feedbackByEmail"
-                  className="flex justify-between items-center cursor-pointer">
+                  className="flex justify-between items-center cursor-pointer"
+                >
                   <div>
                     <h2 className="text-sm font-bold">Feedback By Email</h2>
                     <span className="text-xs font-medium text-secondary">

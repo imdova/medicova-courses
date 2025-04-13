@@ -1,42 +1,35 @@
-// app/settings/components/SecuritySettings.tsx
 "use client";
 
+import PhoneInput from "@/components/UI/PhoneInput";
+import { formDataSettings } from "@/types/forms";
 import { KeyRound, Shield, TriangleAlert } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { UseFormRegister, UseFormWatch } from "react-hook-form";
 
-type SecurityFormData = {
-  email: string;
-  phone: string;
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
-
-const SecuritySettings = () => {
-  const [enable2FA, setEnable2FA] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<SecurityFormData>();
-
-  const onSubmit = (data: SecurityFormData) => {
-    console.log(data);
-    // Handle form submission
+interface SecuritySettingsProps {
+  register: UseFormRegister<formDataSettings>;
+  errors: {
+    [K in keyof formDataSettings]?: { message?: string };
   };
+  watch: UseFormWatch<formDataSettings>;
+}
 
+const SecuritySettings: React.FC<SecuritySettingsProps> = ({
+  register,
+  errors,
+  watch,
+}) => {
+  const [enable2FA, setEnable2FA] = useState(false);
   const newPassword = watch("newPassword");
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div>
       <h1 className="text-2xl font-bold text-gray-900">Security Settings</h1>
       <p className="text-secondary mb-6 text-sm">
         Manage your account security and login information.
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <div className="space-y-8">
         <div className="p-3 border rounded-lg">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             Login Information
@@ -63,7 +56,7 @@ const SecuritySettings = () => {
                     message: "Invalid email address",
                   },
                 })}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Example@gmail.com"
@@ -77,36 +70,11 @@ const SecuritySettings = () => {
                 </p>
               )}
             </div>
-
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Phone Number (optional)
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                {...register("phone", {
-                  pattern: {
-                    value: /^\+?[\d\s]+$/,
-                    message: "Please enter a valid phone number",
-                  },
-                })}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
-                  errors.phone ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="+20 1015753392"
-              />
-              <p className="mt-1 text-sm text-gray-500">
+            <div className="max-w-[400px]">
+              <PhoneInput register={register} errors={errors} />
+              <p className="text-sm text-gray-500 mt-1">
                 Used for account recovery and two-factor authentication.
               </p>
-              {errors.phone && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.phone.message}
-                </p>
-              )}
             </div>
           </div>
         </div>
@@ -133,7 +101,7 @@ const SecuritySettings = () => {
                 {...register("currentPassword", {
                   required: "Current password is required",
                 })}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                   errors.currentPassword ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -176,7 +144,7 @@ const SecuritySettings = () => {
                       : true;
                   },
                 })}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                   errors.newPassword ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -203,7 +171,7 @@ const SecuritySettings = () => {
                   validate: (value) =>
                     value === newPassword || "Passwords do not match",
                 })}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none ${
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                   errors.confirmPassword ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -218,7 +186,7 @@ const SecuritySettings = () => {
               <Shield size={20} />
               <div>
                 <h3 className="font-semibold mb-2">Password Requirements</h3>
-                <ul className="text-sm text-secondary list-disc pl-5 space-y-1">
+                <ul className="text-xs text-secondary list-disc pl-5 space-y-2">
                   <li>At least 8 characters long</li>
                   <li>Contains at least one uppercase letter</li>
                   <li>Contains at least one lowercase letter</li>
@@ -247,8 +215,9 @@ const SecuritySettings = () => {
                 <button
                   type="button"
                   onClick={() => setEnable2FA(false)}
-                  className="text-sm font-medium text-red-600 hover:text-red-500 focus:outline-none"
+                  className="flex gap-2 items-center p-3 border  rounded-md  text-sm font-medium text-red-600 hover:text-red-500 focus:outline-none"
                 >
+                  <KeyRound size={15} />
                   Disable Two-Factor Authentication
                 </button>
               </div>
@@ -277,7 +246,7 @@ const SecuritySettings = () => {
             )}
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

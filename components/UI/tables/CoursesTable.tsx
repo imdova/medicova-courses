@@ -4,6 +4,7 @@ import { useState } from "react";
 import OptionsDropdown from "../OptionsDropdown";
 import Link from "next/link";
 import { CourseContentProps } from "@/types/courses";
+import ToggleSwitch from "../ToggleSwitch";
 
 interface CoursesTableProps {
   courses: CourseContentProps[];
@@ -27,7 +28,7 @@ const CoursesTable: React.FC<CoursesTableProps> = ({ courses, searchTerm }) => {
   );
 
   return (
-    <div>
+    <div className="relative">
       <div>
         {/* Responsive Table */}
         <div className="overflow-x-auto">
@@ -43,14 +44,17 @@ const CoursesTable: React.FC<CoursesTableProps> = ({ courses, searchTerm }) => {
                   { label: "Revenue", key: "revenue" },
                   { label: "Type", key: "type" },
                   { label: "Status", key: "status" },
+                  { label: "Active", key: "active" },
                 ].map(({ label, key }) => (
-                  <th key={key} className=" text-left cursor-pointer p-6">
-                    <div className="flex items-center gap-2 text-sm">
+                  <th key={key} className="w-fit text-left p-3">
+                    <div className="flex items-center font-semibold gap-2 text-sm w-fit">
                       {label}
                     </div>
                   </th>
                 ))}
-                <th className="p-3">Actions</th>
+                <th className="p-3 font-semibold gap-2 text-sm w-fit">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -92,10 +96,22 @@ const CoursesTable: React.FC<CoursesTableProps> = ({ courses, searchTerm }) => {
                         {course.status}
                       </span>
                     </td>
+                    <td>
+                      <div className="flex justify-center">
+                        <ToggleSwitch
+                          checked={course.isActive}
+                          onChange={(value) => {
+                            // update course.active
+                            console.log("New value:", value);
+                          }}
+                        />
+                      </div>
+                    </td>
                     <td className="p-3">
                       <div className="flex justify-center items-center">
                         <OptionsDropdown
-                          onView={() => console.log("View clicked")}
+                          onPublish={() => console.log("Publish clicked")}
+                          onQuickEdit={() => console.log("Quick Edit clicked")}
                           onEdit={() => console.log("Edit clicked")}
                           onDelete={() => console.log("Delete clicked")}
                         />

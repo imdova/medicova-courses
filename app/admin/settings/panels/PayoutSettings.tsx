@@ -1,51 +1,54 @@
-// app/settings/components/PayoutSettings.tsx
 "use client";
 
-import { Check, Info } from "lucide-react";
+import { formDataSettings } from "@/types/forms";
+import { Check, DollarSign, Info } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Control, Controller, UseFormRegister } from "react-hook-form";
 
-type PayoutFormData = {
-  payoutMethod: "bank" | "instapay" | "mobile";
-  accountHolderName: string;
-  accountNumber: string;
-  routingNumber: string;
-  instapayUsername: string;
-  walletNumber: string;
-  taxId: string;
-  country: string;
-  payoutSchedule: string;
-};
+interface PayoutSettingsProps {
+  register: UseFormRegister<formDataSettings>;
+  control: Control<formDataSettings>;
+  errors: {
+    [K in keyof formDataSettings]?: { message?: string };
+  };
+}
 
-const PayoutSettings = () => {
+const PayoutSettings: React.FC<PayoutSettingsProps> = ({
+  register,
+  control,
+  errors,
+}) => {
   const [payoutMethod, setPayoutMethod] = useState<
     "bank" | "instapay" | "mobile"
   >("bank");
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<PayoutFormData>();
-
-  const onSubmit = (data: PayoutFormData) => {
-    console.log(data);
-    // Handle form submission
-  };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Payout Settings</h1>
       <p className="text-sm text-secondary mb-6">
         Manage how and when you receive payments for your courses.
       </p>
       <div className="p-4 border rounded-lg my-10">
-        <h1 className="text-xl font-bold text-gray-900 mb-1">
-          Tax Information
-        </h1>
-        <p className="text-sm text-secondary mb-6">
-          Required for tax reporting purposes
-        </p>
+        <div className="flex flex-col gap-3 justify-between sm:flex-row mb-6">
+          <div>
+            <h1 className="text-xl font-bold text-gray-900 mb-1">
+              Earning Summary
+            </h1>
+            <p className="text-sm text-secondary mb-6">
+              Quick over view of your earning
+            </p>
+          </div>
+          <div>
+            <Link
+              className="flex items-center gap-1 p-2 w-fit bg-white border rounded-lg text-sm"
+              href={"#"}
+            >
+              <DollarSign size={12} />
+              View Full Earning
+            </Link>
+          </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           <div className="flex flex-col justify-center items-center gap-2 p-6 border rounded-lg sm:items-center">
             <span className="text-secondary text-sm">Current Balance</span>
@@ -63,7 +66,7 @@ const PayoutSettings = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-3 mb-8 p-4 bg-yellow-50 border rounded-lg">
+      <div className="flex gap-3 mb-8 p-3 bg-yellow-50 border rounded-lg">
         <Info className="text-yellow-700" size={16} />
         <div>
           <p className="text-yellow-700 font-medium">Important</p>
@@ -74,7 +77,7 @@ const PayoutSettings = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-6">
         <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-1">
             Payout Method
@@ -97,17 +100,20 @@ const PayoutSettings = () => {
                   onChange={() => setPayoutMethod("bank")}
                   className="sr-only"
                 />
-                <div
-                  className={`h-5 w-5 flex items-center justify-center rounded-full border-2 transition-colors duration-200 ${
-                    payoutMethod === "bank"
-                      ? "bg-green-600 border-green-600 text-white"
-                      : "border-gray-300 bg-white"
-                  }`}
-                >
-                  {payoutMethod === "bank" && (
-                    <Check className="w-3 h-3 text-white" />
-                  )}
+                <div className="w-5">
+                  <div
+                    className={`h-5 w-5 flex items-center justify-center rounded-full border-2 transition-colors duration-200 ${
+                      payoutMethod === "bank"
+                        ? "bg-green-600 border-green-600 text-white"
+                        : "border-gray-300 bg-white"
+                    }`}
+                  >
+                    {payoutMethod === "bank" && (
+                      <Check className="w-3 h-3 text-white" />
+                    )}
+                  </div>
                 </div>
+
                 <div className="text-sm text-gray-700 mb-3">
                   <span className="font-semibold">Bank Transfer</span>
                   <span className="block text-sm text-gray-500">
@@ -134,7 +140,7 @@ const PayoutSettings = () => {
                           ? "Account holder name is required"
                           : false,
                     })}
-                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                       errors.accountHolderName
                         ? "border-red-500"
                         : "border-gray-300"
@@ -168,7 +174,7 @@ const PayoutSettings = () => {
                         message: "Account number must contain only numbers",
                       },
                     })}
-                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                       errors.accountNumber
                         ? "border-red-500"
                         : "border-gray-300"
@@ -202,7 +208,7 @@ const PayoutSettings = () => {
                         message: "Routing number must contain only numbers",
                       },
                     })}
-                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                       errors.routingNumber
                         ? "border-red-500"
                         : "border-gray-300"
@@ -230,16 +236,18 @@ const PayoutSettings = () => {
                   onChange={() => setPayoutMethod("instapay")}
                   className="sr-only"
                 />
-                <div
-                  className={`h-5 w-5 flex items-center justify-center rounded-full border-2 transition-colors duration-200 ${
-                    payoutMethod === "instapay"
-                      ? "bg-green-600 border-green-600 text-white"
-                      : "border-gray-300 bg-white"
-                  }`}
-                >
-                  {payoutMethod === "instapay" && (
-                    <Check className="w-3 h-3 text-white" />
-                  )}
+                <div className="w-5">
+                  <div
+                    className={`h-5 w-5 flex items-center justify-center rounded-full border-2 transition-colors duration-200 ${
+                      payoutMethod === "instapay"
+                        ? "bg-green-600 border-green-600 text-white"
+                        : "border-gray-300 bg-white"
+                    }`}
+                  >
+                    {payoutMethod === "instapay" && (
+                      <Check className="w-3 h-3 text-white" />
+                    )}
+                  </div>
                 </div>
                 <div className="text-sm text-gray-700 mb-3">
                   <span className="font-semibold">Instapay</span>
@@ -265,7 +273,7 @@ const PayoutSettings = () => {
                         ? "InstaPay username is required"
                         : false,
                   })}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                     errors.instapayUsername
                       ? "border-red-500"
                       : "border-gray-300"
@@ -292,16 +300,18 @@ const PayoutSettings = () => {
                   onChange={() => setPayoutMethod("mobile")}
                   className="sr-only"
                 />
-                <div
-                  className={`h-5 w-5 flex items-center justify-center rounded-full border-2 transition-colors duration-200 ${
-                    payoutMethod === "mobile"
-                      ? "bg-green-600 border-green-600 text-white"
-                      : "border-gray-300 bg-white"
-                  }`}
-                >
-                  {payoutMethod === "mobile" && (
-                    <Check className="w-3 h-3 text-white" />
-                  )}
+                <div className="w-5">
+                  <div
+                    className={`h-5 w-5 flex items-center justify-center rounded-full border-2 transition-colors duration-200 ${
+                      payoutMethod === "mobile"
+                        ? "bg-green-600 border-green-600 text-white"
+                        : "border-gray-300 bg-white"
+                    }`}
+                  >
+                    {payoutMethod === "mobile" && (
+                      <Check className="w-3 h-3 text-white" />
+                    )}
+                  </div>
                 </div>
                 <div className="text-sm text-gray-700 mb-3">
                   <span className="font-semibold">Mobile Wallet</span>
@@ -332,7 +342,7 @@ const PayoutSettings = () => {
                       message: "Please enter a valid phone number",
                     },
                   })}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                     errors.walletNumber ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="+20 0123456789"
@@ -361,7 +371,7 @@ const PayoutSettings = () => {
             render={({ field }) => (
               <select
                 {...field}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                   errors.country ? "border-red-500" : "border-gray-300"
                 }`}
               >
@@ -393,7 +403,7 @@ const PayoutSettings = () => {
                 id="taxId"
                 type="text"
                 {...register("taxId", { required: "Tax ID is required" })}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                   errors.taxId ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="XXXXXXXXXXX"
@@ -415,7 +425,7 @@ const PayoutSettings = () => {
               <select
                 id="country"
                 {...register("country", { required: "Country is required" })}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none  ${
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none max-w-[400px] ${
                   errors.country ? "border-red-500" : "border-gray-300"
                 }`}
               >
@@ -433,7 +443,7 @@ const PayoutSettings = () => {
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

@@ -20,6 +20,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: true,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -148,6 +149,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: false,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -248,6 +250,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: false,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -296,6 +299,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: true,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -339,6 +343,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: true,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -387,6 +392,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: false,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -513,6 +519,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: true,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -598,6 +605,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: false,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -675,6 +683,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: true,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {
@@ -753,6 +762,7 @@ export const courseData: CourseContentProps[] = [
     supCategory: "sup Cognitive",
     revenue: "$1,200.00",
     status: "Published",
+    isActive: true,
     videoPreveiw: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     reviews: [
       {

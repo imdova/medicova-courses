@@ -1,39 +1,16 @@
-// app/settings/components/CommunicationSettings.tsx
 "use client";
 
 import Toggle from "@/components/UI/form/Toggle";
-import { useForm } from "react-hook-form";
+import { formDataSettings } from "@/types/forms";
+import { UseFormRegister } from "react-hook-form";
 
-type CommunicationFormData = {
-  newEnrollment: boolean;
-  courseCompletion: boolean;
-  studentQuestions: boolean;
-  reviewNotifications: boolean;
-  announcements: boolean;
-  systemUpdates: boolean;
-  weeklyReports: boolean;
-};
+interface CommunicationProps {
+  register: UseFormRegister<formDataSettings>;
+}
 
-const CommunicationSettings = () => {
-  const { register, handleSubmit } = useForm<CommunicationFormData>({
-    defaultValues: {
-      newEnrollment: true,
-      courseCompletion: true,
-      studentQuestions: true,
-      reviewNotifications: true,
-      announcements: true,
-      systemUpdates: true,
-      weeklyReports: true,
-    },
-  });
-
-  const onSubmit = (data: CommunicationFormData) => {
-    console.log(data);
-    // Handle form submission
-  };
-
+const CommunicationSettings: React.FC<CommunicationProps> = ({ register }) => {
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
         Communication Settings
       </h1>
@@ -42,9 +19,9 @@ const CommunicationSettings = () => {
         students.
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="space-y-8">
+        <div className="border-b pb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
             Email Notifications
           </h2>
 
@@ -81,7 +58,7 @@ const CommunicationSettings = () => {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
             Platform Notifications
           </h2>
 
@@ -109,7 +86,7 @@ const CommunicationSettings = () => {
             />
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

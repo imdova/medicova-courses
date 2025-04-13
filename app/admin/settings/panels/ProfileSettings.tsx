@@ -1,36 +1,27 @@
-// app/settings/components/ProfileSettings.tsx
 "use client";
 
-import { ImageUp, RotateCcw, Save, UserRound } from "lucide-react";
+import { formDataSettings } from "@/types/forms";
+import { ImageUp, UserRound } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Control, Controller, UseFormRegister } from "react-hook-form";
 
-type ProfileFormData = {
-  firstName: string;
-  lastName: string;
-  username: string;
-  bio: string;
-  website: string;
-  userAvatar: FileList;
-};
-
-const ProfileSettings = () => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<ProfileFormData>();
-  const [preview, setPreview] = useState<string | null>(null);
-
-  const onSubmit = (data: ProfileFormData) => {
-    console.log(data);
-    // Handle form submission
+interface ProfileSettingsProps {
+  register: UseFormRegister<formDataSettings>;
+  control: Control<formDataSettings>;
+  errors: {
+    [K in keyof formDataSettings]?: { message?: string };
   };
+}
 
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+  register,
+  control,
+  errors,
+}) => {
+  const [preview, setPreview] = useState<string | null>(null);
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-2">
         Profile Information
       </h1>
@@ -38,8 +29,8 @@ const ProfileSettings = () => {
         Update your personal information and how you appear to students.
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="flex gap-6">
+      <div className="space-y-6">
+        <div className="flex flex-col items-center gap-6 md:flex-row md:items-start">
           <div className="flex flex-col items-center max-w-[250px]">
             <div className="relative w-40 h-40 mb-6 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
               {preview ? (
@@ -166,16 +157,17 @@ const ProfileSettings = () => {
               >
                 Short Bio
               </label>
-              <p className="text-sm text-gray-500 mb-2">
-                A brief description that appears on course and instructor pages.
-              </p>
               <textarea
                 id="bio"
                 rows={4}
                 {...register("bio")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none"
-                placeholder="This description will appear on your instructor profile and course pages."
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none resize-none min-h-[150px]"
+                placeholder="A brief description that appears on course and instructor pages."
               />
+              <p className="text-sm text-gray-500 mb-2">
+                This description will appear on your instructor profile and
+                course pages.
+              </p>
             </div>
             <div>
               <label
@@ -205,25 +197,9 @@ const ProfileSettings = () => {
                 </p>
               )}
             </div>
-            <div className="flex justify-end space-x-4 pt-4">
-              <button
-                type="button"
-                className="flex items-center gap-2 px-4 py-2 text-primary border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <RotateCcw size={12} />
-                Reset
-              </button>
-              <button
-                type="submit"
-                className="flex items-center gap-2 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <Save size={12} />
-                Save Changes
-              </button>
-            </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
