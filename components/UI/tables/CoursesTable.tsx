@@ -75,7 +75,7 @@ const CoursesTable: React.FC<CoursesTableProps> = ({ courses, searchTerm }) => {
                         height={50}
                         alt="course Image"
                       />
-                      <Link href="#">
+                      <Link href={`courses/${course.id}`}>
                         <span className="text-sm">{course.title}</span>
                       </Link>
                     </td>
@@ -84,7 +84,7 @@ const CoursesTable: React.FC<CoursesTableProps> = ({ courses, searchTerm }) => {
                     <td className="p-3 text-sm">{course.supCategory}</td>
                     <td className="p-3 text-sm">{course.students}</td>
                     <td className="p-3 text-sm">{course.revenue}</td>
-                    <td className="p-3 text-sm">{course.instructor.name}</td>
+                    <td className="p-3 text-sm">{course.type}</td>
                     <td className="p-3 text-sm">
                       <span
                         className={`px-3 py-1 rounded-lg text-sm ${

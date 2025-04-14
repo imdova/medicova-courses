@@ -105,6 +105,7 @@ export type CourseContentProps = {
   isActive: boolean;
   instructor: instructor;
   type: string;
+  level: string;
   students: number;
   price: number;
   description: string;
