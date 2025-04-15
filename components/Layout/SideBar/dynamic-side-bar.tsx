@@ -37,7 +37,8 @@ export default function DynamicSideBar({
     <div className="relative flex flex-col bg-white border p-4 rounded-lg h-full w-full pt-14 lg:pt-4 overflow-y-auto no-scrollbar shadow-md">
       <button
         onClick={() => setIsActive(false)}
-        className="block lg:hidden absolute right-3 top-3 p-2 text-secondary hover:text-red-500">
+        className="block lg:hidden absolute right-3 top-3 p-2 text-secondary hover:text-red-500"
+      >
         <X size={18} />
       </button>
       <Link className="block md:hidden relative mb-8 m-auto" href="/">
@@ -132,7 +133,8 @@ const CollapseTab: React.FC<CollapseTabProps> = ({
             ? "bg-[#5fbb6428] hover:bg-[#5fbb6428] text-primary"
             : "text-gray-800"
         }`}
-        onClick={handleActivation}>
+        onClick={handleActivation}
+      >
         <div className="flex items-center gap-2">
           {IconComponent && <IconComponent size={15} />} {/* Icon rendering */}
           <span>{item.label}</span>
@@ -149,7 +151,8 @@ const CollapseTab: React.FC<CollapseTabProps> = ({
           <Link
             key={subItem.id}
             href={subItem.path || "#"}
-            className="block pl-6 pr-2 py-1 text-sm text-gray-700 hover:text-black">
+            className="block pl-6 pr-2 py-1 text-sm text-gray-700 hover:text-black"
+          >
             {subItem.label}
           </Link>
         ))}
@@ -172,9 +175,10 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
   return (
     <Link
       href={user.firstName ? `/me/${user.firstName}` : "#"}
-      className={`flex items-center p-3 rounded-lg border-t ${
+      className={`flex items-center p-3 rounded-lg  ${
         isActive ? "text-gray-800" : "text-gray-800"
-      }`}>
+      }`}
+    >
       <div className="w-12">
         <Image
           src={user?.photo || "/images/placeholder-avatar.svg"}
@@ -218,7 +222,8 @@ const LinkTab: React.FC<LinkTabProps> = ({
           ? "bg-[#5fbb6428] hover:bg-[#5fbb6428]  text-primary "
           : "text-gray-800"
       }`}
-      onClick={() => onTabChange(index)}>
+      onClick={() => onTabChange(index)}
+    >
       {IconComponent && <IconComponent size={15} />}
       {/* Render the icon */}
       <span>{item.label}</span>

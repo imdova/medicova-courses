@@ -1,14 +1,6 @@
 "use client";
 import Image from "next/image";
-import Rating from "./Rating";
-import {
-  BookOpen,
-  Clock,
-  Earth,
-  GraduationCap,
-  MoveRight,
-  Video,
-} from "lucide-react";
+import { Earth, GraduationCap, MoveLeft, Star, Video } from "lucide-react";
 import Link from "next/link";
 import { CourseType } from "@/types/courses";
 
@@ -17,31 +9,29 @@ const CourseCardInstructor: React.FC<CourseType> = ({
   image,
   title,
   rating,
-  instructor,
-  lessons,
   students,
-  status,
+  type,
   price,
-  duration,
+  description,
 }) => {
   return (
     <>
       {/* Course Card */}
-      <div className="bg-white border rounded-xl relative p-5">
+      <div className="bg-white border rounded-xl relative overflow-hidden">
         <Link href={`courses/${id}`}>
-          {status === "Online" && (
-            <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-gray-100">
+          {type === "Live" && (
+            <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-gray-100 z-10">
               <Earth size={18} />
               <span className="text-xs font-semibold">Online</span>
             </span>
           )}
-          {status === "Recorded" && (
+          {type === "Recorded" && (
             <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-gray-100">
               <Video size={18} />
               <span className="text-xs font-semibold">Recorded</span>
             </span>
           )}
-          <div className="w-full overflow-hidden rounded-md mb-3 h-40">
+          <div className="w-full overflow-hidden  mb-3 h-56">
             <Image
               className="w-full h-full object-cover"
               src={image}
@@ -50,54 +40,38 @@ const CourseCardInstructor: React.FC<CourseType> = ({
               height={400}
             />
           </div>
-          <div className="flex justify-between items-center w-full ">
-            <h1 className="mb-3 font-semibold">{title}</h1>
-            <div className="flex flex-col items-center gap-1">
-              <Rating rating={rating} size={10} />
-              <span className="text-[10px] text-secondary">
-                ({rating} Reviews)
-              </span>
+          <div className="p-4">
+            <div className="mb-4">
+              <h1 className="mb-2 font-semibold">{title}</h1>
+              <p className="text-sm text-secondary">{description}</p>
             </div>
-          </div>
-          <div className="flex items-center gap-2 mb-3">
-            <Image
-              className="w-9 h-9 rounded-full"
-              width={90}
-              height={90}
-              src={instructor.image}
-              alt="Instructor"
-            />
-            <span className="text-xs">{instructor.name}</span>
-          </div>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 mb-3 w-full">
-            <div className="flex gap-2">
-              <BookOpen className="text-secondary" size={18} />
-              <span className="text-sm text-secondary">{lessons} Lessons</span>
-            </div>
-            <div className="flex gap-2">
-              <Clock className="text-secondary" size={18} />
-              <span className="text-sm text-secondary">{duration}</span>
-            </div>
-            <div className="flex gap-2">
-              <GraduationCap className="text-secondary" size={18} />
-              <span className="text-sm text-secondary">
-                {students} Students
-              </span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Star size={15} className="text-primary" />
+                {rating}
+                <span className="text-secondary text-sm">(865)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <GraduationCap size={15} className="text-primary" />
+                {students}
+                <span className="text-secondary text-sm">Students</span>
+              </div>
             </div>
           </div>
         </Link>
-        <div className="flex justify-between w-full mb-3">
+        <div className="flex justify-between w-full mb-3 p-4">
+          <span className="flex items-center gap-1 text-3xl font-semibold">
+            ${price}
+          </span>
           <div className="flex gap-2">
             <Link
               href={`courses/${id}`}
-              className="flex items-center p-2 px-4 gap-2 text-white bg-primary hover:bg-black rounded-2xl text-xs"
+              className="flex items-center p-2 px-4 gap-2 text-white bg-primary hover:bg-black rounded-md transition"
             >
-              Enroll <MoveRight size={15} />
+              <MoveLeft size={15} />
+              Enroll
             </Link>
           </div>
-          <span className="flex items-center gap-1 font-semibold text-primary">
-            ${price}
-          </span>
         </div>
       </div>
     </>

@@ -5,7 +5,7 @@ import OptionsDropdown from "@/components/UI/OptionsDropdown";
 import CountriesTable from "@/components/UI/tables/CountriesTable";
 import StudentOverviewTable from "@/components/UI/tables/StudentOverviewTable";
 import { courseData } from "@/constants/VideosData.data";
-import { DollarSign, Eye, SquarePen, UsersRound } from "lucide-react";
+import { Award, DollarSign, Eye, SquarePen, UsersRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
@@ -135,7 +135,7 @@ export default function SingleCourseOverview({
         </div>
         <div className="flex items-center gap-4 p-4 border rounded-lg bg-white shadow-sm">
           <div className="flex justify-center items-center rounded-md w-16 h-16 bg-[#FCE7F3] text-[#F6339A]">
-            <UsersRound size={20} />
+            <Award size={20} />
           </div>
           <div>
             <span className="block text-sm">Completion Rate</span>
@@ -146,12 +146,12 @@ export default function SingleCourseOverview({
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 lg:flex-row mb-4">
-        <div className="w-full p-4 rounded-lg border bg-white shadow-sm">
+      <div className="flex flex-col gap-4 xl:flex-row mb-4">
+        <div className="flex-1 p-4 rounded-lg border bg-white shadow-sm">
           {/* Enrollment And Views Over Time Chart  */}
           <EnrollmentChart />
         </div>
-        <div className="lg:w-[450px]">
+        <div className="xl:w-[450px] p-4 rounded-lg border bg-white shadow-sm">
           {/* Countries Table  */}
           <CountriesTable />
         </div>

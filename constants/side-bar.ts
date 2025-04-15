@@ -32,6 +32,7 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
     {
       id: 1,
       type: "profile",
+      path: "/admin/instructor-profile",
     },
     {
       id: 2,
