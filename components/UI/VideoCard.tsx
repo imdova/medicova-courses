@@ -37,11 +37,12 @@ const VideoCard: React.FC<CardProps> = ({
   return (
     <>
       {/* Course Card */}
-      <div className="box-content relative p-5">
+      <div className="shadow-sm relative p-4 border rounded-lg">
         <Link
           href={`${
             type.toLowerCase() === "offline" ? "offline-video" : "live-video"
-          }/${id}`}>
+          }/${id}`}
+        >
           {type.toLowerCase() === "live" && (
             <span className="absolute top-7 left-7 flex items-center gap-3 px-3 py-2 rounded-full bg-[#ffffffb9]">
               <Earth size={18} />
@@ -105,7 +106,8 @@ const VideoCard: React.FC<CardProps> = ({
           </div>
           <Link
             className="text-sm hover:underline hover:text-primary link-smooth"
-            href={`courses/${id}`}>
+            href={`courses/${id}`}
+          >
             Veiw Details
           </Link>
         </div>

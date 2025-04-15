@@ -19,6 +19,8 @@ import {
   Eye,
   Save,
   ArrowLeft,
+  Settings,
+  Timer,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -67,6 +69,8 @@ export default function CreateQuiz() {
   const [isClient, setIsClient] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const optionFileInputRef = useRef<HTMLInputElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [quizTimeLeft, setQuizTimeLeft] = useState<number | null>(null);
   const [alert, setAlert] = useState<{
     message: string;
     type: "success" | "error";
@@ -115,6 +119,26 @@ export default function CreateQuiz() {
     },
     mode: "onBlur",
   });
+  const timeLimit = watch("timeLimit"); // Get the total quiz time limit from form
+
+  useEffect(() => {
+    if (timeLimit === 0) return; // No limit mode
+
+    setQuizTimeLeft(timeLimit); // Initialize quiz timer
+
+    const timer = setInterval(() => {
+      setQuizTimeLeft((prev) => {
+        if (prev === null || prev <= 1) {
+          clearInterval(timer);
+          showAlert("Quiz End!", "error");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLimit]);
 
   const { fields, append, remove, move } = useFieldArray({
     control,
@@ -255,6 +279,20 @@ export default function CreateQuiz() {
     setAlert({ message, type });
     setTimeout(() => setAlert(null), 3000); // Hide after 3 seconds
   };
+  // handel review qustion navigation
+  const questions = watch("questions") || [];
+  const currentQuestion = questions[currentIndex];
+  const handleNext = () => {
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
   //handel submit
   const onSubmit = (data: QuizFormValues) => {
     console.log("Quiz submitted:", data);
@@ -262,9 +300,7 @@ export default function CreateQuiz() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="min-h-screen relative py-8 px-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="text-main relative">
       {/* Global Alert Display */}
       {alert && (
         <CustomAlert
@@ -301,7 +337,8 @@ export default function CreateQuiz() {
             <div className="flex gap-6 items-center">
               <Link
                 className="p-2 border text-secondary rounded-md"
-                href={"/admin"}>
+                href={"/admin"}
+              >
                 <ArrowLeft size={15} />
               </Link>
               <h1 className="text-2xl font-bold text-gray-800">Create Quiz</h1>
@@ -310,13 +347,15 @@ export default function CreateQuiz() {
               <button
                 type="button"
                 className="flex items-center gap-2 px-5 py-2 bg-white border rounded-md text-sm text-primary"
-                onClick={() => setActiveTab("preview")}>
+                onClick={() => setActiveTab("preview")}
+              >
                 <Eye size={15} />
                 Preview
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-2 px-5 py-2 bg-primary border rounded-md text-sm text-white">
+                className="flex items-center gap-2 px-5 py-2 bg-primary border rounded-md text-sm text-white"
+              >
                 <Save size={15} />
                 Save Quiz
               </button>
@@ -330,7 +369,8 @@ export default function CreateQuiz() {
               className={`p-2 w-full rounded-md font-medium ${
                 activeTab === "editor" ? "bg-white" : ""
               }`}
-              onClick={() => setActiveTab("editor")}>
+              onClick={() => setActiveTab("editor")}
+            >
               Editor
             </button>
             <button
@@ -338,15 +378,16 @@ export default function CreateQuiz() {
               className={`p-2 w-full font-medium rounded-md ${
                 activeTab === "preview" ? "bg-white" : ""
               }`}
-              onClick={() => setActiveTab("preview")}>
+              onClick={() => setActiveTab("preview")}
+            >
               Preview
             </button>
           </div>
-          <div className="box-content overflow-hidden">
+          <div className="overflow-hidden">
             {/* Content */}
-            <div className="p-0 sm:p-4">
+            <div className="p-0 sm:p-3">
               {activeTab === "editor" ? (
-                <div className="space-y-6">
+                <div className="box-content space-y-6">
                   {/* Quiz Details */}
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <div className="p-4 ">
@@ -398,7 +439,8 @@ export default function CreateQuiz() {
                       <button
                         type="button"
                         onClick={addQuestion}
-                        className="mt-4 px-4 py-2 w-fit bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none  focus:ring-offset-2 flex items-center">
+                        className="mt-4 px-4 py-2 w-fit bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none  focus:ring-offset-2 flex items-center"
+                      >
                         <Plus className="w-5 h-5 mr-1" />
                         Add Question
                       </button>
@@ -410,22 +452,26 @@ export default function CreateQuiz() {
                             <div
                               {...provided.droppableProps}
                               ref={provided.innerRef}
-                              className="space-y-4">
+                              className="space-y-4"
+                            >
                               {fields.map((question, index) => (
                                 <Draggable
                                   key={question.id}
                                   draggableId={question.id}
-                                  index={index}>
+                                  index={index}
+                                >
                                   {(provided, snapshot) => (
                                     <div
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       className={`border border-gray-200 rounded-lg overflow-hidden bg-white ${
                                         snapshot.isDragging ? "shadow-lg" : ""
-                                      }`}>
+                                      }`}
+                                    >
                                       <div
                                         {...provided.dragHandleProps}
-                                        className="flex justify-between items-center p-4 cursor-pointer bg-gray-50">
+                                        className="flex justify-between items-center p-4 cursor-pointer bg-gray-50"
+                                      >
                                         <div className="flex items-center space-x-2">
                                           <div className="cursor-grab">
                                             <GripVertical className="w-5 h-5 text-gray-400" />
@@ -442,7 +488,8 @@ export default function CreateQuiz() {
                                             onClick={() =>
                                               toggleQuestion(index)
                                             }
-                                            className="text-gray-500 hover:text-gray-700">
+                                            className="text-gray-500 hover:text-gray-700"
+                                          >
                                             {watch(
                                               `questions.${index}.isExpanded`
                                             ) ? (
@@ -454,7 +501,8 @@ export default function CreateQuiz() {
                                           <button
                                             type="button"
                                             onClick={() => remove(index)}
-                                            className="text-red-500 hover:text-red-700">
+                                            className="text-red-500 hover:text-red-700"
+                                          >
                                             <Trash2 className="w-5 h-5" />
                                           </button>
                                         </div>
@@ -492,7 +540,8 @@ export default function CreateQuiz() {
                                                         e.target
                                                           .value as QuestionType
                                                       );
-                                                    }}>
+                                                    }}
+                                                  >
                                                     <option value="multiple-choice">
                                                       Multiple Choice
                                                     </option>
@@ -581,7 +630,8 @@ export default function CreateQuiz() {
                                                   )
                                                 }
                                                 className="p-2 text-gray-500 hover:text-green-500 hover:border-green-500 rounded-md border border-gray-300"
-                                                title="Add image to question">
+                                                title="Add image to question"
+                                              >
                                                 <ImageIcon className="w-5 h-5" />
                                               </button>
                                             </div>
@@ -610,7 +660,8 @@ export default function CreateQuiz() {
                                                       undefined
                                                     )
                                                   }
-                                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                                                >
                                                   <Minus className="w-3 h-3" />
                                                 </button>
                                               </div>
@@ -643,7 +694,8 @@ export default function CreateQuiz() {
                                                     onClick={() =>
                                                       addOption(index)
                                                     }
-                                                    className="flex items-center p-2 gap-3 bg-white rounded-md border shadow-sm text-xs w-fit font-semibold">
+                                                    className="flex items-center p-2 gap-3 bg-white rounded-md border shadow-sm text-xs w-fit font-semibold"
+                                                  >
                                                     <Plus className="w-4 h-4 mr-1" />
                                                     Add Option
                                                   </button>
@@ -656,7 +708,8 @@ export default function CreateQuiz() {
                                                   (option, optionIndex) => (
                                                     <div
                                                       key={option.id}
-                                                      className="space-y-2">
+                                                      className="space-y-2"
+                                                    >
                                                       <div className="flex items-center space-x-2">
                                                         <input
                                                           type={
@@ -742,7 +795,8 @@ export default function CreateQuiz() {
                                                                 )
                                                               }
                                                               className="p-2 text-gray-500 hover:text-green-500 rounded-md border border-gray-300 hover:border-green-500 transition-colors"
-                                                              title="Add image to option">
+                                                              title="Add image to option"
+                                                            >
                                                               <ImageIcon className="w-5 h-5" />
                                                             </button>
                                                           </div>
@@ -760,7 +814,8 @@ export default function CreateQuiz() {
                                                                 optionIndex
                                                               )
                                                             }
-                                                            className="text-red-500 hover:text-red-700">
+                                                            className="text-red-500 hover:text-red-700"
+                                                          >
                                                             <Minus className="w-5 h-5" />
                                                           </button>
                                                         )}
@@ -799,7 +854,8 @@ export default function CreateQuiz() {
                                                                 currentOptions
                                                               );
                                                             }}
-                                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                                                          >
                                                             <Minus className="w-3 h-3" />
                                                           </button>
                                                         </div>
@@ -858,132 +914,188 @@ export default function CreateQuiz() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-6">
-                  <h2 className="text-xl font-bold text-gray-800">
-                    Quiz Preview
-                  </h2>
-
-                  <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 className="text-lg font-semibold mb-2">
+                <div className="box-content space-y-3">
+                  <div className="flex justify-between">
+                    <h2 className="text-xl font-bold text-gray-800 mb-2">
                       {watch("title") || "Untitled Quiz"}
-                    </h3>
-                    {watch("instructions") && (
-                      <div className="prose max-w-none mb-4">
-                        <p className="text-gray-700">{watch("instructions")}</p>
-                      </div>
+                    </h2>
+                    {/* Timer Display */}
+                    {timeLimit !== 0 && quizTimeLeft !== null && (
+                      <span className="flex items-center justify-center gap-2 px-2 bg-gray-200 rounded-md font-semibold ">
+                        <Timer size={18} />
+                        <span className="block text-xs h-fit font-semibold">
+                          {Math.floor(quizTimeLeft / 60)}:
+                          {String(quizTimeLeft % 60).padStart(2, "0")}
+                        </span>
+                      </span>
                     )}
+                  </div>
+                  {watch("instructions") && (
+                    <div className="prose max-w-none mt-2">
+                      <p className="text-secondary text-xs">
+                        {watch("instructions")}
+                      </p>
+                    </div>
+                  )}
+                  <div>
+                    <div className="mb-4">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs sm:text-sm font-medium">
+                          Question {currentIndex + 1} of {questions.length}
+                        </span>
+                        {/* Progress Percentage */}
+                        <span className="text-xs sm:text-sm font-medium">
+                          {Math.round(
+                            ((currentIndex + 1) / questions.length) * 100
+                          )}
+                          % Complete
+                        </span>
+                      </div>
 
-                    <div className="mt-6 space-y-6">
-                      {watch("questions").map((question, index) => (
+                      {/* Progress Bar */}
+                      <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
-                          key={question.id}
-                          className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
-                          <div className="flex justify-between items-start">
-                            <h4 className="text-md font-medium">
-                              Question {index + 1} ({question.points} points)
-                            </h4>
-                          </div>
-
-                          <p className="mt-2 text-gray-800">{question.text}</p>
-
-                          {question.imageUrl && (
-                            <div className="mt-2">
-                              <Image
-                                src={question.imageUrl}
-                                alt="Question"
-                                width={300}
-                                height={300}
-                                className="max-h-40 rounded-md"
-                              />
-                            </div>
-                          )}
-
-                          {question.type === "multiple-choice" &&
-                            question.options && (
-                              <div className="mt-3 space-y-2">
-                                {question.options.map((option, index) => (
-                                  <div
-                                    key={option.id}
-                                    className="flex items-start space-x-2">
-                                    <input
-                                      type="radio"
-                                      name={`preview-${question.id}`}
-                                      className="h-4 w-4 text-green-600  border-gray-300 rounded mt-1"
-                                      disabled
-                                    />
-                                    <div>
-                                      <label className="block text-sm text-gray-700">
-                                        {option?.text?.trim()
-                                          ? option.text
-                                          : `option ${index + 1}`}
-                                      </label>
-                                      {option.imageUrl && (
-                                        <Image
-                                          src={option.imageUrl}
-                                          width={300}
-                                          height={300}
-                                          alt="Option"
-                                          className="max-h-32 rounded-md mt-1"
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                          {question.type === "true-false" &&
-                            question.options && (
-                              <div className="mt-3 space-y-2">
-                                {question.options.map((option) => (
-                                  <div
-                                    key={option.id}
-                                    className="flex items-center">
-                                    <input
-                                      type="radio"
-                                      name={`preview-${question.id}`}
-                                      className="h-4 w-4 text-green-600  border-gray-300 rounded-full"
-                                      disabled
-                                    />
-                                    <label className="ml-2 block text-sm text-gray-700">
-                                      {option.text}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                          {question.type === "fill-in-the-blank" && (
-                            <div className="mt-3">
-                              <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none "
-                                placeholder="Your answer"
-                                disabled
-                              />
-                            </div>
-                          )}
-
-                          {question.type === "short-answer" && (
-                            <div className="mt-3">
-                              <textarea
-                                className="w-full px-3 py-2 min-h-[200px] resize-none border border-gray-300 rounded-md focus:outline-none "
-                                rows={3}
-                                placeholder="Your answer"
-                                disabled
-                              />
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                          className="bg-green-600 h-2 rounded-full"
+                          style={{
+                            width: `${
+                              ((currentIndex + 1) / questions.length) * 100
+                            }%`,
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="flex justify-end">
+                  <div className="bg-white p-3 rounded-lg shadow-sm border border-gray-200 sm:p-6">
+                    {currentQuestion && (
+                      <div className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
+                        <div className="flex flex-col gap-2 justify-between items-center sm:flex-row">
+                          <p className="text-lg font-semibold">
+                            {currentQuestion.text}
+                          </p>
+                          <span className="text-sm text-secondary">
+                            {currentQuestion.points} points
+                          </span>
+                        </div>
+                        {currentQuestion.imageUrl && (
+                          <div className="mt-2 ">
+                            <Image
+                              src={currentQuestion.imageUrl}
+                              alt="Question"
+                              width={300}
+                              height={300}
+                              className="max-h-40 rounded-md"
+                            />
+                          </div>
+                        )}
+
+                        {currentQuestion.type === "multiple-choice" &&
+                          currentQuestion.options && (
+                            <div className="mt-3 space-y-2">
+                              {currentQuestion.options.map((option, index) => (
+                                <div
+                                  key={option.id}
+                                  className="flex items-start space-x-2 p-3 border rounded-md"
+                                >
+                                  <input
+                                    type="radio"
+                                    name={`preview-${currentQuestion.id}`}
+                                    className="h-4 w-4 text-green-600 border-gray-300 rounded mt-1"
+                                    disabled
+                                  />
+                                  <div>
+                                    <label className="block text-sm text-gray-700">
+                                      {option?.text?.trim()
+                                        ? option.text
+                                        : `Option ${index + 1}`}
+                                    </label>
+                                    {option.imageUrl && (
+                                      <Image
+                                        src={option.imageUrl}
+                                        width={300}
+                                        height={300}
+                                        alt="Option"
+                                        className="max-h-32 rounded-md mt-1"
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                        {currentQuestion.type === "true-false" &&
+                          currentQuestion.options && (
+                            <div className="mt-3 space-y-2">
+                              {currentQuestion.options.map((option) => (
+                                <div
+                                  key={option.id}
+                                  className="flex items-center p-3 border rounded-md "
+                                >
+                                  <input
+                                    type="radio"
+                                    name={`preview-${currentQuestion.id}`}
+                                    className="h-4 w-4 text-green-600 border-gray-300 rounded-full"
+                                    disabled
+                                  />
+                                  <label className="ml-2 block text-sm text-gray-700">
+                                    {option.text}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                        {currentQuestion.type === "fill-in-the-blank" && (
+                          <div className="mt-3">
+                            <input
+                              type="text"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+                              placeholder="Your answer"
+                              disabled
+                            />
+                          </div>
+                        )}
+
+                        {currentQuestion.type === "short-answer" && (
+                          <div className="mt-3">
+                            <textarea
+                              className="w-full px-3 py-2 min-h-[200px] resize-none border border-gray-300 rounded-md focus:outline-none"
+                              rows={3}
+                              placeholder="Your answer"
+                              disabled
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Navigation Buttons */}
+                  <div className="flex justify-between">
                     <button
                       type="button"
-                      className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none  focus:ring-offset-2"
-                      onClick={() => setActiveTab("editor")}>
-                      Back to Editor
+                      className={`px-6 py-2 border text-sm rounded-md shadow-sm transition focus:outline-none ${
+                        currentIndex === 0
+                          ? "text-secondary cursor-not-allowed"
+                          : "bg-green-600 text-white hover:bg-green-700"
+                      }`}
+                      onClick={handlePrevious}
+                      disabled={currentIndex === 0}
+                    >
+                      Previous
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`px-6 py-2 border text-sm rounded-md shadow-sm transition focus:outline-none ${
+                        currentIndex === questions.length - 1
+                          ? "text-secondary cursor-not-allowed"
+                          : "bg-green-600 text-white hover:bg-green-700"
+                      }`}
+                      onClick={handleNext}
+                      disabled={currentIndex === questions.length - 1}
+                    >
+                      Next
                     </button>
                   </div>
                 </div>
@@ -995,12 +1107,21 @@ export default function CreateQuiz() {
         <div className="xl:w-[350px]">
           {/* Quiz Settings */}
           <div className="box-content overflow-hidden mb-4">
-            <h2 className="font-semibold text-lg mb-4">Quiz Settings</h2>
+            <h2 className="flex items-center gap-2 font-semibold text-lg mb-4">
+              <Settings size={20} /> Quiz Settings
+            </h2>
             <div className="p-4 space-y-4">
-              <div className="flex items-center">
+              <div>
                 <label
                   htmlFor="randomizeQuestions"
-                  className="flex items-center cursor-pointer">
+                  className="flex justify-between items-center cursor-pointer"
+                >
+                  <div>
+                    <h2 className="text-sm font-bold">Randomize Questions</h2>
+                    <span className="text-xs font-medium text-secondary">
+                      Shuffle questions for each participant
+                    </span>
+                  </div>
                   <div className="relative">
                     <input
                       type="checkbox"
@@ -1011,16 +1132,19 @@ export default function CreateQuiz() {
                     <div className="w-12 h-6 bg-gray-300 peer-checked:bg-primary rounded-full"></div>
                     <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:transform peer-checked:translate-x-6"></div>
                   </div>
-                  <span className="ml-3 text-sm font-medium text-gray-700">
-                    Randomize Questions
-                  </span>
                 </label>
               </div>
-
-              <div className="flex items-center mt-4">
+              <div className="mt-4">
                 <label
                   htmlFor="immediateFeedback"
-                  className="flex items-center cursor-pointer">
+                  className="flex justify-between items-center cursor-pointer"
+                >
+                  <div>
+                    <h2 className="text-sm font-bold">Immediate Feedback</h2>
+                    <span className="text-xs font-medium text-secondary">
+                      Show correct answers after the quiz finish
+                    </span>
+                  </div>
                   <div className="relative">
                     <input
                       type="checkbox"
@@ -1031,16 +1155,19 @@ export default function CreateQuiz() {
                     <div className="w-12 h-6 bg-gray-300 peer-checked:bg-primary rounded-full"></div>
                     <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:transform peer-checked:translate-x-6"></div>
                   </div>
-                  <span className="ml-3 text-sm font-medium text-gray-700">
-                    Show correct answers after quiz completion
-                  </span>
                 </label>
               </div>
-
-              <div className="flex items-center mt-4">
+              <div className="mt-4">
                 <label
                   htmlFor="feedbackByEmail"
-                  className="flex items-center cursor-pointer">
+                  className="flex justify-between items-center cursor-pointer"
+                >
+                  <div>
+                    <h2 className="text-sm font-bold">Feedback By Email</h2>
+                    <span className="text-xs font-medium text-secondary">
+                      Send feadback to my email
+                    </span>
+                  </div>
                   <div className="relative">
                     <input
                       type="checkbox"
@@ -1051,9 +1178,6 @@ export default function CreateQuiz() {
                     <div className="w-12 h-6 bg-gray-300 peer-checked:bg-primary rounded-full"></div>
                     <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:transform peer-checked:translate-x-6"></div>
                   </div>
-                  <span className="ml-3 text-sm font-medium text-gray-700">
-                    Send feedback to my email
-                  </span>
                 </label>
               </div>
 
@@ -1084,17 +1208,26 @@ export default function CreateQuiz() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Time Limit (minutes)
                   </label>
-                  <input
-                    type="number"
-                    min="0"
-                    className={`w-full px-3 py-2 border ${
-                      errors.timeLimit ? "border-red-500" : "border-gray-300"
-                    } rounded-md focus:outline-none `}
-                    {...register("timeLimit", {
-                      valueAsNumber: true,
-                      min: { value: 0, message: "Must be positive" },
-                    })}
-                  />
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min="0"
+                      className={`w-full px-3 py-2 pl-8 border ${
+                        errors.timeLimit ? "border-red-500" : "border-gray-300"
+                      } rounded-md focus:outline-none `}
+                      {...register("timeLimit", {
+                        valueAsNumber: true,
+                        validate: (value) =>
+                          value === 0 ||
+                          value > 0 ||
+                          "Must be 0 (no limit) or a positive number",
+                      })}
+                    />
+                    <Timer
+                      size={15}
+                      className="absolute top-1/2 left-2 -translate-y-1/2 text-secondary"
+                    />
+                  </div>
                   {errors.timeLimit && (
                     <p className="mt-1 text-sm text-red-600">
                       {errors.timeLimit.message}
@@ -1104,6 +1237,7 @@ export default function CreateQuiz() {
                     Set to 0 for no limit
                   </p>
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Retake numbers
@@ -1158,45 +1292,62 @@ export default function CreateQuiz() {
             <h3 className="font-semibold text-lg mb-4">Quiz Summary</h3>
             <div className="text-sm">
               <div>
-                <p className="flex items-center justify-between mb-4">
-                  <span className="font-medium text-secondary">Questions:</span>{" "}
+                <p className="flex items-center justify-between mb-4 text-sm ">
+                  <span className="text-secondary text-sm">Questions:</span>{" "}
                   {watch("questions").length}
                 </p>
                 {watch("startDate") && watch("endDate") && (
                   <p className="flex flex-col gap-2 justify-between mb-4 text-xs">
-                    <span className="font-medium text-secondary">
-                      Time Range:
-                    </span>{" "}
+                    <span className="text-secondary text-sm">Time Range:</span>{" "}
                     {new Date(watch("startDate")).toLocaleString()} -{" "}
                     {new Date(watch("endDate")).toLocaleString()}
                   </p>
                 )}
               </div>
               <div>
-                <p className="flex items-center justify-between mb-4">
-                  <span className="font-medium text-secondary">
-                    Time Limit:
-                  </span>{" "}
-                  {watch("timeLimit") === 0
-                    ? "No limit"
-                    : `${watch("timeLimit")} minutes`}
+                <p className="flex items-center justify-between mb-4 text-sm">
+                  <span className="text-secondary text-sm">Time Limit:</span>
+                  <span className="text-sm">
+                    {watch("timeLimit") && watch("timeLimit") > 0
+                      ? (() => {
+                          const totalSeconds = watch("timeLimit");
+                          const hours = Math.floor(totalSeconds / 3600); // Total hours
+                          const minutes = Math.floor(
+                            (totalSeconds % 3600) / 60
+                          ); // Remaining minutes
+                          const seconds = totalSeconds % 60; // Remaining seconds
+                          return hours > 0
+                            ? `${hours} hour${hours > 1 ? "s" : ""} ${
+                                minutes > 0
+                                  ? `${minutes} minute${minutes > 1 ? "s" : ""}`
+                                  : ""
+                              } ${
+                                seconds > 0
+                                  ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                                  : ""
+                              }`
+                            : `${minutes} minute${minutes > 1 ? "s" : ""} ${
+                                seconds > 0
+                                  ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                                  : ""
+                              }`;
+                        })()
+                      : "No limit"}
+                  </span>
                 </p>
-                <p className="flex items-center justify-between mb-4">
-                  <span className="font-medium text-secondary">Feedback:</span>{" "}
+
+                <p className="flex items-center justify-between mb-4 text-sm">
+                  <span className="text-secondary text-sm">Feedback:</span>{" "}
                   {watch("immediateFeedback")
                     ? "Immediate"
                     : "After submission"}
                 </p>
-                <p className="flex items-center justify-between mb-4">
-                  <span className="font-medium text-secondary">
-                    Total Points:
-                  </span>{" "}
+                <p className="flex items-center justify-between mb-4 text-sm">
+                  <span className="text-secondary text-sm">Total Points:</span>{" "}
                   {calculateTotalPoints()}
                 </p>
-                <p className="flex items-center justify-between mb-4">
-                  <span className="font-medium text-secondary">
-                    Passing Score:
-                  </span>{" "}
+                <p className="flex items-center justify-between mb-4 text-sm">
+                  <span className="text-secondary text-sm">Passing Score:</span>{" "}
                   {watch("passingScore")}%
                 </p>
               </div>

@@ -17,6 +17,10 @@ export const Courses: CourseType[] = [
     price: 25,
     videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Live",
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
     instructor: {
       name: "Dr. Emily Carter",
       image:
@@ -30,7 +34,7 @@ export const Courses: CourseType[] = [
       students: 500,
     },
     students: 400,
-    status: "Recorded",
+    status: "Published",
     description:
       "Explore the fundamentals of human behavior and mental processes in this engaging course.",
     curriculums: [
@@ -83,6 +87,10 @@ export const Courses: CourseType[] = [
     price: 30,
     videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Offline",
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
     instructor: {
       name: "Prof. Robert Smith",
       image:
@@ -96,7 +104,7 @@ export const Courses: CourseType[] = [
       students: 600,
     },
     students: 550,
-    status: "Offline",
+    status: "Published",
     description: "Learn the key principles of managing businesses effectively.",
     curriculums: [
       { title: "Introduction", content: "Understanding business structures." },
@@ -145,6 +153,10 @@ export const Courses: CourseType[] = [
     price: 40,
     videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Live",
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
     instructor: {
       name: "Jane Doe",
       image:
@@ -158,7 +170,7 @@ export const Courses: CourseType[] = [
       students: 800,
     },
     students: 750,
-    status: "Live",
+    status: "Published",
     description:
       "A complete bootcamp covering HTML, CSS, JavaScript, and React.js.",
     curriculums: [
@@ -200,6 +212,10 @@ export const Courses: CourseType[] = [
     price: 35,
     videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Recorded",
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
     instructor: {
       name: "Sarah Johnson",
       image:
@@ -213,7 +229,7 @@ export const Courses: CourseType[] = [
       students: 900,
     },
     students: 650,
-    status: "Live",
+    status: "Published",
     description:
       "Master Photoshop, Illustrator, and InDesign with hands-on projects.",
     curriculums: [
@@ -255,6 +271,10 @@ export const Courses: CourseType[] = [
     price: 20,
     videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Live",
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
     instructor: {
       name: "Michael Brown",
       image:
@@ -267,7 +287,7 @@ export const Courses: CourseType[] = [
       students: 1200,
     },
     students: 850,
-    status: "Live",
+    status: "Published",
     description:
       "Learn Python from scratch, including data structures and automation.",
     curriculums: [
@@ -309,6 +329,10 @@ export const Courses: CourseType[] = [
     price: 50,
     videoUrl: "https://www.youtube.com/watch?v=7mz06SXDoqA",
     type: "Recorded",
+    date: "April 5,2025",
+    category: "Cognitive Fitness",
+    supCategory: "sup Cognitive",
+    revenue: "$1,200.00",
     instructor: {
       name: "Robert Williams",
       image:
@@ -322,7 +346,7 @@ export const Courses: CourseType[] = [
       students: 1400,
     },
     students: 1100,
-    status: "Recorded",
+    status: "Published",
     description:
       "A step-by-step guide to managing money and making smart investments.",
     curriculums: [
