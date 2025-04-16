@@ -4,6 +4,7 @@ import {
   ArrowLeftRight,
   BadgeDollarSign,
   BookOpen,
+  Building2,
   Calendar,
   Cog,
   FileQuestion,
@@ -110,37 +111,43 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
       label: "Messsages",
       path: "/admin/chat",
     },
-
     {
       id: 28,
+      icon: Building2,
+      label: "Financial",
+      path: "/admin/financial",
+    },
+
+    {
+      id: 29,
       icon: Wallet,
       label: "Wallet",
       path: "/admin/wallet",
     },
     {
-      id: 29,
+      id: 30,
       icon: BadgeDollarSign,
       label: "Earngs",
       path: "/admin/earngs",
     },
     {
-      id: 30,
+      id: 31,
       type: "divider",
     },
     {
-      id: 31,
+      id: 32,
       section: "Settings",
       type: "text",
     },
 
     {
-      id: 32,
+      id: 33,
       icon: Cog,
       label: "Settings",
       path: "/admin/settings",
     },
     {
-      id: 33,
+      id: 34,
       icon: FileQuestion,
       label: "Help Center",
       path: "#",

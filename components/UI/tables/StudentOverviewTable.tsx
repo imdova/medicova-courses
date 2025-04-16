@@ -1,4 +1,3 @@
-// components/StudentTable.tsx
 import { useState } from "react";
 import OptionsDropdown from "../OptionsDropdown";
 import SearchBar from "@/app/courses/search-Input";

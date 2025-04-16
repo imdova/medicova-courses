@@ -224,7 +224,7 @@ const InstuctorProfile = () => {
             </Link>
           </div>
           <div className="flex flex-col w-full lg:w-fit lg:flex-row gap-2 bg-gray-100 p-1 rounded-lg mb-4">
-            {[, "All", "Pharmacy", "Health Education", "Clinical Training"].map(
+            {["All", "Pharmacy", "Health Education", "Clinical Training"].map(
               (category) => (
                 <button
                   key={category}

@@ -49,7 +49,9 @@ export default function Quizzes() {
       </div>
 
       {/* Pass the search query handler function to the SearchBar */}
-      <SearchBar placeholder="Search for Quizzes" onSearch={handleSearch} />
+      <div className="mb-4">
+        <SearchBar placeholder="Search for Quizzes" onSearch={handleSearch} />
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredQuizzes.map((quiz) => (
           <div className="box-content border" key={quiz.id}>
