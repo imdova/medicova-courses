@@ -1950,7 +1950,7 @@ export default function AddCoursePage() {
                                                             {/* Create New Quiz Link */}
                                                             <Link
                                                               className="h-fit mt-2 py-2 px-8 rounded-lg bg-primary text-white"
-                                                              href="/admin/add-quiz">
+                                                              href="/instructor/add-quiz">
                                                               + Create Quiz
                                                             </Link>
                                                           </div>

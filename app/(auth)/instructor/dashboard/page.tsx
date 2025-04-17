@@ -15,7 +15,7 @@ import Image from "next/image";
 
 const Dashboard: React.FC = () => {
   return (
-    <main>
+    <main className="body-container px-4 md:px-5">
       <div className="flex flex-col xl:flex-row gap-3 justify-start mb-3 ">
         <div className="w-full">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">

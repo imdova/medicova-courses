@@ -35,7 +35,7 @@ export default function SingleCourse({ params }: SingleCourseProps) {
       <div>
         <Link
           className="flex gap-3 items-center mb-6 w-fit"
-          href="/admin/courses">
+          href="/instructor/courses">
           <ChevronLeft size={18} />
           <span>Back</span>
         </Link>

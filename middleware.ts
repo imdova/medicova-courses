@@ -3,7 +3,7 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(function middleware(req) {
-  const token = req.nextauth.token;
+  const token = req.nextauth.token as unknown as User;
   const path = req.nextUrl.pathname;
 
   // Redirect to login page if there is no accessible token
@@ -12,9 +12,9 @@ export default withAuth(function middleware(req) {
   }
 
   const userType = token.type as User["type"];
-  if (path == "/user-redirect") {
+  if (path == "/me") {
     if (userType === "instructor") {
-      return NextResponse.redirect(new URL(`/instructor`, req.url));
+      return NextResponse.redirect(new URL(`/in/${token.userName}`, req.url));
     } else if (userType === "student") {
       return NextResponse.redirect(new URL(`/student`, req.url));
     } else if (userType === "admin") {
@@ -23,6 +23,7 @@ export default withAuth(function middleware(req) {
   }
 
   const haveAccess = doesRoleHaveAccessToURL(userType, path);
+
   if (!haveAccess) {
     // Redirect to login page if user has no access to that particular page
     return NextResponse.rewrite(new URL("/403", req.url));
@@ -36,13 +37,13 @@ export const config = {
     "/student/:path*",
     "/instructor/:path*",
     "/admin/:path*",
-    "/user-redirect",
+    "/me",
   ],
 };
 
 const roleAccessMap: Record<User["type"], string[]> = {
   student: ["/student/*"],
-  instructor: ["/instructor/*"],
+  instructor: ["/instructor/*", "/instructor"],
   admin: ["/admin/*"],
 };
 

@@ -28,6 +28,7 @@ export const routeConfigs: RouteConfig[] = [
   // auth
   { pattern: "/auth/*", headerType: "minimal", linksType: "userType" },
   //employer
+  { pattern: "/in/*", headerType: "full", linksType: "userType" },
   { pattern: "/instructor/*", headerType: "full", linksType: "userType" },
   //job-seeker
   { pattern: "/student/*", headerType: "full", linksType: "userType" },
@@ -69,8 +70,6 @@ export function getNavLinks(user?: User, pathname?: string) {
     const type = matchRoute(pathname)?.linksType;
     if (type === "userType" && userType) {
       return roleBasedLinks[userType];
-    } else if (userType === "admin") {
-      return roleBasedLinks.admin;
     }
   }
   return roleBasedLinks.default;

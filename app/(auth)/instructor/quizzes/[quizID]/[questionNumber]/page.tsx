@@ -128,8 +128,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
   }, []);
 
   const currentQuestion = orderedQuestions[questionNum - 1];
-  const startPageUrl = `/admin/quizzes/${quizID}/start`;
-  const completePageUrl = `/admin/quizzes/${quizID}/complete`;
+  const startPageUrl = `/instructor/quizzes/${quizID}/start`;
+  const completePageUrl = `/instructor/quizzes/${quizID}/complete`;
 
   if (!currentQuestion) {
     notFound();
@@ -512,7 +512,7 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
               <Link
                 href={
                   questionNum > 1
-                    ? `/admin/quizzes/${quizID}/${questionNum - 1}`
+                    ? `/instructor/quizzes/${quizID}/${questionNum - 1}`
                     : startPageUrl
                 }
                 className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm bg-gray-100 hover:bg-gray-200 text-secondary
@@ -531,7 +531,7 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
               </button>
             ) : (
               <Link
-                href={`/admin/quizzes/${quizID}/${questionNum + 1}`}
+                href={`/instructor/quizzes/${quizID}/${questionNum + 1}`}
                 className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-sm text-white rounded-md"
               >
                 Next <ChevronRight size={15} />
@@ -569,7 +569,7 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
               return (
                 <Link
                   key={questionNum}
-                  href={`/admin/quizzes/${quizID}/${questionNum}`}
+                  href={`/instructor/quizzes/${quizID}/${questionNum}`}
                   className={`w-8 h-8 flex items-center justify-center text-sm rounded-full bg-gray-300
                   ${
                     status?.answered

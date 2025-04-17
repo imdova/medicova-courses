@@ -6,27 +6,18 @@ export const roleBasedLinks: RoleBasedLinks = {
     {
       id: 1,
       label: "Dashboard",
-      path: "/employer/dashboard",
+      path: "/instructor/dashboard",
     },
     {
-      id: 1,
-      label: "My Jobs",
-      path: "/employer/job/manage-jobs",
+      id: 2,
+      label: "All Courses",
+      path: "/instructor/courses",
+      pattern: "/instructor/courses/*",
     },
     {
-      id: 1,
-      label: "CV Search",
-      path: "/employer/search",
-    },
-    {
-      id: 1,
-      label: "Report",
-      path: "#",
-    },
-    {
-      id: 1,
-      label: "Billing",
-      path: "/employer/subscription-plans",
+      id: 3,
+      label: "Add New Course",
+      path: "/instructor/add-course",
     },
   ],
   student: [
@@ -93,6 +84,12 @@ export const roleBasedLinks: RoleBasedLinks = {
       icon: Text,
       path: "/blogs",
       pattern: "/blogs/*",
+    },
+    {
+      id: 4,
+      label: "Search For a Job",
+      icon: Search,
+      path: "http://medicova.net/",
     },
   ],
 };

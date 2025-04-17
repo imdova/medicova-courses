@@ -48,7 +48,9 @@ const SectionHeader = ({
   <div className="h-[45px]">
     <div className="w-full border-b border-gray-200" />
     <p
-      className={`${isMinimal ? "px-1 text-xs" : "px-1 text-xs xl:text-sm"} font-medium normal-case text-gray-600 xl:p-4`}
+      className={`${
+        isMinimal ? "px-1 text-xs" : "px-1 text-xs xl:text-sm"
+      } font-medium normal-case text-gray-600 xl:p-4`}
     >
       {text}
     </p>
@@ -60,21 +62,23 @@ const LinkTab = ({ item, isActive }: TabComponentProps) => {
 
   return (
     <Link
-      className={`mx-2 flex h-[45px] min-h-[40px] flex-row justify-start rounded-[10px] p-2 transition-all duration-300 ease-in-out ${isActive ? "bg-light-primary text-white opacity-100" : "text-secondary"
-        } `}
+      className={`mx-2 flex h-[45px] min-h-[40px] flex-row justify-start rounded-[10px] p-2 transition-all duration-300 ease-in-out ${
+        isActive ? "bg-light-primary text-white opacity-100" : "text-secondary"
+      } `}
       href={item.path || "#"}
     >
       <div className="flex w-full flex-row items-center justify-between gap-2">
         <div className="flex flex-row items-center gap-4 text-left normal-case">
-          {IconComponent && <IconComponent />}
+          {IconComponent && <IconComponent size={16} className="mr-2" />} 
           <span>{item.label}</span>
         </div>
         {item.notifications && (
           <div
-            className={`aspect-square rounded-full p-1 px-2 text-xs ${isActive
-              ? "bg-primary-foreground text-light-primary"
-              : "bg-secondary text-primary-foreground"
-              } `}
+            className={`aspect-square rounded-full p-1 px-2 text-xs ${
+              isActive
+                ? "bg-primary-foreground text-light-primary"
+                : "bg-secondary text-primary-foreground"
+            } `}
           >
             {item.notifications}
           </div>
@@ -103,17 +107,24 @@ const CollapseTab = ({
       >
         <div className="flex w-full flex-row items-center justify-between gap-2">
           <div className="flex flex-row items-center gap-4 text-left normal-case">
-            {IconComponent && <IconComponent />}
+            {IconComponent && <IconComponent size={16} className=" mr-2" />} 
             <span>{item.label}</span>
           </div>
           <ChevronDown
-            className={`${isOpen ? "rotate-180" : ""} transition-transform duration-300`}
+            size={14}
+            className={`${
+              isOpen ? "rotate-180" : ""
+            } transition-transform duration-300`}
           />
         </div>
       </div>
-      <Collapse open={isOpen} >
+      <Collapse open={isOpen}>
         <div
-          className={`${isMinimal ? "group-hover:ml-10" : "max-xl:group-hover:ml-10 xl:ml-10"} transition-all duration-300`}
+          className={`${
+            isMinimal
+              ? "group-hover:ml-10"
+              : "max-xl:group-hover:ml-10 xl:ml-10"
+          } transition-all duration-300`}
         >
           {item.links?.map((link, linkIndex) => {
             const isActive = isOpen
@@ -140,17 +151,24 @@ const ProfileTab = ({
   activeTab,
   isMinimal,
 }: ProfileTabProps) => {
+  const isStudent = user.type === "student";
   const userAvatar = user.photo;
   const displayName = `${user.firstName} .${user.lastName?.[0]}`;
   const email = user.email;
-  const path = "profile"
+  const path = isStudent
+    ? `/st/${user.userName}`
+    : `/in/${user.userName}`;
   const isActive =
     activeTab === 0 &&
     decodeURIComponent(pathname) === decodeURIComponent(path);
 
   return (
     <Link
-      className={`${isMinimal ? "mx-0" : "xl:mx-2"} flex h-[45px] flex-row justify-start rounded-[10px] p-[5px] opacity-100 transition-all duration-300 ease-in-out ${isActive ? "bg-light-primary text-white" : "text-gray-800/60"} `}
+      className={`${
+        isMinimal ? "mx-0" : "xl:mx-2"
+      } flex h-[45px] flex-row justify-start rounded-[10px] p-[5px] opacity-100 transition-all duration-300 ease-in-out ${
+        isActive ? "bg-light-primary text-white" : "text-gray-800/60"
+      } `}
       href={path}
     >
       <div className="flex items-center gap-1">
@@ -178,7 +196,7 @@ export default function VerticalTabs({
   const links = getSideBarLinks(user, pathname);
   const { activeTab, isCollapsed, setIsCollapsed } = useActiveTab(
     links,
-    pathname,
+    pathname
   );
 
   // Calculate position of the active indicator
@@ -196,7 +214,7 @@ export default function VerticalTabs({
       {links.map((item, index) => {
         // Calculate additional offset for collapsed items
         const collapsedLinkIndex = links.findIndex(
-          (link) => link.id === isCollapsed,
+          (link) => link.id === isCollapsed
         );
         const collapsedLink = links.find((link) => link.id === isCollapsed);
         const additionalItems = isCollapsed

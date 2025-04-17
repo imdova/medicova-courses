@@ -30,7 +30,7 @@ const LiveOfflinePage = () => {
   };
 
   return (
-    <div className="p-4 border rounded-lg bg-white shadow-sm">
+    <div className="p-4 border rounded-lg bg-white shadow-sm mx-4 md:mx-5">
       <div className="flex flex-col items-center justify-between gap-4 mb-5 md:flex-row">
         <div className="text-center md:text-start">
           <h1 className="text-2xl font-bold mb-2">My Courses</h1>
@@ -38,7 +38,7 @@ const LiveOfflinePage = () => {
             Manage and track All Your Courses in one place
           </p>
         </div>
-        <AddBtn link="/admin/add-course" className="w-full md:w-[200px]">
+        <AddBtn link="/instructor/add-course" className="w-full md:w-[200px]">
           Add New Course
         </AddBtn>
       </div>

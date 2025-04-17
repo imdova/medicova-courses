@@ -70,7 +70,7 @@ const UserDropDown: React.FC<{ user: User }> = ({ user }) => {
 
         {/* Dropdown Menu */}
         {isProfileMenuOpen && (
-          <div className="absolute top-12 right-0 w-48 bg-white  shadow-lg rounded-md p-2">
+          <div className="absolute top-12 right-0 w-52 bg-white  shadow-lg rounded-md p-3">
             <h2 className="mb-3 text-gray-900 text-sm  font-semibold">
               Welcome, {user.firstName}!
             </h2>
@@ -81,7 +81,7 @@ const UserDropDown: React.FC<{ user: User }> = ({ user }) => {
                   href={"/student"}
                   className={`flex items-center gap-2 px-3 py-2 text-xs cursor-pointer rounded-md transition text-gray-800 hover:bg-gray-100`}>
                   <CircleUser size={16} />
-                  <span>Profile</span>
+                  <span className="text-sm">Profile</span>
                 </Link>
               </li>
               {menuItems.map(({ icon, label, path }) => (
@@ -92,7 +92,7 @@ const UserDropDown: React.FC<{ user: User }> = ({ user }) => {
                     href={path}
                     className={`flex items-center gap-2 px-3 py-2 text-xs cursor-pointer rounded-md transition text-gray-800 hover:bg-gray-100`}>
                     {icon}
-                    <span>{label}</span>
+                    <span className="text-sm">{label}</span>
                   </Link>
                 </li>
               ))}
@@ -100,7 +100,7 @@ const UserDropDown: React.FC<{ user: User }> = ({ user }) => {
                 onClick={() => signOut()}
                 className={`flex items-center gap-2 px-3 py-2 text-xs cursor-pointer rounded-md transition text-red-700`}>
                 <LogOut size={16} />
-                <span>LogOut</span>
+                <span className="text-sm" >LogOut</span>
               </li>
             </ul>
           </div>

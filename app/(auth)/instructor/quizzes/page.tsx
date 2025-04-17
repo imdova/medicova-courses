@@ -27,20 +27,17 @@ export default function Quizzes() {
   };
 
   return (
-    <section>
+    <section className="w-full px-4 md:px-5">
       <div className="flex flex-col justify-between sm:items-center pb-4 gap-4  sm:flex-row">
         <div className="flex gap-6 items-center">
-          <Link
-            className="p-2 border text-secondary rounded-md"
-            href={"/admin"}
-          >
+          <button className="p-2 border text-secondary rounded-md">
             <ArrowLeft size={15} />
-          </Link>
+          </button>
           <h1 className="text-2xl font-bold text-gray-800">My Quizzes</h1>
         </div>
         <div className="flex items-center gap-3">
           <Link
-            href={"/admin/add-quiz"}
+            href={"/instructor/add-quiz"}
             className="flex items-center gap-2 px-5 py-2 bg-primary border rounded-md text-sm text-white"
           >
             <Plus size={15} /> Create New Quiz
@@ -61,23 +58,26 @@ export default function Quizzes() {
                 <Timer size={15} />
                 {quiz.timeLimit && quiz.timeLimit > 0
                   ? (() => {
-                    const totalSeconds = quiz.timeLimit;
-                    const hours = Math.floor(totalSeconds / 3600); // Total hours
-                    const minutes = Math.floor((totalSeconds % 3600) / 60); // Remaining minutes
-                    const seconds = totalSeconds % 60; // Remaining seconds
-                    return hours > 0
-                      ? `${hours} hour${hours > 1 ? "s" : ""} ${minutes > 0
-                        ? `${minutes} minute${minutes > 1 ? "s" : ""}`
-                        : ""
-                      } ${seconds > 0
-                        ? `${seconds} second${seconds > 1 ? "s" : ""}`
-                        : ""
-                      }`
-                      : `${minutes} minute${minutes > 1 ? "s" : ""} ${seconds > 0
-                        ? `${seconds} second${seconds > 1 ? "s" : ""}`
-                        : ""
-                      }`;
-                  })()
+                      const totalSeconds = quiz.timeLimit;
+                      const hours = Math.floor(totalSeconds / 3600); // Total hours
+                      const minutes = Math.floor((totalSeconds % 3600) / 60); // Remaining minutes
+                      const seconds = totalSeconds % 60; // Remaining seconds
+                      return hours > 0
+                        ? `${hours} hour${hours > 1 ? "s" : ""} ${
+                            minutes > 0
+                              ? `${minutes} minute${minutes > 1 ? "s" : ""}`
+                              : ""
+                          } ${
+                            seconds > 0
+                              ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                              : ""
+                          }`
+                        : `${minutes} minute${minutes > 1 ? "s" : ""} ${
+                            seconds > 0
+                              ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                              : ""
+                          }`;
+                    })()
                   : "No limit"}
               </span>
               <span className="border-l text-xs text-secondary pl-2">

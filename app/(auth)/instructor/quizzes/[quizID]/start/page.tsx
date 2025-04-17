@@ -41,7 +41,7 @@ export default function StartQuizPage({ params }: StartQuizPageProps) {
     localStorage.setItem("quizOptions", JSON.stringify(quizOptions));
 
     // Navigate to first question with options as query params
-    return `/admin/quizzes/${quiz.id}/1?order=${questionOrder}&mode=${quizMode}&timer=${timerType}`;
+    return `/instructor/quizzes/${quiz.id}/1?order=${questionOrder}&mode=${quizMode}&timer=${timerType}`;
   };
 
   return (

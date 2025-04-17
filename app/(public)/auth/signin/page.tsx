@@ -27,7 +27,7 @@ const UserCardList: React.FC = () => {
                         : "An error occurred during sign in",
                 );
             } else {
-                window.location.href = "/user-redirect";
+                window.location.href = "/me";
             }
         } catch {
             console.log("Failed to sign in");

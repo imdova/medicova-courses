@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const MinimalHeader: React.FC = () => {
   return (
-    <header className="fixed left-0 top-0 z-50 w-full transition-colors duration-300">
+    <header className="fixed left-0 top-0 z-50 w-full border border-gray-200 shadow-sm transition-colors duration-300">
       <div className="container mx-auto px-6 lg:max-w-[1170px]">
         <div className="flex h-[60px] items-center">
           <Link href="/">

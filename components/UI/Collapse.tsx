@@ -1,52 +1,50 @@
-'use client';
-import React, { useRef, useEffect, useState } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 interface CollapseProps {
-    open: boolean;
-    children: React.ReactNode;
-    duration?: number; // optional duration in ms
+  children: React.ReactNode;
+  open: boolean;
+  className?: string;
 }
 
-const Collapse: React.FC<CollapseProps> = ({ open, children, duration = 300 }) => {
-    const contentRef = useRef<HTMLDivElement>(null);
-    const [height, setHeight] = useState<string | number>(open ? 'auto' : 0);
+export default function Collapse({
+  children,
+  open,
+  className = "",
+}: CollapseProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number | undefined>(
+    open ? undefined : 0
+  );
 
-    useEffect(() => {
-        const el = contentRef.current;
-        if (!el) return;
+  useEffect(() => {
+    if (!contentRef.current) return;
 
-        const contentHeight = el.scrollHeight;
+    const contentHeight = contentRef.current.scrollHeight;
 
-        if (open) {
-            setHeight(contentHeight);
+    if (open) {
+      // Opening animation
+      setHeight(contentHeight);
+      const timeout = setTimeout(() => {
+        setHeight(undefined); // Set to undefined to allow natural height
+      }, 300); // Match transition duration
+      return () => clearTimeout(timeout);
+    } else {
+      // Closing animation
+      setHeight(contentRef.current.scrollHeight);
+      const timeout = setTimeout(() => {
+        setHeight(0);
+      }, 10); // Small delay to ensure the height is set before animating to 0
+      return () => clearTimeout(timeout);
+    }
+  }, [open]);
 
-            const timeout = setTimeout(() => {
-                setHeight('auto');
-            }, duration);
-
-            return () => clearTimeout(timeout);
-        } else {
-            const currentHeight = el.offsetHeight;
-            setHeight(currentHeight);
-
-            requestAnimationFrame(() => {
-                setHeight(0);
-            });
-        }
-    }, [open, duration]);
-
-    return (
-        <div
-            ref={contentRef}
-            className="overflow-hidden transition-all ease-in-out"
-            style={{
-                height: height,
-                transitionDuration: `${duration}ms`,
-            }}
-        >
-            {children}
-        </div>
-    );
-};
-
-export default Collapse;
+  return (
+    <div
+      ref={contentRef}
+      className={`transition-all duration-300 ease-in-out overflow-hidden ${className}`}
+      style={{ height: height === undefined ? "auto" : `${height}px` }}
+    >
+      {children}
+    </div>
+  );
+}

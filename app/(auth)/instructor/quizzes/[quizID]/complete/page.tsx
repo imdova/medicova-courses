@@ -216,7 +216,7 @@ export default function QuizCompletePage({ params }: QuizCompletePageProps) {
           </div>
           <div className="flex justify-end p-4 border-t">
             <Link
-              href={`/admin/quizzes/${quizID}/start`}
+              href={`/instructor/quizzes/${quizID}/start`}
               className="flex items-center gap-2 text-sm bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md font-medium">
               Retry Quiz <RotateCcw size={15} />
             </Link>
