@@ -1,4 +1,5 @@
 import { RoleBasedLinks } from "@/types";
+import { Home, Search, Text } from "lucide-react";
 
 export const roleBasedLinks: RoleBasedLinks = {
   instructor: [
@@ -75,23 +76,23 @@ export const roleBasedLinks: RoleBasedLinks = {
   default: [
     {
       id: 1,
-      label: "Jobs",
-      path: "/search",
+      label: "Home",
+      icon: Home,
+      path: "/",
     },
     {
-      id: 1,
-      label: "Post a Job",
-      path: "/employer/job/posted",
-    },
-    {
-      id: 1,
-      label: "Blog",
-      path: "/blog",
-    },
-    {
-      id: 1,
+      id: 2,
       label: "Courses",
-      path: "#",
+      icon: Search,
+      path: "/courses",
+      pattern: "/courses/*",
+    },
+    {
+      id: 3,
+      label: "Blogs",
+      icon: Text,
+      path: "/blogs",
+      pattern: "/blogs/*",
     },
   ],
 };

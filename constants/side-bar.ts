@@ -1,5 +1,5 @@
 import { RoleBasedLinks } from "@/types";
-import { BriefcaseBusiness, Home, Search, Workflow } from "lucide-react";
+import { BriefcaseBusiness, Home, Search, Text, Workflow } from "lucide-react";
 
 export const roleBasedSideBarLinks: RoleBasedLinks = {
   admin: [
@@ -136,103 +136,23 @@ export const roleBasedSideBarLinks: RoleBasedLinks = {
   default: [
     {
       id: 1,
-      label: "Dashboard",
-      icon: BriefcaseBusiness,
-      path: "/employer/dashboard",
+      label: "Home",
+      icon: Home,
+      path: "/",
     },
     {
       id: 2,
-      label: "Company Info",
-      icon: BriefcaseBusiness,
-      path: "/employer/company-info",
+      label: "Courses",
+      icon: Search,
+      path: "/courses",
+      pattern: "/courses/*",
     },
     {
       id: 3,
-      label: "Jobs",
-      icon: BriefcaseBusiness,
-      type: "collapse",
-      links: [
-        {
-          id: 4,
-          label: "Manage Jobs",
-          icon: BriefcaseBusiness,
-          path: "/employer/job/manage-jobs",
-          pattern: "/employer/job/manage-jobs/*",
-          type: "supLink",
-        },
-        {
-          id: 5,
-          label: "Post New Job",
-          icon: BriefcaseBusiness,
-          path: "/employer/job/posted",
-          pattern: "/employer/job/posted/*",
-          type: "supLink",
-        },
-      ],
-    },
-    {
-      id: 7,
-      label: "Search",
-      icon: BriefcaseBusiness,
-      type: "collapse",
-      links: [
-        {
-          id: 8,
-          label: "Search",
-          icon: BriefcaseBusiness,
-          path: "/employer/search",
-          type: "supLink",
-        },
-        {
-          id: 10,
-          label: "My Folders",
-          icon: BriefcaseBusiness,
-          path: "/employer/search/saved-search",
-          pattern: "/employer/search/saved-search/*",
-          type: "supLink",
-        },
-      ],
-    },
-    {
-      id: 11,
-      label: "Billing & Subscription",
-      icon: BriefcaseBusiness,
-      path: "/employer/subscription-plans",
-    },
-    {
-      id: 12,
-      label: "Report",
-      icon: BriefcaseBusiness,
-    },
-    {
-      id: 13,
-      label: "Chat",
-      icon: BriefcaseBusiness,
-      path: "/chat",
-      notifications: 3,
-    },
-    {
-      id: 40,
-      icon: BriefcaseBusiness,
-      label: "Notifications",
-      path: "/notifications",
-      notifications: 4,
-    },
-    {
-      id: 15,
-      type: "text",
-      section: "Settings",
-    },
-    {
-      id: 16,
-      label: "Settings",
-      icon: BriefcaseBusiness,
-      path: "/employer/setting",
-    },
-    {
-      id: 17,
-      label: "Help Center",
-      icon: BriefcaseBusiness,
+      label: "Blogs",
+      icon: Text,
+      path: "/blogs",
+      pattern: "/blogs/*",
     },
   ],
   instructor: [

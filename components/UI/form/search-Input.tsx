@@ -1,9 +1,9 @@
 "use client";
 
-import CustomInput from "@/components/UI/form/CustomInput";
 import { createUrl } from "@/util";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { KeyboardEvent, Suspense, useState, useEffect } from "react";
+import CustomInput from "./CustomInput";
 
 // Extend the SearchProps to accept the search handler function.
 interface SearchProps extends React.InputHTMLAttributes<HTMLInputElement> {

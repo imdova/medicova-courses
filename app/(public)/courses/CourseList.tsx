@@ -7,9 +7,9 @@ import { Courses } from "@/constants/courses.data";
 import CustomSelect from "@/components/UI/CustomSelect";
 import FilterContent from "@/components/Layout/filter/filter";
 import courseFilter from "@/constants/filters/courseFilter";
-import SearchBar from "./search-Input";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import CourseCardList from "@/components/UI/CourseCardList";
+import SearchBar from "@/components/UI/form/search-Input";
 
 const CoursesList: React.FC = () => {
   const searchParams = useSearchParams();
@@ -130,11 +130,10 @@ const CoursesList: React.FC = () => {
                       category as "All" | "Live" | "Offline" | "Recorded"
                     )
                   }
-                  className={`px-4 py-2 text-sm rounded-md border ${
-                    filter === category
+                  className={`px-4 py-2 text-sm rounded-md border ${filter === category
                       ? "bg-primary text-white"
                       : "bg-gray-200"
-                  }`}>
+                    }`}>
                   {category} Courses
                 </button>
               ))}
@@ -168,20 +167,18 @@ const CoursesList: React.FC = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleViewChange("grid")}
-                    className={`flex justify-center items-center w-8 h-8 border ${
-                      viewMode === "grid"
+                    className={`flex justify-center items-center w-8 h-8 border ${viewMode === "grid"
                         ? "bg-primary text-white"
                         : "border-primary text-primary"
-                    } rounded-md`}>
+                      } rounded-md`}>
                     <LayoutGrid size={18} />
                   </button>
                   <button
                     onClick={() => handleViewChange("list")}
-                    className={`flex justify-center items-center w-8 h-8 border ${
-                      viewMode === "list"
+                    className={`flex justify-center items-center w-8 h-8 border ${viewMode === "list"
                         ? "bg-primary text-white"
                         : "border-primary text-primary"
-                    } rounded-md`}>
+                      } rounded-md`}>
                     <List size={18} />
                   </button>
                 </div>

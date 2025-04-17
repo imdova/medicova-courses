@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import SearchBar from "@/app/courses/search-Input";
 import { quizzes } from "@/constants/quizzes.data";
 import {
   ArrowLeft,
@@ -12,6 +11,7 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
+import SearchBar from "@/components/UI/form/search-Input";
 
 export default function Quizzes() {
   // State to store the search query
@@ -57,26 +57,23 @@ export default function Quizzes() {
                 <Timer size={15} />
                 {quiz.timeLimit && quiz.timeLimit > 0
                   ? (() => {
-                      const totalSeconds = quiz.timeLimit;
-                      const hours = Math.floor(totalSeconds / 3600); // Total hours
-                      const minutes = Math.floor((totalSeconds % 3600) / 60); // Remaining minutes
-                      const seconds = totalSeconds % 60; // Remaining seconds
-                      return hours > 0
-                        ? `${hours} hour${hours > 1 ? "s" : ""} ${
-                            minutes > 0
-                              ? `${minutes} minute${minutes > 1 ? "s" : ""}`
-                              : ""
-                          } ${
-                            seconds > 0
-                              ? `${seconds} second${seconds > 1 ? "s" : ""}`
-                              : ""
-                          }`
-                        : `${minutes} minute${minutes > 1 ? "s" : ""} ${
-                            seconds > 0
-                              ? `${seconds} second${seconds > 1 ? "s" : ""}`
-                              : ""
-                          }`;
-                    })()
+                    const totalSeconds = quiz.timeLimit;
+                    const hours = Math.floor(totalSeconds / 3600); // Total hours
+                    const minutes = Math.floor((totalSeconds % 3600) / 60); // Remaining minutes
+                    const seconds = totalSeconds % 60; // Remaining seconds
+                    return hours > 0
+                      ? `${hours} hour${hours > 1 ? "s" : ""} ${minutes > 0
+                        ? `${minutes} minute${minutes > 1 ? "s" : ""}`
+                        : ""
+                      } ${seconds > 0
+                        ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                        : ""
+                      }`
+                      : `${minutes} minute${minutes > 1 ? "s" : ""} ${seconds > 0
+                        ? `${seconds} second${seconds > 1 ? "s" : ""}`
+                        : ""
+                      }`;
+                  })()
                   : "No limit"}
               </span>
               <span className="border-l text-xs text-secondary pl-2">
