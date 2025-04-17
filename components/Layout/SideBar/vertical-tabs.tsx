@@ -62,7 +62,8 @@ const LinkTab = ({ item, isActive }: TabComponentProps) => {
 
   return (
     <Link
-      className={`mx-2 flex h-[45px] min-h-[40px] flex-row justify-start rounded-[10px] p-2 transition-all duration-300 ease-in-out ${
+      aria-disabled={item.path === "#"}
+      className={`mx-2 flex h-[45px] min-h-[40px] flex-row justify-start rounded-[10px] p-2 transition-all duration-300 aria-disabled:opacity-40 aria-disabled:pointer-events-none  ease-in-out ${
         isActive ? "bg-light-primary text-white opacity-100" : "text-secondary"
       } `}
       href={item.path || "#"}

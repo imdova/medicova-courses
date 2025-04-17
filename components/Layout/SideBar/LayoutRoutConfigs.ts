@@ -16,12 +16,16 @@ export const routeConfigs: RouteConfig[] = [
 
   { pattern: "/chat", sideBarType: "minimal", linksType: "userType" },
   { pattern: "/notifications", sideBarType: "full", linksType: "userType" },
+  { pattern: "/blogs/*", sideBarType: "minimal", linksType: "userType" },
+  
 
   { pattern: "/instructor/dashboard", sideBarType: "full", linksType: "userType" },
   { pattern: "/instructor/*", sideBarType: "full", linksType: "userType" },
   { pattern: "/in/*", sideBarType: "full", linksType: "userType" },
-  //job-seeker
+  //student
   { pattern: "/student/*", sideBarType: "full", linksType: "userType" },
+  { pattern: "/st/*", sideBarType: "full", linksType: "userType" },
+  { pattern: "/cart", sideBarType: "full", linksType: "userType" },
   //admin
   { pattern: "/admin/*", sideBarType: "full", linksType: "userType" },
 ];

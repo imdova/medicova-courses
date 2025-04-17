@@ -30,30 +30,28 @@ const CartPage = () => {
   };
 
   return (
-    <main className="relative mb-20">
-      <div className="container mx-auto px-6 lg:max-w-[1170px]">
-        <h1 className="text-4xl md:text-5xl font-bold my-20 md:text-start text-center">
-          Courses Cart
-        </h1>
-        {submitError && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg">
-            {submitError}
-          </div>
-        )}
-        <div className="flex gap-6 flex-col lg:flex-row">
-          <div className="box-content w-full">
-            <h2 className="font-semibold text-xl mb-6">Checkout</h2>
-            <PaymentForm onSubmit={handleSubmit} loading={isSubmitting} />
-          </div>
-          <OrderSummary
-            items={courses}
-            subtotal={totalPrice}
-            discount={0}
-            tax={5}
-          />
+    <div className="px-4 md:px-5">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4 md:text-start text-center">
+        Courses Cart
+      </h1>
+      {submitError && (
+        <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg">
+          {submitError}
         </div>
+      )}
+      <div className="flex gap-6 flex-col  lg:flex-row">
+        <div className="box-content w-3/4">
+          <h2 className="font-semibold text-xl mb-6">Checkout</h2>
+          <PaymentForm onSubmit={handleSubmit} loading={isSubmitting} />
+        </div>
+        <OrderSummary
+          items={courses}
+          subtotal={totalPrice}
+          discount={0}
+          tax={5}
+        />
       </div>
-    </main>
+    </div>
   );
 };
 

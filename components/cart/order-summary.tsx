@@ -54,7 +54,7 @@ export const OrderSummary = ({
   };
 
   return (
-    <div className="box-content lg:w-[650px]">
+    <div className="box-content w-1/4">
       {alert && (
         <CustomAlert
           message={alert.message}

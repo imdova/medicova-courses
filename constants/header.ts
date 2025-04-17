@@ -22,29 +22,20 @@ export const roleBasedLinks: RoleBasedLinks = {
   ],
   student: [
     {
-      id: 1,
+      id: 0,
       label: "Dashboard",
-      path: "/employer/dashboard",
+      path: "/student/dashboard",
     },
     {
       id: 1,
-      label: "My Jobs",
-      path: "/employer/job/manage-jobs",
+      label: "Explore Courses",
+      path: "/courses",
+      pattern: "/courses/*",
     },
     {
-      id: 1,
-      label: "CV Search",
-      path: "/employer/search",
-    },
-    {
-      id: 1,
-      label: "Report",
-      path: "#",
-    },
-    {
-      id: 1,
-      label: "Billing",
-      path: "/employer/subscription-plans",
+      id: 2,
+      label: "My Courses",
+      path: "/student/my-courses",
     },
   ],
   admin: [
@@ -73,7 +64,7 @@ export const roleBasedLinks: RoleBasedLinks = {
     },
     {
       id: 2,
-      label: "Courses",
+      label: "Explore Courses",
       icon: Search,
       path: "/courses",
       pattern: "/courses/*",
