@@ -23,11 +23,12 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
     ref
   ) => {
     return (
-      <div className="w-full mb-5">
+      <div className="w-full">
         {label && (
           <label
             htmlFor={props.id}
-            className="mb-1 block text-sm font-medium text-gray-700">
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
             {label}
           </label>
         )}
@@ -63,7 +64,8 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
           <p
             className={`mt-1 text-xs ${
               error ? "text-red-600" : "text-gray-500"
-            } `}>
+            } `}
+          >
             {helperText}
           </p>
         )}

@@ -235,7 +235,7 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
     window.location.href = `${completePageUrl}`;
   };
   return (
-    <div className="relative flex flex-col gap-6 px-4 py-8 lg:flex-row">
+    <div className="relative flex flex-col gap-6  lg:flex-row">
       <form
         className="w-full"
         onSubmit={(e) => {
@@ -243,7 +243,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
           if (questionNum === orderedQuestions.length) {
             handleSubmit();
           }
-        }}>
+        }}
+      >
         <div className="box-content border p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-xl font-semibold">
@@ -313,7 +314,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                   currentQuestion.options?.some((opt) => opt.imageUrl)
                     ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2" // grid for image options
                     : "flex flex-col" // vertical list for text options
-                }`}>
+                }`}
+              >
                 {currentQuestion.options?.map((option, index) => {
                   const optionLetters = ["A", "B", "C", "D"];
                   const isSelected = selectedOption === index;
@@ -355,10 +357,12 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                   }
                 `
             }
-          `}>
+          `}
+                    >
                       <div className="flex gap-3 w-full">
                         <span
-                          className={`flex justify-center items-center w-8 h-8 rounded-full text-sm font-medium bg-gray-200 text-main`}>
+                          className={`flex justify-center items-center w-8 h-8 rounded-full text-sm font-medium bg-gray-200 text-main`}
+                        >
                           {optionLetters[index]}
                         </span>
 
@@ -374,7 +378,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
 
                         <label
                           htmlFor={`option-${index}`}
-                          className="flex items-center gap-3 flex-1 cursor-pointer">
+                          className="flex items-center gap-3 flex-1 cursor-pointer"
+                        >
                           <div className="flex flex-col justify-center h-full flex-1">
                             <h2> {option.text}</h2>
                             {option.imageUrl && (
@@ -393,7 +398,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                             <span
                               className={`flex justify-center items-center w-8 h-8 rounded-full bg-white ${
                                 isCorrect ? "text-green-500" : "text-red-500"
-                              }`}>
+                              }`}
+                            >
                               {isCorrect ? (
                                 <Check size={15} />
                               ) : (
@@ -431,14 +437,16 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                             : "bg-green-500 text-white hover:bg-green-600"
                           : "bg-gray-100 hover:bg-gray-200"
                       }`}
-                      onClick={() => handleAnswerSelect(index)}>
+                      onClick={() => handleAnswerSelect(index)}
+                    >
                       <div className="flex items-center gap-2">
                         <span
                           className={`flex justify-center items-center w-8 h-8 rounded-full text-sm font-medium text-main ${
                             isSelected || showCorrect || showIncorrect
                               ? "bg-white"
                               : "bg-gray-200"
-                          }`}>
+                          }`}
+                        >
                           {optionLetters[index]}
                         </span>
 
@@ -455,7 +463,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                           />
                           <label
                             htmlFor={`tf-${index}`}
-                            className="block cursor-pointer font-medium">
+                            className="block cursor-pointer font-medium"
+                          >
                             {value ? "True" : "False"}
                           </label>
                         </div>
@@ -507,7 +516,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                     : startPageUrl
                 }
                 className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm bg-gray-100 hover:bg-gray-200 text-secondary
-               `}>
+               `}
+              >
                 <ChevronLeft size={15} /> Previous
               </Link>
             )}
@@ -515,13 +525,15 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
             {questionNum === orderedQuestions.length ? (
               <button
                 type="submit"
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md disabled:opacity-50">
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md disabled:opacity-50"
+              >
                 {isTestMode ? "Submit Test" : "Finish Quiz"}
               </button>
             ) : (
               <Link
                 href={`/admin/quizzes/${quizID}/${questionNum + 1}`}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-sm text-white rounded-md">
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-sm text-white rounded-md"
+              >
                 Next <ChevronRight size={15} />
               </Link>
             )}
@@ -571,7 +583,8 @@ export default function QuizQuestionPage({ params }: QuizQuestionPageProps) {
                        ? "opacity-100"
                        : "opacity-80"
                    }
-                   `}>
+                   `}
+                >
                   {questionNum}
                 </Link>
               );

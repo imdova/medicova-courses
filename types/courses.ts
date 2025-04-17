@@ -1,3 +1,4 @@
+import { User } from "@/types";
 export interface curriculums {
   title: string;
   content: string;
@@ -15,11 +16,7 @@ export interface instructor {
 export interface review {
   date: string;
   rating: number;
-  user: {
-    name: string;
-    photo: string;
-    job: string;
-  };
+  user: User;
   content: string;
 }
 
@@ -36,6 +33,10 @@ export interface CourseType {
   instructor: instructor;
   lessons: number;
   students: number;
+  date: string;
+  category: string;
+  supCategory: string;
+  revenue: string;
   status: string;
   price: number;
   videoUrl: string;
@@ -96,8 +97,15 @@ export type CourseContentProps = {
   lessons: number;
   duration: string;
   tabs: Tab[];
+  date: string;
+  category: string;
+  supCategory: string;
+  revenue: string;
+  status: string;
+  isActive: boolean;
   instructor: instructor;
   type: string;
+  level: string;
   students: number;
   price: number;
   description: string;
