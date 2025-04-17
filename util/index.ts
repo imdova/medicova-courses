@@ -2,6 +2,13 @@ import { Role } from "@/types";
 import { Permission } from "@/types/permissions";
 import { ReadonlyURLSearchParams } from "next/navigation";
 
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: Parameters<typeof clsx>) {
+  return twMerge(clsx(...inputs));
+}
+
 export const formatDate = (date: Date): string => {
   const months = [
     "Jan",
@@ -84,20 +91,29 @@ export function getLastSegment(url?: string) {
   return segments.length > 0 ? segments[segments.length - 1] : null; // Return the last segment
 }
 
-export const isCurrentPage = (pathname: string, linkPath: string): boolean => {
-  // Convert the linkPath into a regex pattern
-  const regexPattern = linkPath
-    .replace(/\[.*?\]/g, "[^/]+") // Replace dynamic segments (e.g., [id]) with a regex to match any non-slash characters
-    .replace(/\//g, "\\/"); // Escape slashes for regex
+export const isCurrentPage = (pathname?: string, pattern?: string): boolean => {
+  if (!pathname || !pattern) return false;
+  // Handle dynamic segments (e.g., "/user/[id]")
+  const regexPattern = pattern
+    .replace(/\[.*?\]/g, "[^/]+") // Replace dynamic segments with wildcard regex
+    .replace(/\//g, "\\/"); // Escape slashes
 
-  // Create the regex and test the pathname
-  const regex = new RegExp(`^${regexPattern}$`);
-  return regex.test(pathname);
+  const exactRegex = new RegExp(`^${regexPattern}$`);
+  if (exactRegex.test(pathname)) return true;
+
+  // Handle wildcard patterns (e.g., "/dashboard/*")
+  if (pattern.includes("*")) {
+    const wildcardPattern = pattern.replace(/\*/g, ".*");
+    const wildcardRegex = new RegExp(`^${wildcardPattern}`);
+    return wildcardRegex.test(pathname);
+  }
+
+  return false;
 };
 
 export const createUrl = (
   pathname: string,
-  params: URLSearchParams | ReadonlyURLSearchParams,
+  params: URLSearchParams | ReadonlyURLSearchParams
 ) => {
   const paramsString = params.toString();
   const queryString = `${paramsString.length ? "?" : ""}${paramsString}`;

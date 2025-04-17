@@ -15,7 +15,7 @@ const ReviewsSlice = ({ Review }: ReviewSlice) => {
             <div>
               <Image
                 className="object-cover w-10 h-10 rounded-2xl"
-                src={review.user.photo}
+                src={review.user.photo || ""}
                 width={90}
                 height={90}
                 alt="user image"

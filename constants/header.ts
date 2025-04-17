@@ -1,49 +1,97 @@
-import { CommonLinks, RoleBasedLinks } from "@/types";
+import { RoleBasedLinks } from "@/types";
 
 export const roleBasedLinks: RoleBasedLinks = {
-  employer: [],
-  seeker: [],
-  admin: [
+  instructor: [
     {
-      title: "Admin Dashboard",
-      url: "/admin/dashboard",
+      id: 1,
+      label: "Dashboard",
+      path: "/employer/dashboard",
     },
     {
-      title: "User Management",
-      url: "/admin/users",
+      id: 1,
+      label: "My Jobs",
+      path: "/employer/job/manage-jobs",
     },
     {
-      title: "Settings",
-      url: "/admin/settings",
+      id: 1,
+      label: "CV Search",
+      path: "/employer/search",
+    },
+    {
+      id: 1,
+      label: "Report",
+      path: "#",
+    },
+    {
+      id: 1,
+      label: "Billing",
+      path: "/employer/subscription-plans",
     },
   ],
-};
-
-export const commonLinks: CommonLinks = {
-  home: [
+  student: [
     {
-      title: "Home",
-      url: "/",
+      id: 1,
+      label: "Dashboard",
+      path: "/employer/dashboard",
     },
     {
-      title: "Courses",
-      url: "/courses",
+      id: 1,
+      label: "My Jobs",
+      path: "/employer/job/manage-jobs",
     },
     {
-      title: "Blogs",
-      url: "/blogs",
+      id: 1,
+      label: "CV Search",
+      path: "/employer/search",
     },
     {
-      title: "Become a tutor",
-      url: "/tutors",
+      id: 1,
+      label: "Report",
+      path: "#",
     },
     {
-      title: "Admin",
-      url: "/admin",
+      id: 1,
+      label: "Billing",
+      path: "/employer/subscription-plans",
+    },
+  ],
+  admin: [
+    {
+      id: 1,
+      label: "Admin Dashboard",
+      path: "/admin",
     },
     {
-      title: "Prometric Exams",
-      url: "/prometric-exams",
+      id: 1,
+      label: "User Management",
+      path: "/admin/users",
+    },
+    {
+      id: 1,
+      label: "Settings",
+      path: "/admin/settings",
+    },
+  ],
+  default: [
+    {
+      id: 1,
+      label: "Jobs",
+      path: "/search",
+    },
+    {
+      id: 1,
+      label: "Post a Job",
+      path: "/employer/job/posted",
+    },
+    {
+      id: 1,
+      label: "Blog",
+      path: "/blog",
+    },
+    {
+      id: 1,
+      label: "Courses",
+      path: "#",
     },
   ],
 };

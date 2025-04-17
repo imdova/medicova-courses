@@ -5,11 +5,11 @@ import { callbacks } from "./callbacks";
 export const authOptions: AuthOptions = {
   providers,
   callbacks,
-  // pages: {
-  //   signIn: "/auth/signin",
-  //   error: "/auth/error",
-  //   verifyRequest: "/auth/verify-request",
-  // },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify-request",
+  },
   session: {
     strategy: "jwt",
   },

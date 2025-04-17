@@ -15,7 +15,7 @@ const ReviewSlice: React.FC<Review> = ({ reviews }) => {
             <div className="flex gap-3 items-center my-4">
               <div>
                 <Image
-                  src={review.user.photo}
+                  src={review.user.photo || ""}
                   className="w-12 h-12 object-cover rounded-full"
                   width={500}
                   height={500}

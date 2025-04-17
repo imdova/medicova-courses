@@ -1,5 +1,4 @@
 import { JobWorkPlace } from "@/constants/enums/work-place.enum";
-import { RoleState } from "./next-auth";
 import { Permission } from "./permissions";
 import { Gender } from "@/constants/enums/gender.enum";
 import { EducationLevel } from "@/constants/enums/education-level.enum";
@@ -8,6 +7,7 @@ import { SalaryCurrency } from "@/constants/enums/currency.enum";
 import { CompanyStatus } from "@/constants/enums/company-status.enum";
 import { CompanySize } from "@/constants/enums/company-size.enum";
 import { StaticImageData } from "next/image";
+import { User } from "next-auth";
 
 export type Country = {
   name: string;
@@ -49,7 +49,7 @@ export interface UserState {
   email: string | null;
   firstName: string | null;
   lastName: string | null;
-  type: RoleState;
+  type: User[];
   photo: string | null;
   phone: string | null;
   companyId: string | null;
@@ -65,7 +65,7 @@ export interface registerData {
 }
 
 export interface BaseHeaderProps {
-  user?: UserProps;
+  user?: User;
   pathname: string;
 }
 export interface Action {
@@ -79,7 +79,7 @@ export interface Notification {
   title: string;
   timestamp: string;
   read: boolean;
-  user: User;
+  user: Partial<User>;
   action: Action;
 }
 
@@ -268,8 +268,9 @@ export interface HeaderLink {
 export type CommonLinksType = "home";
 
 export type RoleBasedLinks = {
-  [key in RoleState]: HeaderLink[];
+  [key in User["type"] | "default"]: NavItem[];
 };
+
 export type CommonLinks = {
   [key in CommonLinksType]: HeaderLink[];
 };
@@ -279,11 +280,16 @@ export type NavItem = {
   icon?: React.ElementType;
   label?: string;
   path?: string;
+  pattern?: string;
   notifications?: number;
   section?: string; // Optional section header
   type?: "divider" | "text" | "collapse" | "supLink" | "profile";
   links?: NavItem[];
 };
+export interface ActiveLinkResult {
+  activeIndex: number;
+  parentId: number | null;
+}
 
 export type Role = {
   permissions: { name: Permission }[];
@@ -349,12 +355,7 @@ export type UserProps = {
   name: string;
   email: string;
   avatar: string;
-  type: RoleState;
+  type: User["type"];
 };
 
-// Notification
-export interface User {
-  name: string;
-  photo: string;
-  job: string;
-}
+

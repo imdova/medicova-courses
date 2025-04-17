@@ -1,14 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import NextAuth from "next-auth";
-export type RoleState = "seeker" | "admin" | "employer";
+export type RoleState = "student" | "instructor" | "admin";
 
 declare module "next-auth" {
-  type User = {
-    id: string;
-    name: string;
-    email: string;
-    permissions?: Permission[];
-  };
+  interface User {
+    id: string | null;
+    email: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    userName: string | null;
+    type: RoleState;
+    isVerified: boolean;
+    photo: string | null;
+    phone: string | null;
+  }
 
   interface Session {
     user: User;

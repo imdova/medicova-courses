@@ -10,13 +10,8 @@ import {
   LogOut,
   Mail,
 } from "lucide-react";
+import { User } from "next-auth";
 
-type UserProps = {
-  user: {
-    name: string;
-    avatar: string;
-  };
-};
 
 const menuItems = [
   { icon: <CircleUser size={18} />, label: "Profile" },
@@ -26,7 +21,7 @@ const menuItems = [
   { icon: <LogOut size={18} />, label: "Log out", textColor: "text-red-700" },
 ];
 
-const UserDropDown: React.FC<UserProps> = ({ user }) => {
+const UserDropDown: React.FC<{ user: User }> = ({ user }) => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -69,7 +64,7 @@ const UserDropDown: React.FC<UserProps> = ({ user }) => {
           <div className="w-8 h-8 sm:w-10 sm:h-10 overflow-hidden rounded-full ">
             <Image
               className="object-cover "
-              src={user.avatar}
+              src={user.photo || ""}
               alt="User Avatar"
               width={100}
               height={100}
@@ -91,9 +86,8 @@ const UserDropDown: React.FC<UserProps> = ({ user }) => {
               {menuItems.map(({ icon, label, textColor }) => (
                 <li
                   key={label}
-                  className={`flex items-center gap-2 px-3 py-2 text-xs cursor-pointer rounded-md transition ${
-                    textColor || "text-gray-800 hover:bg-gray-100 "
-                  }`}>
+                  className={`flex items-center gap-2 px-3 py-2 text-xs cursor-pointer rounded-md transition ${textColor || "text-gray-800 hover:bg-gray-100 "
+                    }`}>
                   {icon}
                   <span>{label}</span>
                 </li>

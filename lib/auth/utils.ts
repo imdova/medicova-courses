@@ -1,17 +1,48 @@
+import { User } from "next-auth";
+const users: User[] = [
+  {
+    id: "adm_001",
+    email: "admin@example.com",
+    firstName: "Charlie",
+    lastName: "Admin",
+    userName: "charlie_admin",
+    type: "admin",
+    isVerified: true,
+    photo: "https://example.com/avatar/admin.png",
+    phone: "7778889999",
+  },
+  {
+    id: "ins_001",
+    email: "instructor@example.com",
+    firstName: "Bob",
+    lastName: "Smith",
+    userName: "bob_instructor",
+    type: "instructor",
+    isVerified: true,
+    photo: "https://example.com/avatar/instructor.png",
+    phone: "4445556666",
+  },
+  {
+    id: "stu_001",
+    email: "student@example.com",
+    firstName: "Alice",
+    lastName: "Doe",
+    userName: "alice_student",
+    type: "student",
+    isVerified: true,
+    photo: "https://example.com/avatar/student.png",
+    phone: "1112223333",
+  },
+];
+
 export async function authenticateUser(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  credentials: Record<"username" | "password", string> | undefined
+  credentials: Record<"email" | "password", string> | undefined
 ) {
-  // Add logic here to look up the user from the credentials supplied
-  const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
-
-  if (user) {
-    // Any object returned will be saved in `user` property of the JWT
-    return user;
-  } else {
-    // If you return null then an error will be displayed advising the user to check their details.
+  if (!credentials?.email || !credentials?.password) return null;
+  try {
+    return users.find((user) => user.email === credentials.email) || null;
+  } catch (error) {
+    console.error("Authentication error:", error);
     return null;
-
-    // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
   }
 }
