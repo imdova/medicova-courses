@@ -13,38 +13,13 @@ interface RouteConfig {
 
 export const routeConfigs: RouteConfig[] = [
   // default
-  { pattern: "/me/[id]", sideBarType: "full", linksType: "userType" },
-  { pattern: "/co/[id]", sideBarType: "full", linksType: "userType" },
 
   { pattern: "/chat", sideBarType: "minimal", linksType: "userType" },
   { pattern: "/notifications", sideBarType: "full", linksType: "userType" },
 
-  { pattern: "/job/[slug]", sideBarType: "full", linksType: "userType" },
-  // auth
-  //employer
-  {
-    pattern: "/employer/search",
-    sideBarType: "minimal",
-    linksType: "userType",
-  },
-  {
-    pattern: "/employer/subscription-plans",
-    sideBarType: "minimal",
-    linksType: "userType",
-  },
-  {
-    pattern: "/employer/job/manage-jobs/[id]",
-    sideBarType: "minimal",
-    linksType: "userType",
-  },
-  {
-    pattern: "/employer/search/saved-search/[slug]",
-    sideBarType: "minimal",
-    linksType: "userType",
-  },
-  { pattern: "/employer/*", sideBarType: "full", linksType: "userType" },
+  { pattern: "/instructor/*", sideBarType: "full", linksType: "userType" },
   //job-seeker
-  { pattern: "/job-seeker/*", sideBarType: "full", linksType: "userType" },
+  { pattern: "/student/*", sideBarType: "full", linksType: "userType" },
   //admin
   { pattern: "/admin/*", sideBarType: "full", linksType: "userType" },
 ];

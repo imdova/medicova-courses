@@ -21,9 +21,6 @@ export const routeConfigs: RouteConfig[] = [
   { pattern: "/", headerType: "transparent", linksType: "default" },
   { pattern: "/blog", headerType: "none", linksType: "default" },
   { pattern: "/search", headerType: "transparent", linksType: "userType" },
-  { pattern: "/me/[id]", headerType: "full", linksType: "userType" },
-  { pattern: "/co/[id]", headerType: "full", linksType: "userType" },
-  { pattern: "/job/[slug]", headerType: "full", linksType: "userType" },
 
   { pattern: "/chat", headerType: "full", linksType: "userType" },
   { pattern: "/notifications", headerType: "full", linksType: "userType" },
@@ -31,9 +28,9 @@ export const routeConfigs: RouteConfig[] = [
   // auth
   { pattern: "/auth/*", headerType: "minimal", linksType: "userType" },
   //employer
-  { pattern: "/employer/*", headerType: "full", linksType: "userType" },
+  { pattern: "/instructor/*", headerType: "full", linksType: "userType" },
   //job-seeker
-  { pattern: "/job-seeker/*", headerType: "full", linksType: "userType" },
+  { pattern: "/student/*", headerType: "full", linksType: "userType" },
   //admin
   { pattern: "/admin/*", headerType: "full", linksType: "userType" },
 ];
