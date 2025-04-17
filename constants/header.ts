@@ -1,49 +1,86 @@
-import { CommonLinks, RoleBasedLinks } from "@/types";
+import { RoleBasedLinks } from "@/types";
+import { Home, Search, Text } from "lucide-react";
 
 export const roleBasedLinks: RoleBasedLinks = {
-  employer: [],
-  seeker: [],
-  admin: [
+  instructor: [
     {
-      title: "Admin Dashboard",
-      url: "/admin/dashboard",
+      id: 1,
+      label: "Dashboard",
+      path: "/instructor/dashboard",
     },
     {
-      title: "User Management",
-      url: "/admin/users",
+      id: 2,
+      label: "All Courses",
+      path: "/instructor/courses",
+      pattern: "/instructor/courses/*",
     },
     {
-      title: "Settings",
-      url: "/admin/settings",
+      id: 3,
+      label: "Add New Course",
+      path: "/instructor/add-course",
     },
   ],
-};
-
-export const commonLinks: CommonLinks = {
-  home: [
+  student: [
     {
-      title: "Home",
-      url: "/",
+      id: 0,
+      label: "Dashboard",
+      path: "/student/dashboard",
     },
     {
-      title: "Courses",
-      url: "/courses",
+      id: 1,
+      label: "Explore Courses",
+      path: "/courses",
+      pattern: "/courses/*",
     },
     {
-      title: "Blogs",
-      url: "/blogs",
+      id: 2,
+      label: "My Courses",
+      path: "/student/my-courses",
+    },
+  ],
+  admin: [
+    {
+      id: 1,
+      label: "Admin Dashboard",
+      path: "/admin",
     },
     {
-      title: "Become a tutor",
-      url: "/tutors",
+      id: 1,
+      label: "User Management",
+      path: "/admin/users",
     },
     {
-      title: "Admin",
-      url: "/admin",
+      id: 1,
+      label: "Settings",
+      path: "/admin/settings",
+    },
+  ],
+  default: [
+    {
+      id: 1,
+      label: "Home",
+      icon: Home,
+      path: "/",
     },
     {
-      title: "Prometric Exams",
-      url: "/prometric-exams",
+      id: 2,
+      label: "Explore Courses",
+      icon: Search,
+      path: "/courses",
+      pattern: "/courses/*",
+    },
+    {
+      id: 3,
+      label: "Blogs",
+      icon: Text,
+      path: "/blogs",
+      pattern: "/blogs/*",
+    },
+    {
+      id: 4,
+      label: "Search For a Job",
+      icon: Search,
+      path: "http://medicova.net/",
     },
   ],
 };

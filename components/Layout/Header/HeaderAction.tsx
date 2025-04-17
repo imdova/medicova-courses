@@ -1,16 +1,12 @@
-// import NotificationDropdown from "@/components/UI/NotificationDropdown";
-// import UserDropdown from "@/components/UI/UserDropdown";
+import { User } from "next-auth";
 import AlertDropDown from "@/components/UI/AlertDropDown";
 import UserDropDown from "@/components/UI/UserDropDown";
-import { notification, users } from "@/constants";
+import { notification } from "@/constants";
 import { useAppSelector } from "@/store/hooks";
-import { UserProps } from "@/types";
-import { Search, ShoppingCart } from "lucide-react";
-// import { UserState } from "@/types";
-import Link from "next/link";
+import { Search, ShoppingCart } from "lucide-react"; import Link from "next/link";
 
 interface UserActionProps {
-  user?: UserProps;
+  user?: User;
   pathname?: string;
 }
 
@@ -37,7 +33,7 @@ const HeaderAction: React.FC<UserActionProps> = ({ user }) => {
           </Link>
           <AlertDropDown notification={notification} />
         </div>
-        <UserDropDown user={users} />
+        <UserDropDown user={user} />
       </div>
     );
   } else {

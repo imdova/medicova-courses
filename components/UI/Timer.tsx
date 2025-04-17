@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { TimerIcon } from "lucide-react";
@@ -139,8 +140,8 @@ export default function Timer({
 
     return h > 0
       ? `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s
-          .toString()
-          .padStart(2, "0")}`
+        .toString()
+        .padStart(2, "0")}`
       : `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 

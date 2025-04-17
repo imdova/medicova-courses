@@ -1,7 +1,7 @@
-// components/StudentTable.tsx
 import { useState } from "react";
 import OptionsDropdown from "../OptionsDropdown";
-import SearchBar from "@/app/courses/search-Input";
+import Image from "next/image";
+import SearchBar from "../form/search-Input";
 
 type Student = {
   id: number;
@@ -15,6 +15,7 @@ type Student = {
   group: string;
   progress: number;
   joinDate: string;
+  image: string;
 };
 
 const initialStudents: Student[] = [
@@ -30,6 +31,8 @@ const initialStudents: Student[] = [
     group: "Group A",
     progress: 80,
     joinDate: "April 5, 2025",
+    image:
+      "https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg?t=st=1744721699~exp=1744725299~hmac=d9de6b95feefebc35ea1f97dfc870606c4df00fec3a58467febcb9250333c302&w=1380",
   },
   {
     id: 2,
@@ -43,6 +46,8 @@ const initialStudents: Student[] = [
     group: "Group A",
     progress: 90,
     joinDate: "April 5, 2025",
+    image:
+      "https://img.freepik.com/free-photo/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg?t=st=1744721699~exp=1744725299~hmac=d9de6b95feefebc35ea1f97dfc870606c4df00fec3a58467febcb9250333c302&w=1380",
   },
   // Add more for testing
 ];
@@ -96,64 +101,77 @@ export default function StudentOverviewTable() {
     <div className="relative p-4 w-full">
       {/* Header Controls */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+        <h2 className="text-2xl font-semibold">Students</h2>
+        <button className="bg-green-600 text-white text-sm px-4 py-2 rounded-md w-full md:w-auto min-w-[160px]">
+          + Add New Student
+        </button>
+      </div>
+      {/* Filter Dropdowns*/}
+      <div className="flex flex-col xl:flex-row justify-between gap-4 mb-4">
         <SearchBar
           parentClassName="w-full"
           placeholder="Search for students"
           onSearch={handleSearch}
         />
-        <button className="bg-green-600 text-white text-sm px-4 py-2 rounded-md w-full md:w-auto min-w-[160px]">
-          + Add New Student
-        </button>
+        <div className="flex flex-col justify-between items-center gap-3 w-full sm:flex-row">
+          <select
+            className="border px-2 py-2 rounded-md w-full sm:w-[200px]"
+            value={filters.country}
+            onChange={(e) =>
+              setFilters({ ...filters, country: e.target.value })
+            }
+          >
+            <option value="">Country</option>
+            {unique("country").map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          <select
+            className="border px-2 py-2 rounded-md w-full  sm:w-[200px]"
+            value={filters.speciality}
+            onChange={(e) =>
+              setFilters({ ...filters, speciality: e.target.value })
+            }
+          >
+            <option value="">Specialty</option>
+            {unique("speciality").map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+          <select
+            className="border px-2 py-2 rounded-md w-full  sm:w-[200px]"
+            value={filters.age}
+            onChange={(e) => setFilters({ ...filters, age: e.target.value })}
+          >
+            <option value="">Age</option>
+            {unique("age")
+              .sort((a, b) => Number(a) - Number(b))
+              .map((age) => (
+                <option key={age} value={age}>
+                  {age}
+                </option>
+              ))}
+          </select>
+        </div>
       </div>
 
       {/* Filter Dropdowns */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-4">
-        <select
-          className="border px-2 py-2 rounded-md"
-          value={filters.country}
-          onChange={(e) => setFilters({ ...filters, country: e.target.value })}
-        >
-          <option value="">Country</option>
-          {unique("country").map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-        <select
-          className="border px-2 py-2 rounded-md"
-          value={filters.speciality}
-          onChange={(e) =>
-            setFilters({ ...filters, speciality: e.target.value })
-          }
-        >
-          <option value="">Specialty</option>
-          {unique("speciality").map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-        <select
-          className="border px-2 py-2 rounded-md"
-          value={filters.age}
-          onChange={(e) => setFilters({ ...filters, age: e.target.value })}
-        >
-          <option value="">Age</option>
-          {unique("age")
-            .sort((a, b) => Number(a) - Number(b))
-            .map((age) => (
-              <option key={age} value={age}>
-                {age}
-              </option>
-            ))}
-        </select>
-        <select className="border px-2 py-2 rounded-md">
-          <option>Action</option>
-        </select>
-        <select className="border px-2 py-2 rounded-md">
-          <option>Columns</option>
-        </select>
+      <div className="flex flex-col-reverse justify-between gap-3 items-center mb-4 lg:flex-row">
+        <span className="text-sm text-secondary min-w-[150px]">
+          {selectedIds.length} Item Selected
+        </span>
+        <div className="flex items-center justify-end gap-3 w-full">
+          <select className="border w-full px-2 py-2 rounded-md lg:w-[200px]">
+            <option>Action</option>
+          </select>
+          <select className="border w-full px-2 py-2 rounded-md lg:w-[200px]">
+            <option>Columns</option>
+          </select>
+        </div>
       </div>
 
       {/* Responsive Table */}
@@ -200,8 +218,21 @@ export default function StudentOverviewTable() {
                   </label>
                 </td>
                 <td className="p-2">
-                  <p className="font-semibold">{student.name}</p>
-                  <p className="text-sm text-gray-500">{student.email}</p>
+                  <div className="flex items-center gap-2 p-2">
+                    <div className="w-12">
+                      <Image
+                        className="w-12 h-12 rounded-full object-cover"
+                        src={student.image}
+                        alt="Avatar Student"
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+                    <div className="">
+                      <p className="font-semibold">{student.name}</p>
+                      <p className="text-sm text-gray-500">{student.email}</p>
+                    </div>
+                  </div>
                 </td>
                 <td className="text-center">{student.country}</td>
                 <td className="text-center">{student.age}</td>

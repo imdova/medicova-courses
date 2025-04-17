@@ -1,7 +1,6 @@
-import { BaseHeaderProps } from "@/types";
 import Link from "next/link";
 
-const DarkHeader: React.FC<BaseHeaderProps> = () => {
+const DarkHeader: React.FC = () => {
   return (
     <header className="w-full bg-gray-900">
       <div className="mx-auto max-w-7xl px-4">
@@ -15,7 +14,8 @@ const DarkHeader: React.FC<BaseHeaderProps> = () => {
             </Link>
             <Link
               href="/blog/categories"
-              className="text-gray-300 hover:text-white">
+              className="text-gray-300 hover:text-white"
+            >
               Categories
             </Link>
             <Link href="/blog/about" className="text-gray-300 hover:text-white">

@@ -71,8 +71,8 @@ const AlertDropDown: React.FC<notificationProps> = ({ notification }) => {
                     <div className="flex items-center space-x-5">
                       <Image
                         className="w-8 h-8 rounded-full"
-                        src={notification.user.photo} // Correct reference to user photo
-                        alt={notification.user.name} // Correct reference to user name
+                        src={notification.user.photo || ""} // Correct reference to user photo
+                        alt={notification.user.firstName || ""} // Correct reference to user name
                         width={32} // Small width for user photo
                         height={32} // Small height for user photo
                       />

@@ -1,4 +1,3 @@
-import { User } from "@/types";
 export interface curriculums {
   title: string;
   content: string;
@@ -16,7 +15,11 @@ export interface instructor {
 export interface review {
   date: string;
   rating: number;
-  user: User;
+  user: {
+    name: string;
+    photo: string;
+    job: string;
+  };
   content: string;
 }
 

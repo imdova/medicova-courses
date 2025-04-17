@@ -190,7 +190,7 @@ const EnrollmentChart = () => {
         </div>
       </div>
 
-      <div className="">
+      <div className="overflow-hidden">
         <Chart
           options={options}
           series={series}

@@ -1,39 +1,12 @@
-"use client";
-import { usePathname } from "next/navigation";
-import { matchRoute } from "./routeConfigs";
-import MinimalHeader from "./MinimalHeader";
-import TransparentHeader from "./TransparentHeader";
-import { users } from "@/constants";
-import FullHeader from "./FullHeader";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/config";
+import HeaderSelector from "./SelectedHeader";
 
-interface DynamicHeaderProps {
-  isActive: boolean;
-  setIsActive: (active: boolean) => void;
-}
+const DynamicHeader = async () => {
+  const data = await getServerSession(authOptions);
+  const user = data?.user
 
-const DynamicHeader: React.FC<DynamicHeaderProps> = ({
-  isActive,
-  setIsActive,
-}) => {
-  const pathname = usePathname() || "/";
-  const headerType = matchRoute(pathname)?.headerType || "minimal";
-
-  const headerComponents = {
-    minimal: MinimalHeader,
-    transparent: TransparentHeader,
-    full: FullHeader,
-  };
-
-  const SelectedHeader = headerComponents[headerType];
-
-  return (
-    <SelectedHeader
-      user={users}
-      pathname={pathname}
-      isActive={isActive}
-      setIsActive={setIsActive}
-    />
-  );
+  return <HeaderSelector user={user} />;
 };
 
 export default DynamicHeader;
